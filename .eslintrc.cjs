@@ -8,11 +8,12 @@ module.exports = {
         '@electron-toolkit',
         '@electron-toolkit/eslint-config-ts/eslint-recommended',
         '@vue/eslint-config-typescript/recommended',
-        '@vue/eslint-config-prettier'
+        '@rushstack/eslint-patch',
+        '@vue/eslint-config-prettier',
     ],
     rules: {
         'vue/require-default-prop': 'off',
         'vue/multi-word-component-names': 'off',
-        'space-before-function-paren': 0
-    }
+        'space-before-function-paren': 0,
+    },
 }

@@ -1,0 +1,26 @@
+<template>
+    <n-layout class="main-comp">
+        <n-layout-header class="main-header">
+            我是标题
+        </n-layout-header>
+        <n-layout-header class="main-nav-header">
+            颐和园路
+        </n-layout-header>
+        <n-layout has-sider>
+            <n-layout-sider class="main-left-nav" content-style="padding: 24px;">
+                海淀桥
+            </n-layout-sider>
+            <n-layout-content class="main-content-view" content-style="padding: 24px;">
+                平山道
+            </n-layout-content>
+        </n-layout>
+        <n-layout-footer class="main-footer">成府路</n-layout-footer>
+    </n-layout>
+</template>
+ 
+<script lang="ts" setup>
+
+</script>
+<style lang="less">
+@import '../../assets/css/mainstyle.less';
+</style>
