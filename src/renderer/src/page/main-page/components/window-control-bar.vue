@@ -1,8 +1,8 @@
 <template>
-    <n-grid :cols="3">
-        <n-gi></n-gi>
-        <n-gi span="2"></n-gi>
-        <n-gi></n-gi>
+    <n-grid :cols="24">
+        <n-gi span="1"></n-gi>
+        <n-gi span="20"></n-gi>
+        <n-gi span="3">222</n-gi>
     </n-grid>
 </template>
  

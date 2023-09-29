@@ -1,7 +1,7 @@
 <template>
     <n-layout class="main-comp">
         <n-layout-header class="main-header">
-            我是标题
+            <windowControlBar />
         </n-layout-header>
         <n-layout-header class="main-nav-header">
             颐和园路
@@ -19,8 +19,9 @@
 </template>
  
 <script lang="ts" setup>
+import windowControlBar from './components/window-control-bar.vue';
 
 </script>
-<style lang="less">
+<style lang="less" scoped>
 @import '../../assets/css/mainstyle.less';
 </style>
