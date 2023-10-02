@@ -6,7 +6,7 @@ import { BrowserWindow, ipcMain } from 'electron'
  */
 export const windowControl = () => {
     const minWindow = (window: BrowserWindow) => {
-        ipcMain.on('main-window', () => {
+        ipcMain.on('min-window', () => {
             window.minimize()
         })
     }

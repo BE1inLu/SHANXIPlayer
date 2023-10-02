@@ -4,7 +4,8 @@
             <windowControlBar />
         </n-layout-header>
         <n-layout-header class="main-nav-header">
-            颐和园路
+            <span>
+                我是菜单我是菜单我是菜单我是菜单我是菜单</span>
         </n-layout-header>
         <n-layout has-sider>
             <n-layout-sider class="main-left-nav" content-style="padding: 24px;">
