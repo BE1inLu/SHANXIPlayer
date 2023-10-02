@@ -27,7 +27,7 @@
             "<script lang=\"ts\" setup>",
             " ",
             "</script>",
-            "<style lang=\"lang\">",
+            "<style lang=\"less\">",
             "</style>",
         ]
     }

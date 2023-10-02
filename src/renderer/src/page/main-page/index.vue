@@ -1,11 +1,10 @@
 <template>
     <n-layout class="main-comp">
         <n-layout-header class="main-header">
-            <windowControlBar />
+            <mainTopControlBar />
         </n-layout-header>
         <n-layout-header class="main-nav-header">
-            <span>
-                我是菜单我是菜单我是菜单我是菜单我是菜单</span>
+            <mainTopMenuBar />
         </n-layout-header>
         <n-layout has-sider>
             <n-layout-sider class="main-left-nav" content-style="padding: 24px;">
@@ -20,7 +19,8 @@
 </template>
  
 <script lang="ts" setup>
-import windowControlBar from './components/window-control-bar.vue';
+import mainTopControlBar from './components/main-top-control-bar.vue';
+import mainTopMenuBar from './components/main-top-menu-bar.vue';
 
 </script>
 <style lang="less" scoped>
