@@ -3,6 +3,8 @@ import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
 const api = {
+    darkTheme: () => ipcRenderer.invoke('dark-mode'),
+    lightTheme: () => ipcRenderer.invoke('light-mode'),
     minwindow: () => ipcRenderer.send('min-window'),
     maxwindow: () => ipcRenderer.send('max-window'),
     closewindow: () => ipcRenderer.send('close-window'),

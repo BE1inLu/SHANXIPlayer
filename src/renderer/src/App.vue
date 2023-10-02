@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import mainPage from './page/main-page/index.vue'
 import { darkTheme } from 'naive-ui'
+import { useStore } from './store'
+
+const store = useStore()
+
+let localTheme = darkTheme;
+
+
 </script>
 
 <template>
-    <n-config-provider :theme="darkTheme">
+    <n-config-provider :theme="localTheme">
         <main-page />
     </n-config-provider>
 </template>

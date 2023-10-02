@@ -1,6 +1,5 @@
 <template>
     <n-grid :cols="24">
-        <n-gi span="0" class="drag"></n-gi>
         <n-gi span="21" class="drag"></n-gi>
         <n-gi span="3" class="no-drag">
             <div class="button-group">
@@ -65,7 +64,8 @@
                         </n-icon>
                     </template>
                 </n-button>
-                <n-button secondary circle type="error" size="tiny" @click="windowControl.closewindow">
+                <n-button secondary circle type="error" size="tiny" @click="windowControl.closewindow"
+                    style="margin-right: 5px;">
                     <template #icon>
                         <n-icon>
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -90,6 +90,7 @@ const darkModeVal = ref<boolean>(true)
 
 const darkModeChange = () => {
     darkModeVal.value = !darkModeVal.value
+    darkModeVal.value ? window.api.darkTheme() : window.api.lightTheme()
 }
 
 
@@ -111,7 +112,6 @@ const windowControl = {
 <style lang="less" scoped>
 .button-group {
     padding-top: 5px;
-
     display: flex;
     justify-content: space-evenly;
     align-items: center;

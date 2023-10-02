@@ -3,9 +3,6 @@
         <n-layout-header class="main-header">
             <mainTopControlBar />
         </n-layout-header>
-        <n-layout-header class="main-nav-header">
-            <mainTopMenuBar />
-        </n-layout-header>
         <n-layout has-sider>
             <n-layout-sider class="main-left-nav" content-style="padding: 24px;">
                 海淀桥
@@ -17,10 +14,9 @@
         <n-layout-footer class="main-footer">成府路</n-layout-footer>
     </n-layout>
 </template>
- 
+
 <script lang="ts" setup>
 import mainTopControlBar from './components/main-top-control-bar.vue';
-import mainTopMenuBar from './components/main-top-menu-bar.vue';
 
 </script>
 <style lang="less" scoped>

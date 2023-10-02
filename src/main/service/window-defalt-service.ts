@@ -1,4 +1,4 @@
-import { BrowserWindow, ipcMain } from 'electron'
+import { BrowserWindow, ipcMain, nativeTheme } from 'electron'
 
 /**
  * 基础窗口操作方法
@@ -20,11 +20,24 @@ export const windowControl = () => {
             window.close()
         })
     }
+
+    const windowDarkMode = () => {
+        ipcMain.handle('dark-mode', () => {
+            nativeTheme.themeSource = 'dark'
+        })
+        ipcMain.handle('light-mode', () => {
+            nativeTheme.themeSource = 'light'
+        })
+
+        return
+    }
+
     /**
-     * 执行基础窗口声明
-     * @param window 
+     * 执行基础窗口方法
+     * @param window
      */
     const execWindowControl = (window: BrowserWindow) => {
+        windowDarkMode()
         minWindow(window)
         maxWindow(window)
         closeWindow(window)
