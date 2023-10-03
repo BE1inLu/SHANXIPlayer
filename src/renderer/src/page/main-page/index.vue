@@ -4,10 +4,8 @@
             <mainTopControlBar />
         </n-layout-header>
         <n-layout has-sider>
-            <n-layout-sider class="main-left-nav" content-style="padding: 24px;">
-                海淀桥
-            </n-layout-sider>
-            <n-layout-content class="main-content-view" content-style="padding: 24px;">
+            <mainLeftMenuBar />
+            <n-layout-content class="main-content-view">
                 平山道
             </n-layout-content>
         </n-layout>
@@ -17,6 +15,7 @@
 
 <script lang="ts" setup>
 import mainTopControlBar from './components/main-top-control-bar.vue';
+import mainLeftMenuBar from './components/main-left-menu-bar.vue';
 
 </script>
 <style lang="less" scoped>

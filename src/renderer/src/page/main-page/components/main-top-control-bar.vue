@@ -86,7 +86,7 @@
     </n-grid>
 </template>
  
-<script lang="ts" setup>
+<script lang="ts" setup> 
 import { useStore } from '@renderer/store';
 import { ref } from 'vue'
 
