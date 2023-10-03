@@ -1,8 +1,9 @@
 <template>
-    <n-grid :cols="24">
-        <n-gi span="21" class="drag"></n-gi>
-        <n-gi span="3" class="no-drag">
+    <n-grid :cols="10" item-responsive responsive="screen">
+        <n-gi span="8 m:9" class="drag"></n-gi>
+        <n-gi span="2 m:1" class="no-drag">
             <div class="button-group">
+
                 <n-button secondary circle size="tiny" @click="darkModeChange()">
                     <template #icon>
                         <n-icon v-if="darkModeVal">
@@ -41,6 +42,7 @@
                         </n-icon>
                     </template>
                 </n-button>
+
                 <n-button secondary circle type="warning" size="tiny" id="maxMinbtn" @click="windowControl.maxwindow">
                     <template #icon>
                         <n-icon v-if="maxMinMode">
@@ -64,6 +66,7 @@
                         </n-icon>
                     </template>
                 </n-button>
+
                 <n-button secondary circle type="error" size="tiny" @click="windowControl.closewindow"
                     style="margin-right: 5px;">
                     <template #icon>
@@ -77,19 +80,23 @@
                         </n-icon>
                     </template>
                 </n-button>
+
             </div>
         </n-gi>
     </n-grid>
 </template>
  
 <script lang="ts" setup>
+import { useStore } from '@renderer/store';
 import { ref } from 'vue'
 
 const maxMinMode = ref<boolean>(true)
 const darkModeVal = ref<boolean>(true)
+let store = useStore()
 
 const darkModeChange = () => {
     darkModeVal.value = !darkModeVal.value
+    store.changheTheme()
     darkModeVal.value ? window.api.darkTheme() : window.api.lightTheme()
 }
 
@@ -110,8 +117,12 @@ const windowControl = {
 
 </script>
 <style lang="less" scoped>
-.button-group {
+.n-grid {
     padding-top: 5px;
+}
+
+.button-group {
+
     display: flex;
     justify-content: space-evenly;
     align-items: center;

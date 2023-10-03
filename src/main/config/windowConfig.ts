@@ -7,7 +7,7 @@ export const WINDOWCONFIG = (icon: any) => {
         minHeight: 600,
         minWidth: 800,
         show: false,
-        // frame: false,
+        frame: false,
         autoHideMenuBar: true,
         ...(process.platform === 'linux' ? { icon } : {}),
         webPreferences: {
