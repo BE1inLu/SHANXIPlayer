@@ -2,8 +2,10 @@
     <n-layout-sider class="main-left-nav" bordered :collapsed="true" collapse-mode="width" :collapsed-width="64"
         :width="240" :native-scrollbar="false">
         <div class="menu-bar">
-            <n-menu :collapsed-width="64" :collapsed-icon-size="22" :options="menuOptions" @update:value="updateValue" />
-            <n-menu :collapsed-width="64" :collapsed-icon-size="22" :options="settingOptions" @update:value="updateValue" />
+            <n-menu id="flag-menu" :collapsed-width="64" :collapsed-icon-size="22" :options="menuOptions"
+                @update:value="updateValue" :watch-props="['defaultValue']" />
+            <n-menu id="flag-menu" :collapsed-width="64" :collapsed-icon-size="22" :options="settingOptions"
+                @update:value="updateValue" />
         </div>
     </n-layout-sider>
 </template>
@@ -21,6 +23,7 @@ import {
     Document20Regular,
     Search12Regular
 } from '@vicons/fluent'
+import { RouterLink } from 'vue-router'
 
 const renderIcon = (icon: Component) => {
     return () => h(NIcon, null, { default: () => h(icon) })
@@ -41,12 +44,20 @@ const menuOptions: MenuOption[] = [
         icon: renderIcon(TextAlignJustify20Filled)
     },
     {
-        label: 'table1',
+        label: () => h(RouterLink, {
+            to: {
+                path: '/mainpage'
+            }
+        }, { default: () => 'Home' }),
         key: 'key1',
         icon: renderIcon(Home12Filled)
     },
     {
-        label: 'table2',
+        label: () => h(RouterLink, {
+            to: {
+                path: '/orderpage'
+            }
+        }, { default: () => 'Order' }),
         key: 'key2',
         icon: renderIcon(Search12Regular)
     },
