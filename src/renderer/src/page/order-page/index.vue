@@ -1,8 +1,170 @@
 <template>
-    <span>i am orderpage</span>
+    <div class="order-page">
+        <div>
+            <n-space>
+                <n-button @click="fullparty">start!</n-button>
+            </n-space>
+        </div>
+        <div class="music-btn">
+            <n-space class="order-page-span">
+                <n-button @click="voicenum(261.63)">C</n-button>
+                <n-button @click="voicenum(277.18)">C#</n-button>
+                <n-button @click="voicenum(293.66)">D</n-button>
+                <n-button @click="voicenum(311.13)">D#</n-button>
+                <n-button @click="voicenum(329.63)">E</n-button>
+                <n-button @click="voicenum(349.23)">F</n-button>
+                <n-button @click="voicenum(369.99)">F#</n-button>
+                <n-button @click="voicenum(392.0)">G</n-button>
+                <n-button @click="voicenum(415.3)">G#</n-button>
+                <n-button @click="voicenum(440.0)">A</n-button>
+                <n-button @click="voicenum(466.16)">A#</n-button>
+                <n-button @click="voicenum(493.88)">B</n-button>
+                <n-button @click="voicenum(523.25)">HC</n-button>
+            </n-space>
+        </div>
+
+    </div>
 </template>
  
 <script lang="ts" setup>
 
+
+const context = new AudioContext();
+
+const voicenum = (num: number) => {
+    const localGain = context.createGain();
+    localGain.gain.setValueAtTime(0.09, 0);
+    localGain.connect(context.destination);
+    const defaultnoice = context.createOscillator();
+    defaultnoice.frequency.setValueAtTime(num, 0);
+    defaultnoice.type = 'square'
+    defaultnoice.connect(localGain)
+    defaultnoice.start()
+    defaultnoice.stop(context.currentTime + 0.4)
+}
+
+
+
+
+
+const fullparty = () => {
+
+    const voice = {
+        "1": 261.63,
+        "#1": 277.18,
+        "2": 293.66,
+        "#2": 311.13,
+        "3": 329.63,
+        "4": 349.23,
+        "#4": 369.99,
+        "5": 392.0,
+        "#5": 415.3,
+        "6": 440.0,
+        "#6": 466.16,
+        "7": 493.88,
+        "(7)": 523.25,
+    }
+
+    const list = [
+        "(7)", "#1", " ", "#2", "#2", "#1", " ", "3", "#2", "#1", " ",
+        "#1", "#1", "(7)", " ", "3", "#2", "#1", " ", "#1", "(7)", "#1", "#2",
+        "#2", "#4", "7", " ", "#6", "7", "#6", "7", " ", "#6", "#5", "#4", " ",
+        "#4", "#1", "3", "3", "#2", "#2", " ",
+        "#4", "3", "#2", "#1", "#2", "#4", "#1", " ", "(7)", "#1", "(7)", " ",
+        "(7)", "#4", "(7)", " ", "3", "#2", "#1", "(7)", "(7)", " ",
+        "(7)", "#1", " ", "#2", "#2", "#1", " ", "3", "#2", "#1", " ",
+        "#1", "#1", "(7)", " ", "3", "#2", "#1", " ", "#1", "(7)", "#1", "#2", " ",
+        "#2", "#4", "7", " ", "#6", "7", "#6", "7", " ", "#6", "#5", "#4", " ",
+        "#4", "#1", "3", "3", "#2", "#2", "#2", " ",
+        "#4", "3", "#2", "#1", "#2", "#4", "#1", " ",
+        "(7)", "(7)", "#1", "(7)", " ", "(7)", "#4", "(7)", " ",
+        "3", "3", "3", "#2", "#1", " ", "#1", "(7)", "(7)", "(7)", " ",
+        "#5", "#4", "#4", " ", "#4", "3", "3", " ", "#2", "#1", " ",
+        "#4", "#4", "3", "3", "3", " ", "3", "#2", "#1", " ",
+        "#1", "(7)", "#6", "(7)", " ",
+        "#5", "#4", "#4", " ", "#4", "3", "3", " ", "#2", "#1", " ",
+        "#2", "3", "#2", "#2", "#2", "#2", " ",
+        "#2", "#1", "#2", "#1", "7", "7", " ",
+        "7", "#6", "#5", "#5", " ",
+        "#5", "#5", "#4", "3", "3", "3", " ",
+        "#2", "3", "#4", " ",
+        "#2", "#1", "#2", "#1", "#2", "3", "#4", " ",
+        "3", "#4", "#5", " ", "#5", "#6", "7", " ", "#1", " ", "7", "#4", " ",
+        "#4", "3", "3", "#2", " ", "#2", "3", "#4", " ",
+        "#2", "#1", "#2", "#1", "#2", "3", "#4", " ", "3", "#4", "#5", " ", "5", "#5", "#6", " ",
+        "#4", "#2", "#2", " ", "#4", "3", "#2", "#1", "#1", " ", "7", "#6", "7", " ",
+        "#4", "7", " ", "#1", "7", "7", " ", "#4", "#1", "7", "7", " ",
+        "#4", "7", " ", "#1", "7", "7", " ", "#4", "7", " ", "#1", " ", "#2", "#1", "7", " ",
+        "7", "#6", "#5", "#5", " ", "#4", "#4", "3", "3", "#2", "#1", "#2", " ",
+        "3", "3", "#2", "3", "#2", "#1", "(7)", " "
+    ]
+
+    let j = 0;
+    list.forEach((i) => {
+
+        if (i != '#') {
+            j += 400;
+            setTimeout(() => {
+                voicenum(voice[i])
+            }, j);
+            console.log(i);
+        }
+        else if (i == "#") {
+            j += 200;
+            setTimeout(() => {
+                console.log("#");
+            }, j);
+        } else {
+            j += 400
+            setTimeout(() => {
+                console.log(" ");
+            },);
+        }
+    });
+
+
+}
+
+/**
+    (7)#1 #2#2#1 3#2#1 #1#1(7) 3#2#1 #1(7)#1#2
+    #2#47 #67#67 #6#5#4 #4#133#2#2 
+    (#4)3#2#1#2#4(7)  (7)#1(7)   (7)#4(7) 3#2#1(77)
+    (7)#1 #2#2#1 3#2#1 #1#1(7) 3#2#1 #1(7)#1#2
+    #2#47 #67#67 #6#5#4 #4#133#2#2#2
+    (#4)3#2#1#2#4(7)
+    (77)#1(7) (7)#4(7) 333#2#1 #1(777)
+    #5#4#4 #433 #2#1 
+    #4#4333 3#2#1 #1(7#67)
+    #5#4#4 #433 #2#1 
+    #23#2#2#2#2 #2#1#2【#1】77
+    7#6#5#5 #5#5#4333 #23#4
+    #2#1#2#1#23#4 3#4#5 #5#67 【#1】7#4
+    #433#2 #23#4 
+    #2#1#2#1#23#4 3#4#5 5#5#6
+    #4【#2#2】 #4【3#2#1#1】 7#67
+    #47【#1】77 #4【#1】77
+    #47【#1】77 #47【#1】【#2#1】7
+    7#6#5#5 #4#433#2#1#2 
+    33#23#2#1(7)
+ */
+
+
+
+
 </script>
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.order-page {
+    height: 90vh;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+
+    .music-btn {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+}
+</style>

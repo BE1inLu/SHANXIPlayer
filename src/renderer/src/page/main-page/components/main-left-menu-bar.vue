@@ -16,7 +16,6 @@ import { h, Component } from 'vue'
 import { NIcon } from 'naive-ui'
 import type { MenuOption } from 'naive-ui'
 import {
-    TextAlignJustify20Filled,
     Settings24Filled,
     Home12Filled,
     TextBulletListLtr20Filled,
@@ -38,11 +37,11 @@ const settingOptions: MenuOption[] = [
 ]
 
 const menuOptions: MenuOption[] = [
-    {
-        label: 'open',
-        key: 'open',
-        icon: renderIcon(TextAlignJustify20Filled)
-    },
+    // {
+    //     label: 'open',
+    //     key: 'open',
+    //     icon: renderIcon(TextAlignJustify20Filled)
+    // },
     {
         label: () => h(RouterLink, {
             to: {

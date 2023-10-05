@@ -9,7 +9,7 @@
                 <router-view />
             </n-layout-content>
         </n-layout>
-        <n-layout-footer class="main-footer">成府路</n-layout-footer>
+        <n-layout-footer class="main-footer">footer</n-layout-footer>
     </n-layout>
 </template>
 
