@@ -43,10 +43,6 @@ const voicenum = (num: number) => {
     defaultnoice.stop(context.currentTime + 0.4)
 }
 
-
-
-
-
 const fullparty = () => {
 
     const voice = {
