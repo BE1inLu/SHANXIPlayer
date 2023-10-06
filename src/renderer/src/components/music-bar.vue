@@ -4,7 +4,7 @@
             <n-button strong secondary circle size="small" type="info">
                 <template #icon>
                     <n-icon>
-                        <Play12Filled />
+                        <Previous16Filled />
                     </n-icon>
                 </template>
             </n-button>
@@ -36,7 +36,7 @@
             <n-button strong secondary circle size="small" type="info">
                 <template #icon>
                     <n-icon>
-                        <Next16Filled />
+                        <ArrowRepeatAll16Filled />
                     </n-icon>
                 </template>
             </n-button>
@@ -45,32 +45,49 @@
             <n-button strong secondary circle size="small" type="info">
                 <template #icon>
                     <n-icon>
-                        <Next16Filled />
+                        <Speaker216Filled />
                     </n-icon>
                 </template>
             </n-button>
         </n-gi>
         <n-gi span="1" class="local-group">
-            <n-button strong secondary circle size="small" type="info">
+            <n-button strong secondary circle size="small" type="info" @click="showNote">
                 <template #icon>
                     <n-icon>
-                        <Next16Filled />
+                        <TextBulletListLtr16Filled />
                     </n-icon>
                 </template>
             </n-button>
 
         </n-gi>
     </n-grid>
+
+    <n-drawer v-model:show="show" :width="380">
+        <n-drawer-content title="PlayList" :native-scrollbar="false">
+            <!-- <n-data-table :columns="columns.value" :data="data.value" :pagination="pagination" :bordered="false" /> -->
+        </n-drawer-content>
+    </n-drawer>
 </template>
  
 <script lang="ts" setup>
 import {
     Play12Filled,
-    Next16Filled
+    Next16Filled,
+    Previous16Filled,
+    ArrowRepeatAll16Filled,
+    TextBulletListLtr16Filled,
+    Speaker216Filled,
 } from '@vicons/fluent';
 import { ref } from 'vue'
+
 const value = ref(0)
- 
+
+const show = ref(false)
+
+const showNote = () => {
+    show.value = !show.value;
+}
+
 </script>
 <style lang="less" scoped>
 @import '../assets/css/defaultCommon.less';
