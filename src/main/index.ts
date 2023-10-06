@@ -1,15 +1,18 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { WINDOWCONFIG } from './config/windowConfig'
 import { windowControl } from './service/window-defalt-service'
+import { fileControl } from './service/file-service'
 
 function createWindow(): void {
     /**首屏窗口 */
     const mainWindow = new BrowserWindow(WINDOWCONFIG(icon))
 
     windowControl().execWindowControl(mainWindow)
+
+    getFile()
 
     mainWindow.on('ready-to-show', () => {
         mainWindow.show()
@@ -45,3 +48,8 @@ app.on('window-all-closed', () => {
         app.quit()
     }
 })
+
+const getFile = () => {
+    const { loadFlacFile } = fileControl()
+    ipcMain.handle('open-flac-file', loadFlacFile)
+}

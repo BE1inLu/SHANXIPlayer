@@ -9,7 +9,7 @@
                 <router-view />
             </n-layout-content>
         </n-layout>
-        <n-layout-footer class="main-footer">footer</n-layout-footer>
+        <n-layout-footer class="main-footer"></n-layout-footer>
     </n-layout>
 </template>
 

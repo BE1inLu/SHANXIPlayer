@@ -37,11 +37,6 @@ const settingOptions: MenuOption[] = [
 ]
 
 const menuOptions: MenuOption[] = [
-    // {
-    //     label: 'open',
-    //     key: 'open',
-    //     icon: renderIcon(TextAlignJustify20Filled)
-    // },
     {
         label: () => h(RouterLink, {
             to: {
@@ -61,7 +56,11 @@ const menuOptions: MenuOption[] = [
         icon: renderIcon(Search12Regular)
     },
     {
-        label: 'table3',
+        label: () => h(RouterLink, {
+            to: {
+                path: '/pianopage'
+            }
+        }, { default: () => 'Piano' }),
         key: 'key3',
         icon: renderIcon(TextBulletListLtr20Filled)
     },
