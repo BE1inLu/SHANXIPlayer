@@ -9,6 +9,7 @@ declare global {
             minwindow: () => void
             maxwindow: () => void
             closewindow: () => void
+            loadFlacFile: () => void
         }
     }
 }

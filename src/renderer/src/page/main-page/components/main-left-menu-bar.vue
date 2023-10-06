@@ -2,8 +2,10 @@
     <n-layout-sider class="main-left-nav" bordered :collapsed="true" collapse-mode="width" :collapsed-width="64"
         :width="240" :native-scrollbar="false">
         <div class="menu-bar">
-            <n-menu :collapsed-width="64" :collapsed-icon-size="22" :options="menuOptions" @update:value="updateValue" />
-            <n-menu :collapsed-width="64" :collapsed-icon-size="22" :options="settingOptions" @update:value="updateValue" />
+            <n-menu id="flag-menu" :collapsed-width="64" :collapsed-icon-size="22" :options="menuOptions"
+                @update:value="updateValue" :watch-props="['defaultValue']" />
+            <n-menu id="flag-menu" :collapsed-width="64" :collapsed-icon-size="22" :options="settingOptions"
+                @update:value="updateValue" />
         </div>
     </n-layout-sider>
 </template>
@@ -14,13 +16,13 @@ import { h, Component } from 'vue'
 import { NIcon } from 'naive-ui'
 import type { MenuOption } from 'naive-ui'
 import {
-    TextAlignJustify20Filled,
     Settings24Filled,
     Home12Filled,
     TextBulletListLtr20Filled,
     Document20Regular,
     Search12Regular
 } from '@vicons/fluent'
+import { RouterLink } from 'vue-router'
 
 const renderIcon = (icon: Component) => {
     return () => h(NIcon, null, { default: () => h(icon) })
@@ -36,22 +38,29 @@ const settingOptions: MenuOption[] = [
 
 const menuOptions: MenuOption[] = [
     {
-        label: 'open',
-        key: 'open',
-        icon: renderIcon(TextAlignJustify20Filled)
-    },
-    {
-        label: 'table1',
+        label: () => h(RouterLink, {
+            to: {
+                path: '/mainpage'
+            }
+        }, { default: () => 'Home' }),
         key: 'key1',
         icon: renderIcon(Home12Filled)
     },
     {
-        label: 'table2',
+        label: () => h(RouterLink, {
+            to: {
+                path: '/orderpage'
+            }
+        }, { default: () => 'Order' }),
         key: 'key2',
         icon: renderIcon(Search12Regular)
     },
     {
-        label: 'table3',
+        label: () => h(RouterLink, {
+            to: {
+                path: '/pianopage'
+            }
+        }, { default: () => 'Piano' }),
         key: 'key3',
         icon: renderIcon(TextBulletListLtr20Filled)
     },
@@ -69,8 +78,10 @@ const updateValue = (key: string, item: MenuOption) => {
 
 </script>
 <style lang="less" scoped>
+@import '../../../assets/css/defaultCommon.less';
+
 .menu-bar {
-    height: 90vh;
+    height: @defaultHeight;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
