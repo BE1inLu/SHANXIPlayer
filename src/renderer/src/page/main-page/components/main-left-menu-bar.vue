@@ -78,8 +78,10 @@ const updateValue = (key: string, item: MenuOption) => {
 
 </script>
 <style lang="less" scoped>
+@import '../../../assets/css/defaultCommon.less';
+
 .menu-bar {
-    height: 90vh;
+    height: @defaultHeight;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

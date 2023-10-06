@@ -86,7 +86,7 @@
     </n-grid>
 </template>
  
-<script lang="ts" setup> 
+<script lang="ts" setup>
 import { useStore } from '@renderer/store';
 import { ref } from 'vue'
 
@@ -117,12 +117,10 @@ const windowControl = {
 
 </script>
 <style lang="less" scoped>
-.n-grid {
-    padding-top: 5px;
-}
+@import '../../../assets/css/defaultCommon.less';
 
 .button-group {
-
+    height: @defaultHeader;
     display: flex;
     justify-content: space-evenly;
     align-items: center;

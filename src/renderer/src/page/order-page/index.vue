@@ -9,12 +9,15 @@
  
 <script lang="ts" setup>
 import { ref } from 'vue'
-
 const flacData = ref()
-const context = new AudioContext();
-const source = context.createBufferSource()
+
+let context: any = {};
+let source: any = {};
 
 const getFlacFile = async () => {
+    context = new AudioContext();
+    source = context.createBufferSource()
+
     let loadData = await window.api.loadFlacFile()
     flacData.value = loadData
 
@@ -30,6 +33,8 @@ const start = () => {
 
 const stop = () => {
     source.stop(0)
+    context = {};
+
 }
 
 </script>

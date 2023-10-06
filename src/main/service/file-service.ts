@@ -1,4 +1,3 @@
-import { error } from 'console'
 import { dialog } from 'electron'
 import fs from 'fs'
 export const fileControl = () => {
