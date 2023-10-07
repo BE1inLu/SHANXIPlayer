@@ -1,7 +1,14 @@
 <template>
     <n-drawer v-model:show="musicPlayListStore" :width="380">
-        <n-drawer-content title="PlayList" :native-scrollbar="false">
-            <n-data-table :columns="column" :data="data" :pagination="false" :bordered="false" />
+        <n-drawer-content :native-scrollbar="false" :body-content-style="{ padding: 0 }">
+            <template #header> PlayList </template>
+            <n-data-table
+                :columns="column"
+                :data="data"
+                :pagination="false"
+                :bordered="false"
+                :row-props="rowProps"
+            />
         </n-drawer-content>
     </n-drawer>
 </template>
@@ -23,6 +30,14 @@ const data: playList[] = [
     { no: 2, title: 'title2', length: '4:48' },
     { no: 3, title: 'Champagne Supernova11111111111111111111111', length: '7:27' },
 ]
+
+const rowProps = (row: playList) => {
+    return {
+        onClick: () => {
+            console.info(row)
+        },
+    }
+}
 
 const column: DataTableColumns<playList> = [
     {
@@ -47,7 +62,7 @@ const column: DataTableColumns<playList> = [
         title: '',
         key: 'action',
         width: 20,
-        render: (row) => {
+        render: () => {
             return h(NButton, {
                 size: 'tiny',
                 quaternary: true,
@@ -59,12 +74,15 @@ const column: DataTableColumns<playList> = [
                     })
                 },
                 onClick: () => {
-                    console.log(row)
+                    console.log('del')
                 },
             })
         },
     },
 ]
 </script>
-<style lang="less" scoped></style>
-@renderer/types/default
+<style lang="less" scoped>
+.playerlist-drawer {
+    padding: 0;
+}
+</style>
