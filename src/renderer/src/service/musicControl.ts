@@ -7,8 +7,25 @@
 
 import { playList } from '@renderer/types/default'
 
-class playBar {
+class playListBar {
     private playList: playList[] = []
 
-    constructor() {}
+    constructor() {
+
+
+
+    }
+
+    get getPlayList() {
+        return this.playList
+    }
+
+    set setPlayList(list: playList[]) {
+        this.playList = list
+    }
+
+    
+
 }
+
+export default { }
