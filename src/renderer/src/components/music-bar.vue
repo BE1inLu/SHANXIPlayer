@@ -63,12 +63,6 @@
 
     <n-drawer v-model:show="show" :width="380">
         <n-drawer-content title="PlayList" :native-scrollbar="false">
-            <!-- <n-data-table
-                :columns="columns"
-                :data="data"
-                :pagination="false"
-                :bordered="false"
-            /> -->
             <n-data-table :columns="column" :data="data" :pagination="false" :bordered="false" />
         </n-drawer-content>
     </n-drawer>
