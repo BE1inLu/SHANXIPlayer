@@ -2,15 +2,31 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useStore = defineStore('store', () => {
-    const darkmode = ref<boolean>(true)
+    const darkmodeStore = ref<boolean>(true)
+    const musicPlayListStore = ref<boolean>(false)
 
     const changheTheme = () => {
-        darkmode.value = !darkmode.value
+        darkmodeStore.value = !darkmodeStore.value
     }
 
     const getTheme = () => {
-        return darkmode.value
+        return darkmodeStore.value
     }
 
-    return { changheTheme, getTheme }
+    const changePlayList = () => {
+        musicPlayListStore.value = !musicPlayListStore.value
+    }
+
+    const getPlayListStore = () => {
+        return musicPlayListStore.value
+    }
+
+    return {
+        darkmodeStore,
+        musicPlayListStore,
+        changheTheme,
+        getTheme,
+        changePlayList,
+        getPlayListStore,
+    }
 })

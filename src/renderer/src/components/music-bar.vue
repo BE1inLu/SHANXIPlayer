@@ -61,14 +61,11 @@
         </n-gi>
     </n-grid>
 
-    <n-drawer v-model:show="show" :width="380">
-        <n-drawer-content title="PlayList" :native-scrollbar="false">
-            <n-data-table :columns="column" :data="data" :pagination="false" :bordered="false" />
-        </n-drawer-content>
-    </n-drawer>
+    <musicPlayList />
 </template>
 
 <script lang="ts" setup>
+import musicPlayList from './music-playlist.vue'
 import {
     Play12Filled,
     Next16Filled,
@@ -76,73 +73,17 @@ import {
     ArrowRepeatAll16Filled,
     TextBulletListLtr16Filled,
     Speaker216Filled,
-    Delete20Filled,
 } from '@vicons/fluent'
-import { ref, h } from 'vue'
-import type { DataTableColumns } from 'naive-ui'
-import { NButton, NIcon } from 'naive-ui'
+import { ref } from 'vue'
+import { useStore } from '@renderer/store'
 
 const value = ref(0)
 
-const show = ref(false)
+const store = useStore()
 
 const showNote = () => {
-    show.value = !show.value
+    store.changePlayList()
 }
-
-type Song = {
-    no: number
-    title: string
-    length: string
-}
-
-const data: Song[] = [
-    { no: 1, title: 'title1', length: '4:18' },
-    { no: 2, title: 'title2', length: '4:48' },
-    { no: 3, title: 'Champagne Supernova11111111111111111111111', length: '7:27' },
-]
-
-const column: DataTableColumns<Song> = [
-    {
-        title: 'No',
-        key: 'no',
-        width: 20,
-    },
-    {
-        title: 'Title',
-        key: 'title',
-        width: 70,
-        ellipsis: {
-            tooltip: true,
-        },
-    },
-    {
-        title: 'Length',
-        key: 'length',
-        width: 30,
-    },
-    {
-        title: '',
-        key: 'action',
-        width: 20,
-        render: (row) => {
-            return h(NButton, {
-                size: 'tiny',
-                quaternary: true,
-                circle: true,
-                type: 'error',
-                'render-icon': () => {
-                    return h(NIcon, null, {
-                        default: () => h(Delete20Filled),
-                    })
-                },
-                onClick: () => {
-                    console.log(row)
-                },
-            })
-        },
-    },
-]
 </script>
 <style lang="less" scoped>
 @import '../assets/css/defaultCommon.less';
