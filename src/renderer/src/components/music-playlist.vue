@@ -33,6 +33,7 @@ const data: playList[] = [
 
 const rowProps = (row: playList) => {
     return {
+        // todo: 修改成 ondblclick 双击执行播放
         onClick: () => {
             console.info(row)
         },
