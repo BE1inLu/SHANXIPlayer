@@ -58,17 +58,22 @@
                     </n-icon>
                 </template>
             </n-button>
-
         </n-gi>
     </n-grid>
 
     <n-drawer v-model:show="show" :width="380">
         <n-drawer-content title="PlayList" :native-scrollbar="false">
-            <!-- <n-data-table :columns="columns.value" :data="data.value" :pagination="pagination" :bordered="false" /> -->
+            <!-- <n-data-table
+                :columns="columns"
+                :data="data"
+                :pagination="false"
+                :bordered="false"
+            /> -->
+            <n-data-table :columns="column" :data="data" :pagination="false" :bordered="false" />
         </n-drawer-content>
     </n-drawer>
 </template>
- 
+
 <script lang="ts" setup>
 import {
     Play12Filled,
@@ -77,17 +82,73 @@ import {
     ArrowRepeatAll16Filled,
     TextBulletListLtr16Filled,
     Speaker216Filled,
-} from '@vicons/fluent';
-import { ref } from 'vue'
+    Delete20Filled,
+} from '@vicons/fluent'
+import { ref, h } from 'vue'
+import type { DataTableColumns } from 'naive-ui'
+import { NButton, NIcon } from 'naive-ui'
 
 const value = ref(0)
 
 const show = ref(false)
 
 const showNote = () => {
-    show.value = !show.value;
+    show.value = !show.value
 }
 
+type Song = {
+    no: number
+    title: string
+    length: string
+}
+
+const data: Song[] = [
+    { no: 1, title: 'title1', length: '4:18' },
+    { no: 2, title: 'title2', length: '4:48' },
+    { no: 3, title: 'Champagne Supernova11111111111111111111111', length: '7:27' },
+]
+
+const column: DataTableColumns<Song> = [
+    {
+        title: 'No',
+        key: 'no',
+        width: 20,
+    },
+    {
+        title: 'Title',
+        key: 'title',
+        width: 70,
+        ellipsis: {
+            tooltip: true,
+        },
+    },
+    {
+        title: 'Length',
+        key: 'length',
+        width: 30,
+    },
+    {
+        title: '',
+        key: 'action',
+        width: 20,
+        render: (row) => {
+            return h(NButton, {
+                size: 'tiny',
+                quaternary: true,
+                circle: true,
+                type: 'error',
+                'render-icon': () => {
+                    return h(NIcon, null, {
+                        default: () => h(Delete20Filled),
+                    })
+                },
+                onClick: () => {
+                    console.log(row)
+                },
+            })
+        },
+    },
+]
 </script>
 <style lang="less" scoped>
 @import '../assets/css/defaultCommon.less';
@@ -108,6 +169,5 @@ const showNote = () => {
         flex-direction: column;
         justify-content: center;
     }
-
 }
 </style>
