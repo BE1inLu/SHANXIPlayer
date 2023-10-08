@@ -9,5 +9,5 @@ export type playList = {
     /** 默认编号, UUID 唯一值 */
     ID?: string
     /** 数据 */
-    data?: {}
+    data?: Uint8Array
 }
