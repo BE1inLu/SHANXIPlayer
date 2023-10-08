@@ -10,6 +10,7 @@ declare global {
             maxwindow: () => void
             closewindow: () => void
             loadFlacFile: () => void
+            loadPathFile: () => void
         }
     }
 }

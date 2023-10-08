@@ -9,6 +9,7 @@ const api = {
     maxwindow: () => ipcRenderer.send('max-window'),
     closewindow: () => ipcRenderer.send('close-window'),
     loadFlacFile:()=>ipcRenderer.invoke('open-flac-file'), 
+    loadPathFile:()=>ipcRenderer.invoke('load-path-file'), 
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
