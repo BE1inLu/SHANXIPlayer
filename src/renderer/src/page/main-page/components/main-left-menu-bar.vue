@@ -62,13 +62,11 @@ const menuOptions: MenuOption[] = [
         icon: renderIcon(Search12Regular)
     },
     {
-        // label: () => h(RouterLink, {
-        //     to: {
-        //         path: '/pianopage'
-        //     }
-        // }, { default: () => 'Piano' }),
-
-        // label: setLabel('/pianopage', 'Piano'),
+        label: () => h(RouterLink, {
+            to: {
+                path: '/playlistpage'
+            }
+        }, { default: () => 'playlist' }),
         key: 'key3',
         icon: renderIcon(TextBulletListLtr20Filled)
     },
@@ -79,7 +77,7 @@ const menuOptions: MenuOption[] = [
     },
 ]
 
-const updateValue = (key: string, item: MenuOption) => {
+const updateValue = (/* key: string, item: MenuOption */) => {
     // console.info('key: ' + key);
     // console.info(item);
 }
