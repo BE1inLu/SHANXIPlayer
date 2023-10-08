@@ -47,6 +47,7 @@
         "eslint-config-prettier": "^9.0.0",
         "eslint-plugin-prettier": "^5.0.0",
         "eslint-plugin-vue": "^9.17.0",
+        "glob": "^10.3.10",
         "less": "^4.2.0",
         "naive-ui": "^2.34.4",
         "prettier": "^3.0.2",
