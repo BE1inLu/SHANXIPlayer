@@ -50,7 +50,7 @@ app.on('window-all-closed', () => {
 })
 
 const getFile = () => {
-    const { loadFlacFile,loadPathFile } = fileControl()
+    const { loadFlacFile, loadPathFileInfo } = fileControl()
     ipcMain.handle('open-flac-file', loadFlacFile)
-    ipcMain.handle('load-path-file',loadPathFile)
+    ipcMain.handle('load-path-file', loadPathFileInfo)
 }

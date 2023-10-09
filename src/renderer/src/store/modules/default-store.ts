@@ -1,9 +1,32 @@
+import { musicFile } from '@renderer/types/default'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useStore = defineStore('store', () => {
     const darkmodeStore = ref<boolean>(true)
-    const musicPlayListStore = ref<boolean>(false)
+    const switchMusicPlayList = ref<boolean>(false)
+    const musicPlayList = ref<musicFile[]>([])
+
+    const setMusicPlayList = (musicList: musicFile[]) => {
+        let localList: musicFile[] = []
+
+        if (!musicPlayList.value) {
+            localList = musicPlayList.value
+            localList.concat(musicList)
+            musicPlayList.value = localList
+        } else {
+            localList = musicList
+        }
+        musicPlayList.value = localList
+    }
+
+    const clearMusicPlayListItem=(item:musicFile)=>{
+        
+    }
+
+    const clearMusicPlayList=()=>{
+        musicPlayList.value=[]
+    }
 
     const changheTheme = () => {
         darkmodeStore.value = !darkmodeStore.value
@@ -14,19 +37,22 @@ export const useStore = defineStore('store', () => {
     }
 
     const changePlayList = () => {
-        musicPlayListStore.value = !musicPlayListStore.value
+        switchMusicPlayList.value = !switchMusicPlayList.value
     }
 
     const getPlayListStore = () => {
-        return musicPlayListStore.value
+        return switchMusicPlayList.value
     }
 
     return {
+        musicPlayList,
         darkmodeStore,
-        musicPlayListStore,
+        switchMusicPlayList,
         changheTheme,
         getTheme,
         changePlayList,
         getPlayListStore,
+        setMusicPlayList,
+        clearMusicPlayList,
     }
 })
