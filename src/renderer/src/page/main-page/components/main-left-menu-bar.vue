@@ -77,9 +77,7 @@ const menuOptions: MenuOption[] = [
     },
 ]
 
-const updateValue = (/* key: string, item: MenuOption */) => {
-    // console.info('key: ' + key);
-    // console.info(item);
+const updateValue = () => {
 }
 
 </script>

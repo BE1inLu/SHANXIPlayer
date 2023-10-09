@@ -1,14 +1,16 @@
 <template>
     <div>
-        <n-button @click="test">clickme</n-button>
+        <n-button @click="useAddPlaylist">add playList</n-button>
     </div>
 </template>
 
 <script lang="ts" setup>
+import { musicPlayListService } from '@renderer/service/play-file-service'
 
-const test=async()=>{
-    await window.api.loadPathFile()
+const { playListAdd } = musicPlayListService()
+
+const useAddPlaylist = () => {
+    playListAdd(window.api)
 }
-
 </script>
 <style lang="less"></style>

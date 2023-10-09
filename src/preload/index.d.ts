@@ -1,4 +1,5 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
+import { musicFile } from 'src/main/types'
 
 declare global {
     interface Window {
@@ -10,7 +11,7 @@ declare global {
             maxwindow: () => void
             closewindow: () => void
             loadFlacFile: () => void
-            loadPathFile: () => void
+            loadPathFile: () => musicFile[]
         }
     }
 }
