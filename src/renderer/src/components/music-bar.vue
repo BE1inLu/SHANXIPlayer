@@ -42,13 +42,28 @@
             </n-button>
         </n-gi>
         <n-gi span="1" class="local-group">
-            <n-button strong secondary circle size="small" type="info">
+            <n-popconfirm :positive-text="null" :negative-text="null">
                 <template #icon>
                     <n-icon>
                         <Speaker216Filled />
                     </n-icon>
                 </template>
-            </n-button>
+                <template #trigger>
+                    <n-button strong secondary circle size="small" type="info">
+                        <template #icon>
+                            <n-icon>
+                                <Speaker216Filled />
+                            </n-icon>
+                        </template>
+                    </n-button>
+                </template>
+                <n-slider
+                    v-model:value="voiceValue"
+                    class="slider-style"
+                    :format-tooltip="formatTooltip"
+                    :on-update:value="updatedValue"
+                />
+            </n-popconfirm>
         </n-gi>
         <n-gi span="1" class="local-group">
             <n-button strong secondary circle size="small" type="info" @click="showNote">
@@ -78,8 +93,15 @@ import { ref } from 'vue'
 import { useStore } from '@renderer/store'
 
 const value = ref(0)
+const voiceValue = ref()
 
 const store = useStore()
+
+const formatTooltip = (val: number) => `${val}%`
+
+const updatedValue=()=>{
+    /* TODO: 将音量大小比值传到 main */
+}
 
 const showNote = () => {
     store.changePlayList()
@@ -104,5 +126,9 @@ const showNote = () => {
         flex-direction: column;
         justify-content: center;
     }
+}
+
+.slider-style {
+    width: 100px;
 }
 </style>

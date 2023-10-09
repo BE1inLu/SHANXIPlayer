@@ -1,5 +1,7 @@
 import { dialog } from 'electron'
 import fs from 'fs'
+import path from 'path'
+import { musicFile } from '../types'
 export const fileControl = () => {
     const loadFlacFile = async () => {
         let loadData
@@ -23,5 +25,53 @@ export const fileControl = () => {
         return loadData
     }
 
-    return { loadFlacFile }
+    /**
+     * 读取用户选择的目录下全部文件信息
+     * @returns 
+     */
+    const loadPathFileInfo = async () => {
+        let files: any
+        let filePath: any
+        let filelist: musicFile[] = []
+        await dialog
+            .showOpenDialog({
+                properties: ['openDirectory'],
+                buttonLabel: 'load',
+                defaultPath: '',
+                title: 'load file',
+            })
+            .then((res) => {
+                filePath = res.filePaths[0]
+            })
+
+        files = fs.readdirSync(filePath, {
+            encoding: 'utf-8',
+        })
+
+        for (const file of files) {
+            const localFilePath = path.join(filePath, file)
+
+            const stat = fs.statSync(localFilePath)
+
+            let fileExt = file.split('.')[1]
+
+            const isCheckext = (fileExt: string) => {
+                return fileExt == 'flac' || fileExt == 'wav' || fileExt == 'mp3'
+            }
+
+            if (isCheckext(fileExt)) {
+                let localfile: musicFile = {
+                    fileid: stat.ino,
+                    name: file.split('.')[0],
+                    ext: fileExt,
+                    url: localFilePath,
+                    length: undefined,
+                }
+                filelist.push(localfile)
+            }
+        }
+        return filelist
+    }
+
+    return { loadFlacFile, loadPathFileInfo }
 }

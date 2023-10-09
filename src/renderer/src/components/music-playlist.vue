@@ -1,14 +1,34 @@
 <template>
-    <n-drawer v-model:show="musicPlayListStore" :width="380">
+    <n-drawer v-model:show="switchMusicPlayList" :width="380">
         <n-drawer-content :native-scrollbar="false" :body-content-style="{ padding: 0 }">
-            <template #header> PlayList </template>
+            <template #header>
+                <span>PlayList</span>
+            </template>
             <n-data-table
                 :columns="column"
-                :data="data"
+                :data="musicPlayList"
                 :pagination="false"
                 :bordered="false"
                 :row-props="rowProps"
             />
+
+            <n-popover trigger="hover">
+                <template #trigger>
+                    <n-button
+                        class="btn-style"
+                        strong
+                        secondary
+                        circle
+                        type="error"
+                        @click="store.clearMusicPlayList()"
+                    >
+                        <template #icon>
+                            <n-icon><Delete20Filled /></n-icon>
+                        </template>
+                    </n-button>
+                </template>
+                清空列表
+            </n-popover>
         </n-drawer-content>
     </n-drawer>
 </template>
@@ -20,34 +40,32 @@ import { NButton, NIcon } from 'naive-ui'
 import { Delete20Filled } from '@vicons/fluent'
 import { useStore } from '@renderer/store'
 import { storeToRefs } from 'pinia'
-import type { playList } from '@renderer/types/default.d.ts'
+import type { musicFile } from '@renderer/types/default.d.ts'
 
 const store = useStore()
-const { musicPlayListStore } = storeToRefs(store)
+const { switchMusicPlayList, musicPlayList } = storeToRefs(store)
 
-const data: playList[] = [
-    { no: 1, title: 'title1', length: '4:18' },
-    { no: 2, title: 'title2', length: '4:48' },
-    { no: 3, title: 'Champagne Supernova11111111111111111111111', length: '7:27' },
-]
-
-const rowProps = (row: playList) => {
+const rowProps = (row: musicFile) => {
     return {
+        // todo: 修改成 ondblclick 双击执行播放
         onClick: () => {
             console.info(row)
         },
     }
 }
 
-const column: DataTableColumns<playList> = [
+const column: DataTableColumns<musicFile> = [
     {
-        title: 'No',
-        key: 'no',
+        title: 'Id',
+        key: 'id',
         width: 20,
+        render: (_data, index) => {
+            return h('span', [index])
+        },
     },
     {
-        title: 'Title',
-        key: 'title',
+        title: 'Name',
+        key: 'name',
         width: 70,
         ellipsis: {
             tooltip: true,
@@ -84,5 +102,11 @@ const column: DataTableColumns<playList> = [
 <style lang="less" scoped>
 .playerlist-drawer {
     padding: 0;
+}
+
+.btn-style {
+    position: absolute;
+    bottom: 4%;
+    right: 20%;
 }
 </style>

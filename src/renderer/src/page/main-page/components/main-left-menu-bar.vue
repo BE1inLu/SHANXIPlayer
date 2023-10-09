@@ -28,39 +28,45 @@ const renderIcon = (icon: Component) => {
     return () => h(NIcon, null, { default: () => h(icon) })
 }
 
+const setLabel = (path: string, barName: string) => {
+    return () => h(RouterLink, {
+        to: {
+            path: path
+        }
+    }, { default: () => barName })
+}
+
 const settingOptions: MenuOption[] = [
     {
         label: 'setting',
         key: 'setting',
-        icon: renderIcon(Settings24Filled)
+        icon: renderIcon(Settings24Filled),
+        children: [
+            {
+                label: setLabel('/pianopage', '彩蛋'),
+                key: 'key-1',
+            }
+        ]
     },
 ]
 
 const menuOptions: MenuOption[] = [
     {
-        label: () => h(RouterLink, {
-            to: {
-                path: '/mainpage'
-            }
-        }, { default: () => 'Home' }),
+        label: setLabel('/mainpage', 'Home'),
         key: 'key1',
         icon: renderIcon(Home12Filled)
     },
     {
-        label: () => h(RouterLink, {
-            to: {
-                path: '/orderpage'
-            }
-        }, { default: () => 'Order' }),
+        label: setLabel('/orderpage', 'Order'),
         key: 'key2',
         icon: renderIcon(Search12Regular)
     },
     {
         label: () => h(RouterLink, {
             to: {
-                path: '/pianopage'
+                path: '/playlistpage'
             }
-        }, { default: () => 'Piano' }),
+        }, { default: () => 'playlist' }),
         key: 'key3',
         icon: renderIcon(TextBulletListLtr20Filled)
     },
@@ -71,9 +77,7 @@ const menuOptions: MenuOption[] = [
     },
 ]
 
-const updateValue = (key: string, item: MenuOption) => {
-    console.info('key: ' + key);
-    console.info(item);
+const updateValue = () => {
 }
 
 </script>
