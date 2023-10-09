@@ -1,0 +1,20 @@
+{
+    "include": [
+      "test/unit/*.spec.ts",
+      "src/main/**/*.ts",
+      "src/renderer/**/*.ts",
+    ],
+    "compilerOptions": {
+      "composite": true,
+      "baseUrl": ".",
+      "paths": {
+        "@main/*": [
+          "src/main/*"
+        ],
+        "@renderer/*":[
+          "src/renderer/src/*"
+        ]
+      },
+      "types": ["naive-ui/volar"]
+    }
+  }
