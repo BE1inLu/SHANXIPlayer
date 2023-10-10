@@ -29,7 +29,7 @@
         </n-gi>
         <n-gi span="6" class="long-group">
             <n-space vertical>
-                <n-slider v-model:value="value" :step="1" />
+                <n-slider v-model:value="musicLangthValue" :step="1" />
             </n-space>
         </n-gi>
         <n-gi span="1" class="local-group">
@@ -60,7 +60,7 @@
                 <n-slider
                     v-model:value="voiceValue"
                     class="slider-style"
-                    :format-tooltip="formatTooltip"
+                    :format-tooltip="voicePercendTooltip"
                     :on-update:value="updatedValue"
                 />
             </n-popconfirm>
@@ -91,15 +91,17 @@ import {
 } from '@vicons/fluent'
 import { ref } from 'vue'
 import { useStore } from '@renderer/store'
+import { musicService } from '@renderer/service/music'
 
-const value = ref(0)
-const voiceValue = ref()
+const musicLangthValue = ref<number>(0)
+const voiceValue = ref<number>(0)
+const {}=musicService(window.api)
 
 const store = useStore()
 
-const formatTooltip = (val: number) => `${val}%`
+const voicePercendTooltip = (val: number) => `${val}%`
 
-const updatedValue=()=>{
+const updatedValue = () => {
     /* TODO: 将音量大小比值传到 main */
 }
 
