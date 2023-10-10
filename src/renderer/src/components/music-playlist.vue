@@ -4,26 +4,16 @@
             <template #header>
                 <span>PlayList</span>
             </template>
-            <n-data-table
-                :columns="column"
-                :data="musicPlayList"
-                :pagination="false"
-                :bordered="false"
-                :row-props="rowProps"
-            />
+            <n-data-table :columns="column" :data="musicPlayList" :pagination="false" :bordered="false"
+                :row-props="rowProps" max-height="83vh" />
 
             <n-popover trigger="hover">
                 <template #trigger>
-                    <n-button
-                        class="btn-style"
-                        strong
-                        secondary
-                        circle
-                        type="error"
-                        @click="store.clearMusicPlayList()"
-                    >
+                    <n-button class="btn-style" strong secondary circle type="error" @click="store.clearMusicPlayList()">
                         <template #icon>
-                            <n-icon><Delete20Filled /></n-icon>
+                            <n-icon>
+                                <Delete20Filled />
+                            </n-icon>
                         </template>
                     </n-button>
                 </template>
@@ -32,16 +22,11 @@
 
             <n-popover trigger="hover">
                 <template #trigger>
-                    <n-button
-                        class="btn-style1"
-                        strong
-                        secondary
-                        circle
-                        type="info"
-                        @click="emit('emit-addlist')"
-                    >
+                    <n-button class="btn-style1" strong secondary circle type="info" @click="emit('emit-addlist')">
                         <template #icon>
-                            <n-icon><Add16Filled /></n-icon>
+                            <n-icon>
+                                <Add16Filled />
+                            </n-icon>
                         </template>
                     </n-button>
                 </template>
@@ -65,8 +50,7 @@ const { switchMusicPlayList, musicPlayList } = storeToRefs(store)
 const emit = defineEmits(['emit-data', 'emit-addlist'])
 const rowProps = (row: musicFile) => {
     return {
-        // todo: 修改成 ondblclick 双击执行播放
-        onClick: () => {
+        onDblclick: () => {
             emit('emit-data', row)
         },
     }
@@ -78,21 +62,16 @@ const column: DataTableColumns<musicFile> = [
         key: 'id',
         width: 20,
         render: (_data, index) => {
-            return h('span', [index])
+            return h('span', [index + 1])
         },
     },
     {
         title: 'Name',
         key: 'name',
-        width: 70,
+        width: 90,
         ellipsis: {
             tooltip: true,
         },
-    },
-    {
-        title: 'Length',
-        key: 'length',
-        width: 30,
     },
     {
         title: '',

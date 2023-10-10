@@ -14,8 +14,7 @@ export const musicService = (API?: any) => {
 
     const { musicBarLength } = storeToRefs(store)
     musicBarLength.value = context.getOutputTimestamp()
-
-    let voiceNum: number = 0.8
+    localGain.gain.value = 0.2
     source.connect(localGain)
     localGain.connect(context.destination)
 
@@ -37,8 +36,7 @@ export const musicService = (API?: any) => {
 
     /** 音量设置 */
     const setVoice = (num: number) => {
-        voiceNum = num * 0.01
-        localGain.gain.value = voiceNum
+        localGain.gain.value = num * 0.01
     }
 
     /** 通过 file 来播放 */
@@ -72,7 +70,6 @@ export const musicService = (API?: any) => {
     }
 
     return {
-        voiceNum,
         playListAdd,
         loadFile,
         setVoice,
