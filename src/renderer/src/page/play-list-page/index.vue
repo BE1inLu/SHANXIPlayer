@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import { musicService } from '@renderer/service/music'
 
-const { playListAdd } = musicService()
+const { playListAdd } = musicService(window.api)
 
 const useAddPlaylist = () => {
     playListAdd(window.api)

@@ -4,7 +4,7 @@ import { musicFile } from 'src/main/types'
  * 音乐操作
  * @returns
  */
-export const musicService = (API) => {
+export const musicService = (API?: any) => {
     const store = useStore()
 
     let context: AudioContext
