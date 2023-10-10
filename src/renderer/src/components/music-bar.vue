@@ -58,7 +58,7 @@
                     </n-button>
                 </template>
                 <n-slider
-                    v-model:value="voiceValue"
+                    v-model:value="musicVoice"
                     class="slider-style"
                     :format-tooltip="voicePercendTooltip"
                     :on-update:value="updatedValue"
@@ -76,7 +76,7 @@
         </n-gi>
     </n-grid>
 
-    <musicPlayList />
+    <musicPlayList @emit-data="playListItemData" @emit-addlist="playListAdd" />
 </template>
 
 <script lang="ts" setup>
@@ -90,19 +90,26 @@ import {
     Speaker216Filled,
 } from '@vicons/fluent'
 import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useStore } from '@renderer/store'
 import { musicService } from '@renderer/service/music'
+import type { musicFile } from '@renderer/types/default'
 
 const musicLangthValue = ref<number>(0)
-const voiceValue = ref<number>(0)
-const {}=musicService(window.api)
+const { play, setVoice, playListAdd } = musicService(window.api)
 
 const store = useStore()
+const { musicVoice } = storeToRefs(store)
 
 const voicePercendTooltip = (val: number) => `${val}%`
 
-const updatedValue = () => {
-    /* TODO: 将音量大小比值传到 main */
+const updatedValue = (value: number) => {
+    musicVoice.value = value
+    setVoice(musicVoice.value!)
+}
+
+const playListItemData = (data: musicFile) => {
+    play(data)
 }
 
 const showNote = () => {

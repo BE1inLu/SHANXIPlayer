@@ -3,13 +3,8 @@ import mainPage from './page/main-page/index.vue'
 import { darkTheme } from 'naive-ui'
 import { useStore } from './store'
 import { computed } from 'vue'
-import { musicService } from '@renderer/service/music'
 
 const store = useStore()
-
-const { musicAudioInit } = musicService()
-
-musicAudioInit()
 
 let theme = computed(() => {
     return store.getTheme() ? darkTheme : null
