@@ -12,6 +12,7 @@ declare global {
             closewindow: () => void
             loadFlacFile: () => void
             loadPathFile: () => musicFile[]
+            getBufferData: (filePatch: string) => ArrayBuffer
         }
     }
 }

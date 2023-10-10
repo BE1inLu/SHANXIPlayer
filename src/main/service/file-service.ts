@@ -1,8 +1,9 @@
 import { dialog } from 'electron'
-import fs from 'fs'
-import path from 'path'
+import * as fs from 'fs'
+import * as path from 'path'
 import { musicFile } from '../types'
 export const fileControl = () => {
+
     const loadFlacFile = async () => {
         let loadData
         await dialog
@@ -27,7 +28,7 @@ export const fileControl = () => {
 
     /**
      * 读取用户选择的目录下全部文件信息
-     * @returns 
+     * @returns
      */
     const loadPathFileInfo = async () => {
         let files: any
@@ -73,5 +74,9 @@ export const fileControl = () => {
         return filelist
     }
 
-    return { loadFlacFile, loadPathFileInfo }
+    const getFileBufferData = (filePath: string) => {
+        return fs.readFileSync(filePath).buffer
+    }
+
+    return { loadFlacFile, loadPathFileInfo, getFileBufferData }
 }

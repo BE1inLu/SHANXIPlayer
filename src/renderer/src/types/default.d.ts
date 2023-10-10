@@ -1,4 +1,4 @@
-import type { musicFile } from '../../../main/types/index'
+import type { musicFile as musicType } from '../../../main/types/index'
 
 /** playList 播放队列对象 */
 export type playList = {
@@ -14,4 +14,4 @@ export type playList = {
     data?: Uint8Array
 }
 
-export type musicFile = musicFile
+export type musicFile = musicType

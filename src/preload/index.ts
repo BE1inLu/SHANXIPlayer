@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
-// Custom APIs for renderer
+/* TODO: api 调整 */
 const api = {
     darkTheme: () => ipcRenderer.invoke('dark-mode'),
     lightTheme: () => ipcRenderer.invoke('light-mode'),
@@ -10,6 +10,7 @@ const api = {
     closewindow: () => ipcRenderer.send('close-window'),
     loadFlacFile:()=>ipcRenderer.invoke('open-flac-file'), 
     loadPathFile:()=>ipcRenderer.invoke('load-path-file'), 
+    getBufferData:(filePath:string)=>ipcRenderer.invoke('get-file-buffer-data',filePath)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
