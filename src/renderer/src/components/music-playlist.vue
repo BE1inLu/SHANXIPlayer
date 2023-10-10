@@ -29,6 +29,24 @@
                 </template>
                 清空列表
             </n-popover>
+
+            <n-popover trigger="hover">
+                <template #trigger>
+                    <n-button
+                        class="btn-style1"
+                        strong
+                        secondary
+                        circle
+                        type="info"
+                        @click="emit('emit-addlist')"
+                    >
+                        <template #icon>
+                            <n-icon><Add16Filled /></n-icon>
+                        </template>
+                    </n-button>
+                </template>
+                从目录添加
+            </n-popover>
         </n-drawer-content>
     </n-drawer>
 </template>
@@ -37,19 +55,19 @@
 import { h } from 'vue'
 import type { DataTableColumns } from 'naive-ui'
 import { NButton, NIcon } from 'naive-ui'
-import { Delete20Filled } from '@vicons/fluent'
+import { Delete20Filled, Add16Filled } from '@vicons/fluent'
 import { useStore } from '@renderer/store'
 import { storeToRefs } from 'pinia'
 import type { musicFile } from '@renderer/types/default.d.ts'
 
 const store = useStore()
 const { switchMusicPlayList, musicPlayList } = storeToRefs(store)
-
+const emit = defineEmits(['emit-data', 'emit-addlist'])
 const rowProps = (row: musicFile) => {
     return {
         // todo: 修改成 ondblclick 双击执行播放
         onClick: () => {
-            console.info(row)
+            emit('emit-data', row)
         },
     }
 }
@@ -80,7 +98,7 @@ const column: DataTableColumns<musicFile> = [
         title: '',
         key: 'action',
         width: 20,
-        render: () => {
+        render: (row) => {
             return h(NButton, {
                 size: 'tiny',
                 quaternary: true,
@@ -92,7 +110,7 @@ const column: DataTableColumns<musicFile> = [
                     })
                 },
                 onClick: () => {
-                    console.log('del')
+                    store.clearMusicPlayListItem(row)
                 },
             })
         },
@@ -108,5 +126,11 @@ const column: DataTableColumns<musicFile> = [
     position: absolute;
     bottom: 4%;
     right: 20%;
+}
+
+.btn-style1 {
+    position: absolute;
+    bottom: 4%;
+    right: 35%;
 }
 </style>

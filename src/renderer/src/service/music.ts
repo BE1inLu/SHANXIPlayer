@@ -1,4 +1,5 @@
 import { useStore } from '@renderer/store'
+import { storeToRefs } from 'pinia'
 import { musicFile } from 'src/main/types'
 /**
  * 音乐操作
@@ -7,32 +8,28 @@ import { musicFile } from 'src/main/types'
 export const musicService = (API?: any) => {
     const store = useStore()
 
-    let context: AudioContext
-    let localGain: GainNode
-    let source: AudioBufferSourceNode
-    let voiceNum: number
+    const context: AudioContext = new AudioContext()
+    const localGain: GainNode = context.createGain()
+    const source: AudioBufferSourceNode = context.createBufferSource()
 
-    const musicAudioInit = () => {
-        context = new AudioContext()
-        localGain = context.createGain()
-        source = context.createBufferSource()
-        voiceNum = 0.8
-        source.connect(localGain)
-        localGain.connect(context.destination)
-    }
+    const { musicBarLength } = storeToRefs(store)
+    musicBarLength.value = context.getOutputTimestamp()
 
-    const playListAdd = async (api: {
-        loadPathFile: () => musicFile[] | PromiseLike<musicFile[]>
-    }) => {
-        store.setMusicPlayList(await api.loadPathFile())
+    let voiceNum: number = 0.8
+    source.connect(localGain)
+    localGain.connect(context.destination)
+
+    const playListAdd = async () => {
+        store.setMusicPlayList(await API.loadPathFile())
     }
 
     const getFileBuffer = (filePatch: string): ArrayBuffer => {
-        return API.getFileBufferData(filePatch)
+        if (API == null) throw new Error('API undefind')
+        return API.getBufferData(filePatch)
     }
 
-    const loadFile = (f: musicFile) => {
-        let buf = getFileBuffer(f.url)
+    const loadFile = async (f: musicFile) => {
+        let buf = await getFileBuffer(f.url)
         context.decodeAudioData(buf).then((buffer) => {
             source.buffer = buffer
         })
@@ -40,11 +37,7 @@ export const musicService = (API?: any) => {
 
     /** 音量设置 */
     const setVoice = (num: number) => {
-        if (num > 1 && num < 0) {
-            console.error('voice err')
-            return
-        }
-        voiceNum = num
+        voiceNum = num * 0.01
         localGain.gain.value = voiceNum
     }
 
@@ -80,7 +73,6 @@ export const musicService = (API?: any) => {
 
     return {
         voiceNum,
-        musicAudioInit,
         playListAdd,
         loadFile,
         setVoice,

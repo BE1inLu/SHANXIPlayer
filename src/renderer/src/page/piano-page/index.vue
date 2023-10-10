@@ -151,11 +151,9 @@ const fullparty = () => {
             setTimeout(() => {
                 voicenum(voice[i])
             }, j);
-            console.log(i);
         } else {
             j += 400
             setTimeout(() => {
-                console.log(" ");
             },);
         }
     });

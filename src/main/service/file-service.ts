@@ -3,7 +3,6 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { musicFile } from '../types'
 export const fileControl = () => {
-
     const loadFlacFile = async () => {
         let loadData
         await dialog
