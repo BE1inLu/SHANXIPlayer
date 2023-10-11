@@ -1,12 +1,11 @@
 import { useMusicStore } from '@renderer/store'
 import { storeToRefs } from 'pinia'
 import { musicFile } from 'src/main/types'
-import { buffer } from 'stream/consumers'
 /**
  * 音乐操作
  * @returns
  */
-export const musicService = (API?: any) => {
+export const musicBarService = (API?: any) => {
     const store = useMusicStore()
     const { musicBarLength, musicOrderData, musicStatus } = storeToRefs(store)
     const context: AudioContext = new AudioContext()
@@ -33,7 +32,7 @@ export const musicService = (API?: any) => {
             .then((buffer) => {
                 return buffer
             })
-        musicBarLength.value = parseInt(source.buffer.duration.toFixed(0))
+        musicBarLength.value = parseInt(source.buffer!.duration.toFixed(0))
         source.connect(localGain)
         localGain.connect(context.destination)
     }
@@ -65,24 +64,9 @@ export const musicService = (API?: any) => {
         musicStatus.value = false
     }
 
-    const playControlToLengthBar = async (val: number) => {
-        if (playStatu) clearSource()
-        source = context.createBufferSource()
-        source.buffer = await context
-            .decodeAudioData(await getFile(musicOrderData.value))
-            .then((buffer) => {
-                return buffer
-            })
-        musicBarLength.value = parseInt(source.buffer.duration.toFixed(0))
-        source.connect(localGain)
-        localGain.connect(context.destination)
-        source.loopStart = val
-    }
-
     /** 清除当前 source 信息 */
     const clearSource = () => {
         source.stop()
-        source = null
         playStatu = !playStatu
     }
 
@@ -100,6 +84,5 @@ export const musicService = (API?: any) => {
         play,
         suspend,
         resume,
-        playControlToLengthBar,
     }
 }

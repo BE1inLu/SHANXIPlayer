@@ -1,8 +1,6 @@
 {
     "include": [
       "test/unit/*.spec.ts",
-      "src/main/**/*.ts",
-      "src/renderer/**/*.ts",
     ],
     "compilerOptions": {
       "composite": true,

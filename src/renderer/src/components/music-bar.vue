@@ -101,10 +101,10 @@ import {
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMusicStore } from '@renderer/store'
-import { musicService } from '@renderer/service/music'
+import { musicBarService } from '@renderer/service/music-bar-service'
 import type { musicFile } from '@renderer/types/default'
 
-const { play, setVoice, playListAdd, suspend, resume } = musicService(window.api)
+const { play, setVoice, playListAdd, suspend, resume } = musicBarService(window.api)
 
 const store = useMusicStore()
 const { musicVoice, musicBarLength, musicStatus } = storeToRefs(store)
@@ -159,3 +159,4 @@ const showNote = () => {
     width: 100px;
 }
 </style>
+@renderer/service/music-bar-service
