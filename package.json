@@ -1,6 +1,6 @@
 {
-    "name": "electron-app-demo01",
-    "version": "1.0.0",
+    "name": "shanxi-palyer",
+    "version": "0.1.1",
     "description": "An Electron application with Vue and TypeScript",
     "main": "./out/main/index.js",
     "author": "example.com",

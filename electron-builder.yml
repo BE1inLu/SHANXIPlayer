@@ -1,5 +1,5 @@
-appId: com.electron.app
-productName: electron-app-demo01
+appId: shanxi.musicplayer.app
+productName: shanxilayer
 directories:
   buildResources: build
 files:
@@ -12,7 +12,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: electron-app-demo01
+  executableName: shanxi-musicPlayer
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
@@ -40,4 +40,4 @@ appImage:
 npmRebuild: false
 publish:
   provider: generic
-  url: https://example.com/auto-updates
+  url: https://github.com/auto-updates

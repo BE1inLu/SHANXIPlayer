@@ -1,7 +1,7 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png'
+import icon from '../../resources/icon.png?asset'
 import { WINDOWCONFIG } from './config/windowConfig'
 import { windowControl } from './service/window-defalt-service'
 import { fileControl } from './service/file-service'
@@ -53,7 +53,7 @@ const getFile = () => {
     const { loadFlacFile, loadPathFileInfo, getFileBufferData } = fileControl()
     ipcMain.handle('open-flac-file', loadFlacFile)
     ipcMain.handle('load-path-file', loadPathFileInfo)
-    ipcMain.handle('get-file-buffer-data', (event, filePatch: string) => {
+    ipcMain.handle('get-file-buffer-data', (_event, filePatch: string) => {
         return getFileBufferData(filePatch)
     })
 }
