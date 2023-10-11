@@ -10,10 +10,13 @@
             </n-button>
         </n-gi>
         <n-gi span="1" class="local-group">
-            <n-button strong secondary circle size="small" type="info">
+            <n-button strong secondary circle size="small" type="info" @click="useMusic">
                 <template #icon>
-                    <n-icon>
+                    <n-icon v-if="musicStatus">
                         <Play12Filled />
+                    </n-icon>
+                    <n-icon v-else>
+                        <Pause16Filled />
                     </n-icon>
                 </template>
             </n-button>
@@ -29,7 +32,12 @@
         </n-gi>
         <n-gi span="6" class="long-group">
             <n-space vertical>
-                <n-slider v-model:value="musicLangthValue" :step="1" />
+                <n-slider
+                    :max="musicBarLength"
+                    v-model:value="musicLangthValue"
+                    :on-update:value="updateLengthValue"
+                    disabled
+                />
             </n-space>
         </n-gi>
         <n-gi span="1" class="local-group">
@@ -88,24 +96,34 @@ import {
     ArrowRepeatAll16Filled,
     TextBulletListLtr16Filled,
     Speaker216Filled,
+    Pause16Filled,
 } from '@vicons/fluent'
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useStore } from '@renderer/store'
-import { musicService } from '@renderer/service/music'
+import { useMusicStore } from '@renderer/store'
+import { musicBarService } from '@renderer/service/music-bar-service'
 import type { musicFile } from '@renderer/types/default'
 
+const { play, setVoice, playListAdd, suspend, resume } = musicBarService(window.api)
+
+const store = useMusicStore()
+const { musicVoice, musicBarLength, musicStatus } = storeToRefs(store)
 const musicLangthValue = ref<number>(0)
-const { play, setVoice, playListAdd } = musicService(window.api)
-
-const store = useStore()
-const { musicVoice } = storeToRefs(store)
-
 const voicePercendTooltip = (val: number) => `${val}%`
 
 const updatedValue = (value: number) => {
     musicVoice.value = value
     setVoice(musicVoice.value!)
+}
+
+const useMusic = () => {
+    musicStatus.value = !musicStatus.value
+    musicStatus.value ? suspend() : resume
+}
+
+/* TODO:音频条实现 */
+const updateLengthValue = (val: number) => {
+    musicLangthValue.value = val
 }
 
 const playListItemData = (data: musicFile) => {
@@ -141,3 +159,4 @@ const showNote = () => {
     width: 100px;
 }
 </style>
+@renderer/service/music-bar-service

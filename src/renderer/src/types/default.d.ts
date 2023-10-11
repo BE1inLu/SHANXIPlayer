@@ -1,4 +1,7 @@
-import type { musicFile as musicType } from '../../../main/types/index'
+import type {
+    musicFile as musicType,
+    musimusicFileExt as musicExt,
+} from '@main/types/index'
 
 /** playList 播放队列对象 */
 export type playList = {
@@ -15,3 +18,11 @@ export type playList = {
 }
 
 export type musicFile = musicType
+
+export type musicFileExt = musicExt
+
+export type tabsList = {
+    id: number
+    name: string
+    data: musicFileExt[]
+}

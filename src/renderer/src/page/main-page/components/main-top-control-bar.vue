@@ -92,7 +92,7 @@ import { ref } from 'vue'
 
 const maxMinMode = ref<boolean>(true)
 const darkModeVal = ref<boolean>(true)
-let store = useStore()
+const store = useStore()
 
 const darkModeChange = () => {
     darkModeVal.value = !darkModeVal.value

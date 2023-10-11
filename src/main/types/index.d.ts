@@ -1,5 +1,7 @@
+import { UUID } from 'crypto'
+
 /**
- * flac 文件
+ * 音乐文件 -- 基础
  */
 export type musicFile = fileDefaultInfo & musicInfo
 
@@ -36,4 +38,18 @@ type musicInfo = (mp3File | wavFile | flacFile) & {
     length?: number
     /**音频内容 */
     bufferData?: Uint8Array | ArrayBuffer
+}
+
+/**
+ * **音乐文件 -- 扩展**
+ * 添加了标签信息，所属队列编号，最后打开时间，音频长度，生成的 UUID
+ *
+ */
+export type musicFileExt = musicFile & {
+    tag?: string[]
+    listID?: number
+    createTime?: Date | string
+    lastOpenTime?: Date | string
+    musicLength?: number
+    UUID?: UUID | string
 }
