@@ -6,8 +6,10 @@ export const useStore = defineStore('store', () => {
     const darkmodeStore = ref<boolean>(true)
     const switchMusicPlayList = ref<boolean>(false)
     const musicPlayList = ref<musicFile[]>([])
-    const musicBarLength = ref<AudioTimestamp>()
+    const musicBarLength = ref<number>()
     const musicVoice = ref<number>(10)
+    const musicOrderData = ref()
+    const musicStatus = ref<boolean>(true)
 
     const setMusicPlayList = (musicList: musicFile[]) => {
         let localList: musicFile[] = []
@@ -32,6 +34,12 @@ export const useStore = defineStore('store', () => {
         musicPlayList.value = []
     }
 
+    const addPlayList = (list: musicFile[]) => {
+        list.forEach((i) => {
+            musicPlayList.value.push(i)
+        })
+    }
+
     const changheTheme = () => {
         darkmodeStore.value = !darkmodeStore.value
     }
@@ -49,6 +57,8 @@ export const useStore = defineStore('store', () => {
     }
 
     return {
+        musicStatus,
+        musicOrderData,
         musicVoice,
         musicBarLength,
         musicPlayList,
@@ -59,6 +69,7 @@ export const useStore = defineStore('store', () => {
         changePlayList,
         getPlayListStore,
         setMusicPlayList,
+        addPlayList,
         clearMusicPlayList,
         clearMusicPlayListItem,
     }
