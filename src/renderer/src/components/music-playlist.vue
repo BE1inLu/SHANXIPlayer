@@ -41,11 +41,11 @@ import { h } from 'vue'
 import type { DataTableColumns } from 'naive-ui'
 import { NButton, NIcon } from 'naive-ui'
 import { Delete20Filled, Add16Filled } from '@vicons/fluent'
-import { useStore } from '@renderer/store'
+import { useMusicStore } from '@renderer/store'
 import { storeToRefs } from 'pinia'
 import type { musicFile } from '@renderer/types/default.d.ts'
 
-const store = useStore()
+const store = useMusicStore()
 const { switchMusicPlayList, musicPlayList } = storeToRefs(store)
 const emit = defineEmits(['emit-data', 'emit-addlist'])
 const rowProps = (row: musicFile) => {

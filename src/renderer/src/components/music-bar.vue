@@ -100,13 +100,13 @@ import {
 } from '@vicons/fluent'
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useStore } from '@renderer/store'
+import { useMusicStore } from '@renderer/store'
 import { musicService } from '@renderer/service/music'
 import type { musicFile } from '@renderer/types/default'
 
 const { play, setVoice, playListAdd, suspend, resume } = musicService(window.api)
 
-const store = useStore()
+const store = useMusicStore()
 const { musicVoice, musicBarLength, musicStatus } = storeToRefs(store)
 const musicLangthValue = ref<number>(0)
 const voicePercendTooltip = (val: number) => `${val}%`

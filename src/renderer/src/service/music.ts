@@ -1,4 +1,4 @@
-import { useStore } from '@renderer/store'
+import { useMusicStore } from '@renderer/store'
 import { storeToRefs } from 'pinia'
 import { musicFile } from 'src/main/types'
 import { buffer } from 'stream/consumers'
@@ -7,7 +7,7 @@ import { buffer } from 'stream/consumers'
  * @returns
  */
 export const musicService = (API?: any) => {
-    const store = useStore()
+    const store = useMusicStore()
     const { musicBarLength, musicOrderData, musicStatus } = storeToRefs(store)
     const context: AudioContext = new AudioContext()
     const localGain: GainNode = context.createGain()
