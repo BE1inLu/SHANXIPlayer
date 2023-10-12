@@ -53,6 +53,7 @@
         "naive-ui": "^2.34.4",
         "prettier": "^3.0.2",
         "typescript": "^5.2.2",
+        "uuid": "^9.0.1",
         "vfonts": "^0.0.3",
         "vite": "^4.4.9",
         "vitest": "^0.34.5",
