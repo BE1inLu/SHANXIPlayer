@@ -1,6 +1,6 @@
 export const util = () => {
     const debounce = (fn: any, delay: number) => {
-        let timer
+        let timer = null
         const _debounce = (...args) => {
             if (timer) clearTimeout(timer)
             timer = setTimeout(() => {
