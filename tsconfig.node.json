@@ -6,8 +6,9 @@
         "src/main/config/*",
         "src/main/service/*", 
         "src/preload/*",
-        "src/main/util/*"
-        ],
+        "src/main/util/*",
+        "src/main/data/*"
+    ],
     "compilerOptions": {
         "composite": true,
         "types": ["electron-vite/node"],
