@@ -15,7 +15,10 @@
       ],
       "@/*":[
         "src/renderer/src/*"
-      ]
+      ],
+      "@main/*": [
+        "src/main/*"
+      ],
     },
     "types": ["naive-ui/volar"]
   }

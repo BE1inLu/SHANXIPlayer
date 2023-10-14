@@ -7,9 +7,8 @@
         <n-gi span="1 m:2"></n-gi>
     </n-grid>
 </template>
- 
-<script lang="ts" setup>
-import musicBar from '@renderer/components/music-bar.vue';
 
+<script lang="ts" setup>
+import musicBar from '@renderer/components/music-bar.vue'
 </script>
 <style lang="less"></style>

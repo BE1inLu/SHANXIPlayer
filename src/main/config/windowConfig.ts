@@ -1,6 +1,6 @@
 import { join } from 'path'
 
-export const WINDOWCONFIG = (icon: any) => {
+export const WINDOWCONFIG = (icon: string) => {
     return {
         width: 800,
         height: 600,

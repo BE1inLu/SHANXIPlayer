@@ -1,7 +1,7 @@
 import { dialog } from 'electron'
 import * as fs from 'fs'
 import * as path from 'path'
-import { musicFile } from '../types'
+import { musicFile, musicFileExt } from '../types'
 export const fileControl = () => {
     const loadFlacFile = async () => {
         let loadData
@@ -30,10 +30,8 @@ export const fileControl = () => {
      * @returns
      */
     const loadPathFileInfo = async () => {
-        let files: any
-        let filePath: any
-        let filelist: musicFile[] = []
-        await dialog
+        const filelist: musicFile[] = []
+        const filePath = await dialog
             .showOpenDialog({
                 properties: ['openDirectory'],
                 buttonLabel: 'load',
@@ -41,36 +39,31 @@ export const fileControl = () => {
                 title: 'load file',
             })
             .then((res) => {
-                filePath = res.filePaths[0]
+                return res.filePaths[0]
             })
 
-        files = fs.readdirSync(filePath, {
+        const files = fs.readdirSync(filePath, {
             encoding: 'utf-8',
         })
 
         for (const file of files) {
             const localFilePath = path.join(filePath, file)
-
             const stat = fs.statSync(localFilePath)
-
-            let fileExt = file.split('.')[1]
-
-            const isCheckext = (fileExt: string) => {
-                return fileExt == 'flac' || fileExt == 'wav' || fileExt == 'mp3'
-            }
-
+            const fileExt = file.split('.')[1]
             if (isCheckext(fileExt)) {
-                let localfile: musicFile = {
+                const localfile: musicFileExt = {
                     fileid: stat.ino,
                     name: file.split('.')[0],
                     ext: fileExt,
                     url: localFilePath,
-                    length: undefined,
                 }
                 filelist.push(localfile)
             }
         }
         return filelist
+    }
+    const isCheckext = (fileExt: string) => {
+        return fileExt == 'flac' || fileExt == 'wav' || fileExt == 'mp3'
     }
 
     const getFileBufferData = (filePath: string) => {

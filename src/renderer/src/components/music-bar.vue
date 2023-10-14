@@ -33,8 +33,8 @@
         <n-gi span="6" class="long-group">
             <n-space vertical>
                 <n-slider
-                    :max="musicBarLength"
                     v-model:value="musicLangthValue"
+                    :max="musicBarLength"
                     :on-update:value="updateLengthValue"
                     disabled
                 />
