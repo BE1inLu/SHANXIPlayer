@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import { musicFileExt } from '@main/types'
 
 /* TODO: api 调整 */
 const api = {
@@ -13,10 +14,17 @@ const api = {
         loadPathFile: () => ipcRenderer.invoke('load-path-file'),
         getBufferData: (filePath: string) => ipcRenderer.invoke('get-file-buffer-data', filePath),
     },
-    db:{
-        readConfigTable:()=>ipcRenderer.invoke('read-config-table'),
-        updateConfigItem:(configname: string, value: string)=>ipcRenderer.invoke('update-config-item',configname,value)
-    }
+    db: {
+        readConfigTable: () => ipcRenderer.invoke('read-config-table'),
+        readMusicDataTable:()=>ipcRenderer.invoke('read-musicdata-table'),
+        updateConfigItem: (configname: string, value: string) =>
+            ipcRenderer.invoke('update-config-item', configname, value),
+        insertMusicDataItem: (data: musicFileExt) =>
+            ipcRenderer.invoke('insert-musicdata-item', data),
+        insertManyMusicData: (data: musicFileExt[]) => {
+            ipcRenderer.invoke('insert-many-musicdata', data)
+        },
+    },
 }
 
 if (process.contextIsolated) {

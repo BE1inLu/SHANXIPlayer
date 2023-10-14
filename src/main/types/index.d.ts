@@ -55,8 +55,8 @@ export type musicFileExt = musicFile & {
 }
 
 export type configItem={
-    uuid:UUID
-    configname:string,
-    status:string,
-    lastchangetime:string,
+    uuid?:UUID
+    configname?:string,
+    status?:string,
+    lastchangetime?:string,
 }

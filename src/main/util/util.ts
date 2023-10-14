@@ -1,5 +1,4 @@
 import fs from 'fs'
-import path from 'path'
 
 export const useUtil = () => {
     /** 判断文件是否存在 */

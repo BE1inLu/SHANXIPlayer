@@ -1,5 +1,5 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
-import type { configItem, musicFile } from 'src/main/types'
+import type { configItem, musicFile, musicFileExt } from 'src/main/types'
 
 declare global {
     interface Window {
@@ -17,7 +17,10 @@ declare global {
             }
             db: {
                 readConfigTable: () => configItem[]
+                readMusicDataTable: () => musicFileExt[]
                 updateConfigItem: (configname: string, value: string) => boolean
+                insertMusicDataItem: (data: musicFileExt) => boolean
+                insertManyMusicData: (data: musicFileExt[]) => boolean
             }
         }
     }
