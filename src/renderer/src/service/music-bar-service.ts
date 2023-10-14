@@ -33,7 +33,7 @@ export const musicBarService = (window?: any) => {
             .then((buffer) => {
                 return buffer
             })
-        musicBarLength.value = parseInt(source.buffer?.duration.toFixed(0))
+        musicBarLength.value = parseInt(source.buffer!.duration.toFixed(0))
         source.connect(localGain)
         localGain.connect(context.destination)
     }

@@ -28,9 +28,9 @@ const api = {
             ipcRenderer.invoke('delete-musicdata-item', data)
         },
     },
-    test:{
-        testfunc1:()=>ipcRenderer.invoke('test-a')
-    }
+    test: {
+        testfunc1: () => ipcRenderer.invoke('test-a'),
+    },
 }
 
 if (process.contextIsolated) {

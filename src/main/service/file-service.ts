@@ -55,7 +55,7 @@ export const fileControl = () => {
                     fileid: stat.ino,
                     name: file.split('.')[0],
                     ext: fileExt,
-                    url: localFilePath
+                    url: localFilePath,
                 }
                 filelist.push(localfile)
             }
@@ -65,8 +65,6 @@ export const fileControl = () => {
     const isCheckext = (fileExt: string) => {
         return fileExt == 'flac' || fileExt == 'wav' || fileExt == 'mp3'
     }
-
-    
 
     const getFileBufferData = (filePath: string) => {
         return fs.readFileSync(filePath).buffer

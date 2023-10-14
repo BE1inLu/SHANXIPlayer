@@ -96,6 +96,5 @@ const test7 = async () => {
     /* 读取目录数据, 然后生成结构化musicfile并返回 */
     await window.api.test.testfunc1()
 }
-
 </script>
 <style lang="less" scoped></style>

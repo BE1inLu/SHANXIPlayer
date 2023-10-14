@@ -8,7 +8,7 @@ export const orderService = () => {
         const extFileList: musicFileExt[] = await loadPathFileInfo()
         /* 批量写入数据库 */
         const res = await insertManyMusicData(extFileList)
-        console.log(res);
+        console.log(res)
         return extFileList
     }
 
