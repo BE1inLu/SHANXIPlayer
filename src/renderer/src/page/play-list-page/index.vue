@@ -24,14 +24,28 @@
             </n-button>
         </n-space>
         <n-divider style="margin-top: 0; margin-bottom: 0" />
-        <n-tabs class="tab-style" size="medium" :type="tagRef" :closable="closable" animated placement="left"
-            :addable="addableRef" @add="handleAdd" @close="handleClose">
+        <n-tabs
+            class="tab-style"
+            size="medium"
+            :type="tagRef"
+            :closable="closable"
+            animated
+            placement="left"
+            :addable="addableRef"
+            @add="handleAdd"
+            @close="handleClose"
+        >
             <n-tab-pane v-for="item of tabList" :key="item.id" :name="item.name">
                 <n-grid x-gap="12" cols="12" item-responsive responsive="screen">
                     <n-gi span="1 m:2"></n-gi>
                     <n-gi span="10 m:8">
-                        <n-data-table :columns="columns" max-height="70vh" :data="item.data" :pagination="false"
-                            :bordered="false">
+                        <n-data-table
+                            :columns="columns"
+                            max-height="70vh"
+                            :data="item.data"
+                            :pagination="false"
+                            :bordered="false"
+                        >
                         </n-data-table>
                     </n-gi>
                     <n-gi span="1 l:2"></n-gi>
@@ -45,7 +59,7 @@
 import { h, ref, computed } from 'vue'
 import type { DataTableColumns } from 'naive-ui'
 import { Navigation16Filled, FolderAdd20Filled, Settings24Filled } from '@vicons/fluent'
-import type { tabsList,musicFileExt } from '@renderer/types/default'
+import type { tabsList, musicFileExt } from '@renderer/types/default'
 
 const tagRef = ref<'card' | 'line'>('line')
 const panelsRef = ref([1, 2, 3])
@@ -65,8 +79,7 @@ const handleAdd = () => {
     const newTable: tabsList = {
         id: newval,
         name: 'table' + newval,
-        data: [
-        ],
+        data: [],
     }
     tabList.push(newTable)
 }
@@ -74,7 +87,7 @@ const handleAdd = () => {
 const handleClose = (name: string) => {
     console.log('close')
     console.log(name)
-    let num = parseInt(name.replace(/[^0~9]/gi, ''))
+    const num = parseInt(name.replace(/[^0~9]/gi, ''))
     tabList = tabList.filter((i) => i.name != name)
     panelsRef.value = panelsRef.value.filter((i) => i != num)
 }
@@ -244,9 +257,7 @@ const columns: DataTableColumns<musicFileExt> = [
         title: 'Id',
         key: 'id',
         fixed: 'left',
-        maxWidth: 50,
-        minWidth: 50,
-        resizable: true,
+        width: 50,
         render: (_data, index) => {
             return h('span', [index + 1])
         },
@@ -254,8 +265,7 @@ const columns: DataTableColumns<musicFileExt> = [
     {
         title: 'Name',
         key: 'name',
-        resizable: true,
-        minWidth: 100,
+        width: 200,
         ellipsis: {
             tooltip: true,
         },
@@ -263,14 +273,12 @@ const columns: DataTableColumns<musicFileExt> = [
     {
         title: 'Ext',
         key: 'ext',
-        resizable: true,
-        minWidth: 100,
+        width: 100,
     },
     {
         title: 'Length',
         key: 'length',
-        resizable: true,
-        minWidth: 100,
+        width: 100,
     },
     {
         title: '',

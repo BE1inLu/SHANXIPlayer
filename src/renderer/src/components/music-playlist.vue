@@ -4,12 +4,25 @@
             <template #header>
                 <span>PlayList</span>
             </template>
-            <n-data-table :columns="column" :data="musicPlayList" :pagination="false" :bordered="false"
-                :row-props="rowProps" max-height="83vh" />
+            <n-data-table
+                :columns="column"
+                :data="musicPlayList"
+                :pagination="false"
+                :bordered="false"
+                :row-props="rowProps"
+                max-height="83vh"
+            />
 
             <n-popover trigger="hover">
                 <template #trigger>
-                    <n-button class="btn-style" strong secondary circle type="error" @click="store.clearMusicPlayList()">
+                    <n-button
+                        class="btn-style"
+                        strong
+                        secondary
+                        circle
+                        type="error"
+                        @click="store.clearMusicPlayList()"
+                    >
                         <template #icon>
                             <n-icon>
                                 <Delete20Filled />
@@ -22,7 +35,14 @@
 
             <n-popover trigger="hover">
                 <template #trigger>
-                    <n-button class="btn-style1" strong secondary circle type="info" @click="emit('emit-addlist')">
+                    <n-button
+                        class="btn-style1"
+                        strong
+                        secondary
+                        circle
+                        type="info"
+                        @click="emit('emit-addlist')"
+                    >
                         <template #icon>
                             <n-icon>
                                 <Add16Filled />

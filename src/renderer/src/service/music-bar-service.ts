@@ -5,6 +5,7 @@ import { musicFile } from 'src/main/types'
  * 音乐操作
  * @returns
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const musicBarService = (window?: any) => {
     const store = useMusicStore()
     const { musicBarLength, musicOrderData, musicStatus } = storeToRefs(store)
@@ -12,7 +13,7 @@ export const musicBarService = (window?: any) => {
     const localGain: GainNode = context.createGain()
     let source: AudioBufferSourceNode
     localGain.gain.value = 0.2
-    let playStatu: boolean = false
+    let playStatu = false
 
     const playListAdd = async () => {
         store.addPlayList(await window.api.file.loadPathFile())

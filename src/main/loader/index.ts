@@ -2,6 +2,7 @@ import { BrowserWindow, ipcMain } from 'electron'
 import { windowControl } from '../service/window-defalt-service'
 import { fileControl } from '../service/file-service'
 import {
+    deleteMusicDataItem,
     insertManyMusicData,
     insertMusicDataTable,
     procdb,
@@ -10,9 +11,11 @@ import {
     updateConfigItem,
 } from '../data/db-control'
 import type { musicFileExt } from '../types'
+import { orderService } from '../service/order-service'
 export function loader(window: BrowserWindow) {
     windowControl().execWindowControl(window)
     const { loadFlacFile, loadPathFileInfo, getFileBufferData } = fileControl()
+    const { loadPathFileAndAddMusicData } = orderService()
     ipcMain.handle('open-flac-file', loadFlacFile)
     ipcMain.handle('load-path-file', loadPathFileInfo)
     ipcMain.handle('get-file-buffer-data', (_event, filePatch: string) => {
@@ -41,9 +44,18 @@ export function loader(window: BrowserWindow) {
         return res
     })
 
-    ipcMain.handle('read-musicdata-table',async()=>{
-        const res =await readMusicDataTable()
+    ipcMain.handle('read-musicdata-table', async () => {
+        const res = await readMusicDataTable()
         return res
     })
 
+    ipcMain.handle('delete-musicdata-item', async (_, data: musicFileExt) => {
+        const res = await deleteMusicDataItem(data)
+        return res
+    })
+
+    ipcMain.handle('test-a', async () => {
+        const res = await loadPathFileAndAddMusicData()
+        return res
+    })
 }

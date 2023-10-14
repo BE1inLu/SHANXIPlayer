@@ -21,6 +21,10 @@ declare global {
                 updateConfigItem: (configname: string, value: string) => boolean
                 insertMusicDataItem: (data: musicFileExt) => boolean
                 insertManyMusicData: (data: musicFileExt[]) => boolean
+                deleteMusicDataItem: (data: musicFileExt) => boolean
+            }
+            test: {
+                testfunc1: () => void
             }
         }
     }

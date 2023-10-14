@@ -4,7 +4,6 @@ import native from 'naive-ui'
 import router from './router'
 import pinia from './store'
 
-
 const localApp = createApp(App)
 
 localApp.use(native)

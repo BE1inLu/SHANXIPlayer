@@ -16,7 +16,7 @@ const api = {
     },
     db: {
         readConfigTable: () => ipcRenderer.invoke('read-config-table'),
-        readMusicDataTable:()=>ipcRenderer.invoke('read-musicdata-table'),
+        readMusicDataTable: () => ipcRenderer.invoke('read-musicdata-table'),
         updateConfigItem: (configname: string, value: string) =>
             ipcRenderer.invoke('update-config-item', configname, value),
         insertMusicDataItem: (data: musicFileExt) =>
@@ -24,6 +24,12 @@ const api = {
         insertManyMusicData: (data: musicFileExt[]) => {
             ipcRenderer.invoke('insert-many-musicdata', data)
         },
+        deleteMusicDataItem: (data: musicFileExt) => {
+            ipcRenderer.invoke('delete-musicdata-item', data)
+        },
+    },
+    test: {
+        testfunc1: () => ipcRenderer.invoke('test-a'),
     },
 }
 
