@@ -171,29 +171,7 @@ export async function insertMusicDataTable(musicitem: musicFileExt) {
 }
 
 export async function insertManyMusicData(data: musicFileExt[]) {
-    let valueList: any[] = []
-
-    data.forEach((i) => {
-        const uuid = randomUUID()
-        const lastchangetime = new Date().toLocaleDateString()
-        const tag: string = i.tag ? i.tag!.join(',') : ''
-        const listid: number = i.listID ? i.listID! : 0
-        const musiclength: number = i.musicLength ? i.musicLength! : 0
-        const value = [
-            uuid,
-            i.name,
-            i.fileid!,
-            i.url,
-            i.ext,
-            tag,
-            listid,
-            lastchangetime,
-            musiclength,
-            lastchangetime,
-        ]
-        valueList.push(value)
-    })
-
+    let valueList: any[] = getvalueList(data)
     const sql =
         'INSERT INTO `' +
         'musicdatatable` ' +
@@ -210,4 +188,25 @@ export async function insertManyMusicData(data: musicFileExt[]) {
                 reject(err)
             })
     })
+}
+
+function getvalueList(data: musicFileExt[]) {
+    let valueList: any[] = []
+    data.forEach((i) => {
+        const lastchangetime = new Date().toLocaleDateString()
+        const value = [
+            randomUUID(),
+            i.name,
+            i.fileid!,
+            i.url,
+            i.ext,
+            i.tag ? i.tag!.join(',') : '',
+            i.listID ? i.listID! : 0,
+            lastchangetime,
+            i.musicLength ? i.musicLength! : 0,
+            lastchangetime,
+        ]
+        valueList.push(value)
+    })
+    return valueList
 }

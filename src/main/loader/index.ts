@@ -41,9 +41,8 @@ export function loader(window: BrowserWindow) {
         return res
     })
 
-    ipcMain.handle('read-musicdata-table',async()=>{
-        const res =await readMusicDataTable()
+    ipcMain.handle('read-musicdata-table', async () => {
+        const res = await readMusicDataTable()
         return res
     })
-
 }
