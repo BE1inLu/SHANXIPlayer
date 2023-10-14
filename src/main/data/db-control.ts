@@ -158,8 +158,10 @@ export async function readMusicDataTable() {
     const sql = 'SELECT * FROM `musicdatatable` '
     return new Promise((resolve, reject) => {
         db.executeQuery(sql, 'all')
-            .then((req) => {
-                resolve(req)
+            .then((req: any) => {
+                const result = decodeMusicDataList(req)
+                console.log(result)
+                resolve(result)
             })
             .catch((err) => {
                 reject(err)
@@ -186,9 +188,9 @@ export async function insertMusicDataTable(musicitem: musicFileExt) {
     const musiclength: number = musicitem.musicLength ? musicitem.musicLength : 0
     const value = [
         uuid,
-        musicitem.name,
+        encodeURI(musicitem.name),
         musicitem.fileid,
-        musicitem.url,
+        encodeURI(musicitem.url),
         musicitem.ext,
         tag,
         listid,
@@ -221,7 +223,7 @@ export async function insertManyMusicData(data: musicFileExt[]) {
         '`listid`,`createtime`,`musiclength`,`lastopentime`)' +
         'VALUES(?,?,?,?,?,?,?,?,?,?)'
 
-    return new Promise((resolve, reject) => {
+    return new Promise<any>((resolve, reject) => {
         db.executeMany(sql, valueList)
             .then((req) => {
                 resolve(req)
@@ -239,9 +241,9 @@ function getvalueList(data: musicFileExt[]) {
         const lastchangetime = new Date().toLocaleDateString()
         const value = [
             randomUUID(),
-            i.name,
+            encodeURI(i.name),
             i.fileid,
-            i.url,
+            encodeURI(i.url),
             i.ext,
             i.tag ? i.tag.join(',') : '',
             i.listID ? i.listID : 0,
@@ -254,12 +256,19 @@ function getvalueList(data: musicFileExt[]) {
     return valueList
 }
 
+function decodeMusicDataList(data: any): musicFileExt[] {
+    data.forEach((item) => {
+        item[1] = decodeURI(item[1])
+        item[3] = decodeURI(item[3])
+    })
+    return data
+}
+
 export async function deleteMusicDataItem(data: musicFileExt) {
     const sql = 'DELETE FROM musicdatatable WHERE uuid = ?'
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const uuid = data.UUID!
     const val = [uuid]
-
     return new Promise((resolve, reject) => {
         db.executeQuery(sql, '', val)
             .then((res) => {

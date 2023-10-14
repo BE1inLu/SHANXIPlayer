@@ -11,6 +11,9 @@
             <n-button @click="test4">insertManyMusicData</n-button>
             <n-button @click="test6">deleteMusicDataItem</n-button>
         </div>
+        <div>
+            <n-button @click="test7">deleteMusicDataItem</n-button>
+        </div>
 
         <div>data: {{ refdata }}</div>
     </span>
@@ -88,5 +91,11 @@ const test6 = async () => {
     const res = await window.api.db.deleteMusicDataItem(data)
     refdata.value = res
 }
+
+const test7 = async () => {
+    /* 读取目录数据, 然后生成结构化musicfile并返回 */
+    await window.api.test.testfunc1()
+}
+
 </script>
 <style lang="less" scoped></style>

@@ -15,6 +15,7 @@ type fileDefaultInfo = {
     name: string
     /**文件路径 */
     url: string
+    ext: 'flac' | 'wav' | 'mp3' | string
 }
 
 /** flac 音频文件 */
@@ -34,7 +35,6 @@ type mp3File = {
 
 /** 音乐文件基本信息 */
 type musicInfo = {
-    ext: 'flac' | 'wav' | 'mp3' | string
     /**音频长度 */
     length?: number
     /**音频内容 */
@@ -42,18 +42,27 @@ type musicInfo = {
 }
 
 /**
- * **音乐文件 -- 扩展**
+ * **单音乐文件--扩展**  
  * 添加了标签信息，所属队列编号，最后打开时间，音频长度，生成的 UUID
- *
+ * @params
  */
-export type musicFileExt = musicFile & {
-    tag?: string[]
+export type musicFileExt = fileDefaultInfo &
+    listInfo & {
+        tag?: string[]
+        createTime?: Date | string
+        lastOpenTime?: Date | string
+        musicLength?: number
+        UUID?: UUID | string
+    }
+
+/**
+ * **队列信息**
+ */
+export type listInfo = {
+    /** 队列ID */
     listID?: number
+    /** 队列名字 */
     listName?: string
-    createTime?: Date | string
-    lastOpenTime?: Date | string
-    musicLength?: number
-    UUID?: UUID | string
 }
 
 export type configItem = {

@@ -1,7 +1,7 @@
 import { dialog } from 'electron'
 import * as fs from 'fs'
 import * as path from 'path'
-import { musicFile } from '../types'
+import { musicFile, musicFileExt } from '../types'
 export const fileControl = () => {
     const loadFlacFile = async () => {
         let loadData
@@ -48,27 +48,22 @@ export const fileControl = () => {
 
         for (const file of files) {
             const localFilePath = path.join(filePath, file)
-
             const stat = fs.statSync(localFilePath)
-
             const fileExt = file.split('.')[1]
-
-            const isCheckext = (fileExt: string) => {
-                return fileExt == 'flac' || fileExt == 'wav' || fileExt == 'mp3'
-            }
-
             if (isCheckext(fileExt)) {
-                const localfile: musicFile = {
+                const localfile: musicFileExt = {
                     fileid: stat.ino,
                     name: file.split('.')[0],
                     ext: fileExt,
-                    url: localFilePath,
-                    length: undefined,
+                    url: localFilePath
                 }
                 filelist.push(localfile)
             }
         }
         return filelist
+    }
+    const isCheckext = (fileExt: string) => {
+        return fileExt == 'flac' || fileExt == 'wav' || fileExt == 'mp3'
     }
 
     const getFileBufferData = (filePath: string) => {

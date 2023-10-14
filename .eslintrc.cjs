@@ -8,7 +8,7 @@ module.exports = {
         '@electron-toolkit',
         '@electron-toolkit/eslint-config-ts/eslint-recommended',
         '@vue/eslint-config-typescript/recommended',
-        // '@rushstack/eslint-patch',
+        '@rushstack/eslint-patch',
         '@vue/eslint-config-prettier',
     ],
     rules: {

@@ -23,6 +23,9 @@ declare global {
                 insertManyMusicData: (data: musicFileExt[]) => boolean
                 deleteMusicDataItem: (data: musicFileExt) => boolean
             }
+            test: {
+                testfunc1: () => void
+            }
         }
     }
 }
