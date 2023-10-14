@@ -3,16 +3,12 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { WINDOWCONFIG } from './config/windowConfig'
-import { windowControl } from './service/window-defalt-service'
-import { fileControl } from './service/file-service'
-
+import { loader } from './loader/index'
 function createWindow(): void {
     /**首屏窗口 */
     const mainWindow = new BrowserWindow(WINDOWCONFIG(icon))
 
-    windowControl().execWindowControl(mainWindow)
-
-    getFile()
+    loader(mainWindow)
 
     mainWindow.on('ready-to-show', () => {
         mainWindow.show()
@@ -48,12 +44,3 @@ app.on('window-all-closed', () => {
         app.quit()
     }
 })
-
-const getFile = () => {
-    const { loadFlacFile, loadPathFileInfo, getFileBufferData } = fileControl()
-    ipcMain.handle('open-flac-file', loadFlacFile)
-    ipcMain.handle('load-path-file', loadPathFileInfo)
-    ipcMain.handle('get-file-buffer-data', (_event, filePatch: string) => {
-        return getFileBufferData(filePatch)
-    })
-}
