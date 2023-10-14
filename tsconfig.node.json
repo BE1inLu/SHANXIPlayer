@@ -7,14 +7,17 @@
         "src/main/service/*", 
         "src/preload/*",
         "src/main/util/*",
-        "src/main/data/*"
+        "src/main/data/*",
+        "src/main/loader/*"
     ],
     "compilerOptions": {
         "composite": true,
         "types": ["electron-vite/node"],
         "baseUrl": ".",
         "paths": {
-            "@main/*":["src/main/*"]
+            "@main/*": [
+                "src/main/*"
+              ],
         }
   }
 }

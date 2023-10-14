@@ -1,14 +1,8 @@
-import { DataBase } from '@main/data/data-base'
-import type { musicFileExt } from '@main/types'
+import { DataBase } from '../data/data-base'
+import type { musicFileExt } from '../types'
 import { error } from 'console'
 import { randomUUID } from 'crypto'
 
-/**
- * ## TODO
- * - 数据库proc
- * - 创建 config, defaultdata 表
- * - crud
- */
 export const dbService = (path: string) => {
     const db: DataBase = new DataBase(path)
 

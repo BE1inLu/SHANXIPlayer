@@ -1,5 +1,5 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
-import { musicFile } from 'src/main/types'
+import type { configItem, musicFile, musicFileExt } from 'src/main/types'
 
 declare global {
     interface Window {
@@ -10,9 +10,18 @@ declare global {
             minwindow: () => void
             maxwindow: () => void
             closewindow: () => void
-            loadFlacFile: () => void
-            loadPathFile: () => musicFile[]
-            getBufferData: (filePatch: string) => ArrayBuffer
+            file: {
+                loadFlacFile: () => void
+                loadPathFile: () => musicFile[]
+                getBufferData: (filePatch: string) => ArrayBuffer
+            }
+            db: {
+                readConfigTable: () => configItem[]
+                readMusicDataTable: () => musicFileExt[]
+                updateConfigItem: (configname: string, value: string) => boolean
+                insertMusicDataItem: (data: musicFileExt) => boolean
+                insertManyMusicData: (data: musicFileExt[]) => boolean
+            }
         }
     }
 }

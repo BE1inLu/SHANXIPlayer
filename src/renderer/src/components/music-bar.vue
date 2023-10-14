@@ -104,7 +104,7 @@ import { useMusicStore } from '@renderer/store'
 import { musicBarService } from '@renderer/service/music-bar-service'
 import type { musicFile } from '@renderer/types/default'
 
-const { play, setVoice, playListAdd, suspend, resume } = musicBarService(window.api)
+const { play, setVoice, playListAdd, suspend, resume } = musicBarService(window)
 
 const store = useMusicStore()
 const { musicVoice, musicBarLength, musicStatus } = storeToRefs(store)

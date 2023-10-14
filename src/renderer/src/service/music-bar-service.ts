@@ -5,7 +5,7 @@ import { musicFile } from 'src/main/types'
  * 音乐操作
  * @returns
  */
-export const musicBarService = (API?: any) => {
+export const musicBarService = (window?: any) => {
     const store = useMusicStore()
     const { musicBarLength, musicOrderData, musicStatus } = storeToRefs(store)
     const context: AudioContext = new AudioContext()
@@ -15,12 +15,12 @@ export const musicBarService = (API?: any) => {
     let playStatu: boolean = false
 
     const playListAdd = async () => {
-        store.addPlayList(await API.loadPathFile())
+        store.addPlayList(await window.api.file.loadPathFile())
     }
 
     const getFile = (filePatch: string): ArrayBuffer => {
-        if (API == null) throw new Error('API undefind')
-        return API.getBufferData(filePatch)
+        if (window == null) throw new Error('API undefind')
+        return window.api.file.getBufferData(filePatch)
     }
 
     const loadFile = async (f: musicFile) => {

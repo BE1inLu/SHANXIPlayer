@@ -4,3 +4,4 @@ out
 *.log*
 *.flac
 test
+*.sqlite3
