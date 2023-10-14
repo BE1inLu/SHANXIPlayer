@@ -24,6 +24,9 @@ const api = {
         insertManyMusicData: (data: musicFileExt[]) => {
             ipcRenderer.invoke('insert-many-musicdata', data)
         },
+        deleteMusicDataItem: (data: musicFileExt) => {
+            ipcRenderer.invoke('delete-musicdata-item', data)
+        },
     },
 }
 

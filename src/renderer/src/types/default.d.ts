@@ -1,6 +1,6 @@
 import type {
     musicFile as musicType,
-    musimusicFileExt as musicExt,
+    musicFileExt as musicExt,
     configItem as _configItem,
 } from '@main/types/index'
 
@@ -25,6 +25,7 @@ export type musicFileExt = musicExt
 export type tabsList = {
     id: number
     name: string
+    listName?: string
     data: musicFileExt[]
 }
 

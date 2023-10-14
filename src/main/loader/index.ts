@@ -2,6 +2,7 @@ import { BrowserWindow, ipcMain } from 'electron'
 import { windowControl } from '../service/window-defalt-service'
 import { fileControl } from '../service/file-service'
 import {
+    deleteMusicDataItem,
     insertManyMusicData,
     insertMusicDataTable,
     procdb,
@@ -43,6 +44,11 @@ export function loader(window: BrowserWindow) {
 
     ipcMain.handle('read-musicdata-table', async () => {
         const res = await readMusicDataTable()
+        return res
+    })
+
+    ipcMain.handle('delete-musicdata-item', async (_, data: musicFileExt) => {
+        const res = await deleteMusicDataItem(data)
         return res
     })
 }

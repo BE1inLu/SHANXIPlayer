@@ -33,7 +33,8 @@ type mp3File = {
 }
 
 /** 音乐文件基本信息 */
-type musicInfo = (mp3File | wavFile | flacFile) & {
+type musicInfo = {
+    ext: 'flac' | 'wav' | 'mp3' | string
     /**音频长度 */
     length?: number
     /**音频内容 */
@@ -48,6 +49,7 @@ type musicInfo = (mp3File | wavFile | flacFile) & {
 export type musicFileExt = musicFile & {
     tag?: string[]
     listID?: number
+    listName?: string
     createTime?: Date | string
     lastOpenTime?: Date | string
     musicLength?: number

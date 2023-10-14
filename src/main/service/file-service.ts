@@ -30,10 +30,8 @@ export const fileControl = () => {
      * @returns
      */
     const loadPathFileInfo = async () => {
-        let files: any
-        let filePath: any
-        let filelist: musicFile[] = []
-        await dialog
+        const filelist: musicFile[] = []
+        const filePath = await dialog
             .showOpenDialog({
                 properties: ['openDirectory'],
                 buttonLabel: 'load',
@@ -41,10 +39,10 @@ export const fileControl = () => {
                 title: 'load file',
             })
             .then((res) => {
-                filePath = res.filePaths[0]
+                return res.filePaths[0]
             })
 
-        files = fs.readdirSync(filePath, {
+        const files = fs.readdirSync(filePath, {
             encoding: 'utf-8',
         })
 
@@ -53,14 +51,14 @@ export const fileControl = () => {
 
             const stat = fs.statSync(localFilePath)
 
-            let fileExt = file.split('.')[1]
+            const fileExt = file.split('.')[1]
 
             const isCheckext = (fileExt: string) => {
                 return fileExt == 'flac' || fileExt == 'wav' || fileExt == 'mp3'
             }
 
             if (isCheckext(fileExt)) {
-                let localfile: musicFile = {
+                const localfile: musicFile = {
                     fileid: stat.ino,
                     name: file.split('.')[0],
                     ext: fileExt,

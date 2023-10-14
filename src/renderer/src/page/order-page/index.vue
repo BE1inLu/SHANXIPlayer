@@ -6,9 +6,10 @@
         </div>
 
         <div>
+            <n-button @click="test5">readMusicDataTable</n-button>
             <n-button @click="test3">insertMusicDataItem</n-button>
             <n-button @click="test4">insertManyMusicData</n-button>
-            <n-button @click="test5">readMusicDataTable</n-button>
+            <n-button @click="test6">deleteMusicDataItem</n-button>
         </div>
 
         <div>data: {{ refdata }}</div>
@@ -22,12 +23,12 @@ import { musicFileExt } from '@renderer/types/default'
 const refdata = ref()
 
 const configtest1 = async () => {
-    let configdata = await window.api.db.readConfigTable()
+    const configdata = await window.api.db.readConfigTable()
     refdata.value = configdata
 }
 
 const configtest2 = async () => {
-    let result = await window.api.db.updateConfigItem('voice', '40')
+    const result = await window.api.db.updateConfigItem('voice', '40')
     refdata.value = result
 }
 
@@ -39,10 +40,9 @@ const test3 = async () => {
         ext: 'flac',
         listID: 1,
         listName: '我是listName1',
-        listid: 1,
         tag: ['rock', 'and', 'role'],
     }
-    let result = await window.api.db.insertMusicDataItem(data)
+    const result = await window.api.db.insertMusicDataItem(data)
     refdata.value = result
 }
 
@@ -55,7 +55,6 @@ const test4 = async () => {
             ext: 'flac',
             listID: 1,
             listName: '我是listName1',
-            listid: 1,
             tag: ['rock', 'and', 'role'],
         },
         {
@@ -65,17 +64,28 @@ const test4 = async () => {
             ext: 'flac',
             listID: 2,
             listName: '我是listName2',
-            listid: 2,
             tag: ['blue', 'and', 'black'],
         },
     ]
 
-    let result = await window.api.db.insertManyMusicData(dataList)
+    const result = await window.api.db.insertManyMusicData(dataList)
     refdata.value = result
 }
 
 const test5 = async () => {
-    let res = await window.api.db.readMusicDataTable()
+    const res = await window.api.db.readMusicDataTable()
+    refdata.value = res
+}
+
+const test6 = async () => {
+    const data: musicFileExt = {
+        fileid: 123,
+        name: '12344',
+        url: 'D://',
+        ext: 'flac',
+        UUID: 'f17f894b-91f5-4f02-8249-41b29e0dd199',
+    }
+    const res = await window.api.db.deleteMusicDataItem(data)
     refdata.value = res
 }
 </script>

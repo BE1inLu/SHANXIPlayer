@@ -39,11 +39,11 @@
                 <n-divider vertical />
 
                 <n-button
+                    id="minbtn"
                     secondary
                     circle
                     type="success"
                     size="tiny"
-                    id="minbtn"
                     @click="windowControl.minwindow"
                 >
                     <template #icon>
@@ -63,11 +63,11 @@
                 </n-button>
 
                 <n-button
+                    id="maxMinbtn"
                     secondary
                     circle
                     type="warning"
                     size="tiny"
-                    id="maxMinbtn"
                     @click="windowControl.maxwindow"
                 >
                     <template #icon>
@@ -109,8 +109,8 @@
                     circle
                     type="error"
                     size="tiny"
-                    @click="windowControl.closewindow"
                     style="margin-right: 5px"
+                    @click="windowControl.closewindow"
                 >
                     <template #icon>
                         <n-icon>

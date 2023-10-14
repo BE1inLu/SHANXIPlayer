@@ -2,7 +2,7 @@
 
 ## important
 
--   [ ] 本地数据库实现 -- lowdb
+-   [x] 本地数据库实现 -- sqlite
     -   [ ] 本地 config 信息读取和存储
 
 ## soso

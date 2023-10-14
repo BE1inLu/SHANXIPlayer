@@ -14,8 +14,8 @@
                 :collapsed-width="64"
                 :collapsed-icon-size="22"
                 :options="menuOptions"
-                @update:value="updateValue"
                 :watch-props="['defaultValue']"
+                @update:value="updateValue"
             />
             <n-menu
                 id="flag-menu"

@@ -5,15 +5,18 @@ import { useUtil } from '../util/util'
 import { randomUUID } from 'crypto'
 import { musicFileExt } from '@main/types'
 
+/**
+ * 初始化数据库
+ */
 export function procdb() {
     const { checkFilePath, createFile } = useUtil()
-    const path = join(app.getAppPath(), 'basedb.sqlite3')
+    const filepath = join(app.getAppPath(), 'basedb.sqlite3')
+    console.log(filepath)
+    const pathflag = checkFilePath(filepath)
 
-    const pathflag = checkFilePath(path)
+    if (!pathflag) createFile(filepath)
 
-    if (!pathflag) createFile(path)
-
-    const resPath = relative(__dirname, path)
+    const resPath = relative(__dirname, filepath)
 
     db.setdbPath(resPath)
 
@@ -27,6 +30,10 @@ export function procdb() {
     }
 }
 
+/**
+ * 创建 config 表
+ * @returns
+ */
 function createConfigTable() {
     const createval = [
         '`uuid` text NOT NULL',
@@ -37,7 +44,7 @@ function createConfigTable() {
     ]
     const val = createval.join(',')
     const sql = 'CREATE TABLE `' + 'configtable' + '` (' + val + ')'
-    return new Promise<any>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         db.executeScript(sql)
             .then((res) => {
                 resolve(res)
@@ -48,6 +55,10 @@ function createConfigTable() {
     })
 }
 
+/**
+ * 创建 musicdata 表
+ * @returns
+ */
 function createDataTable() {
     const createval = [
         '`uuid` text NOT NULL',
@@ -63,7 +74,7 @@ function createDataTable() {
     ]
     const val = createval.join(',')
     const sql = 'CREATE TABLE `' + 'musicdatatable' + '` (' + val + ')'
-    return new Promise<any>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         db.executeScript(sql)
             .then((res) => {
                 resolve(res)
@@ -74,6 +85,12 @@ function createDataTable() {
     })
 }
 
+/**
+ * config表新行插入
+ * @param configname
+ * @param status
+ * @returns
+ */
 export async function insertConfigItem(configname: string, status: string) {
     const uuid = randomUUID()
     const lastchangetime = new Date().toLocaleDateString()
@@ -84,7 +101,7 @@ export async function insertConfigItem(configname: string, status: string) {
         '` (`uuid`, `configname`, `status`, `lastchangetime`) ' +
         'VALUES (?,?,?,?)'
 
-    return new Promise<any>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         db.executeQuery(sql, '', insertValue)
             .then((req) => {
                 resolve(req)
@@ -95,9 +112,13 @@ export async function insertConfigItem(configname: string, status: string) {
     })
 }
 
+/**
+ * 查看config表数据
+ * @returns
+ */
 export async function readConfigTable() {
     const sql = 'SELECT * FROM `configtable` '
-    return new Promise<any>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         db.executeQuery(sql, 'all')
             .then((req) => {
                 resolve(req)
@@ -108,11 +129,17 @@ export async function readConfigTable() {
     })
 }
 
+/**
+ * 更新config item数据
+ * @param configname
+ * @param value
+ * @returns
+ */
 export async function updateConfigItem(configname: string, value: string) {
     const sql = 'UPDATE `configtable` SET `status` = ?, `lastchangetime` = ? WHERE `configname` = ?'
     const lastchangetime = new Date().toLocaleDateString()
     const val = [value, lastchangetime, configname]
-    return new Promise<any>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         db.executeQuery(sql, '', val)
             .then((req) => {
                 resolve(req)
@@ -123,9 +150,13 @@ export async function updateConfigItem(configname: string, value: string) {
     })
 }
 
+/**
+ * 查看musicdata表数据
+ * @returns
+ */
 export async function readMusicDataTable() {
     const sql = 'SELECT * FROM `musicdatatable` '
-    return new Promise<any>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         db.executeQuery(sql, 'all')
             .then((req) => {
                 resolve(req)
@@ -135,6 +166,12 @@ export async function readMusicDataTable() {
             })
     })
 }
+
+/**
+ * musicdata表单行插入
+ * @param musicitem
+ * @returns
+ */
 export async function insertMusicDataTable(musicitem: musicFileExt) {
     const uuid = randomUUID()
     const lastchangetime = new Date().toLocaleDateString()
@@ -144,13 +181,13 @@ export async function insertMusicDataTable(musicitem: musicFileExt) {
         '(`uuid`,`musicname`,`dataid`,`url`,`ext`,`tag`,' +
         '`listid`,`createtime`,`musiclength`,`lastopentime`)' +
         'VALUES(?,?,?,?,?,?,?,?,?,?)'
-    const tag: string = musicitem.tag ? musicitem.tag!.join(',') : ''
-    const listid: number = musicitem.listID ? musicitem.listID! : 0
-    const musiclength: number = musicitem.musicLength ? musicitem.musicLength! : 0
+    const tag: string = musicitem.tag ? musicitem.tag.join(',') : ''
+    const listid: number = musicitem.listID ? musicitem.listID : 0
+    const musiclength: number = musicitem.musicLength ? musicitem.musicLength : 0
     const value = [
         uuid,
         musicitem.name,
-        musicitem.fileid!,
+        musicitem.fileid,
         musicitem.url,
         musicitem.ext,
         tag,
@@ -159,7 +196,7 @@ export async function insertMusicDataTable(musicitem: musicFileExt) {
         musiclength,
         lastchangetime,
     ]
-    return new Promise<any>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         db.executeQuery(sql, '', value)
             .then((res) => {
                 resolve(res)
@@ -170,8 +207,13 @@ export async function insertMusicDataTable(musicitem: musicFileExt) {
     })
 }
 
+/**
+ * musicdata表多行插入
+ * @param data
+ * @returns
+ */
 export async function insertManyMusicData(data: musicFileExt[]) {
-    let valueList: any[] = getvalueList(data)
+    const valueList = getvalueList(data)
     const sql =
         'INSERT INTO `' +
         'musicdatatable` ' +
@@ -179,7 +221,7 @@ export async function insertManyMusicData(data: musicFileExt[]) {
         '`listid`,`createtime`,`musiclength`,`lastopentime`)' +
         'VALUES(?,?,?,?,?,?,?,?,?,?)'
 
-    return new Promise<any>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         db.executeMany(sql, valueList)
             .then((req) => {
                 resolve(req)
@@ -191,22 +233,40 @@ export async function insertManyMusicData(data: musicFileExt[]) {
 }
 
 function getvalueList(data: musicFileExt[]) {
-    let valueList: any[] = []
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const valueList: any[] = []
     data.forEach((i) => {
         const lastchangetime = new Date().toLocaleDateString()
         const value = [
             randomUUID(),
             i.name,
-            i.fileid!,
+            i.fileid,
             i.url,
             i.ext,
-            i.tag ? i.tag!.join(',') : '',
-            i.listID ? i.listID! : 0,
+            i.tag ? i.tag.join(',') : '',
+            i.listID ? i.listID : 0,
             lastchangetime,
-            i.musicLength ? i.musicLength! : 0,
+            i.musicLength ? i.musicLength : 0,
             lastchangetime,
         ]
         valueList.push(value)
     })
     return valueList
+}
+
+export async function deleteMusicDataItem(data: musicFileExt) {
+    const sql = 'DELETE FROM musicdatatable WHERE uuid = ?'
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const uuid = data.UUID!
+    const val = [uuid]
+
+    return new Promise((resolve, reject) => {
+        db.executeQuery(sql, '', val)
+            .then((res) => {
+                resolve(res)
+            })
+            .catch((err) => {
+                reject(err)
+            })
+    })
 }

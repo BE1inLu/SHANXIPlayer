@@ -6,7 +6,7 @@ import { computed } from 'vue'
 
 const store = useStore()
 
-let theme = computed(() => {
+const theme = computed(() => {
     return store.getTheme() ? darkTheme : null
 })
 </script>

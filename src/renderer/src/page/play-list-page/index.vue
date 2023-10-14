@@ -87,7 +87,7 @@ const handleAdd = () => {
 const handleClose = (name: string) => {
     console.log('close')
     console.log(name)
-    let num = parseInt(name.replace(/[^0~9]/gi, ''))
+    const num = parseInt(name.replace(/[^0~9]/gi, ''))
     tabList = tabList.filter((i) => i.name != name)
     panelsRef.value = panelsRef.value.filter((i) => i != num)
 }
@@ -257,9 +257,7 @@ const columns: DataTableColumns<musicFileExt> = [
         title: 'Id',
         key: 'id',
         fixed: 'left',
-        maxWidth: 50,
-        minWidth: 50,
-        resizable: true,
+        width: 50,
         render: (_data, index) => {
             return h('span', [index + 1])
         },
@@ -267,8 +265,7 @@ const columns: DataTableColumns<musicFileExt> = [
     {
         title: 'Name',
         key: 'name',
-        resizable: true,
-        minWidth: 100,
+        width: 200,
         ellipsis: {
             tooltip: true,
         },
@@ -276,14 +273,12 @@ const columns: DataTableColumns<musicFileExt> = [
     {
         title: 'Ext',
         key: 'ext',
-        resizable: true,
-        minWidth: 100,
+        width: 100,
     },
     {
         title: 'Length',
         key: 'length',
-        resizable: true,
-        minWidth: 100,
+        width: 100,
     },
     {
         title: '',
