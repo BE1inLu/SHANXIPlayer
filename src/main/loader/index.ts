@@ -15,7 +15,7 @@ import { orderService } from '../service/order-service'
 export function loader(window: BrowserWindow) {
     windowControl().execWindowControl(window)
     const { loadFlacFile, loadPathFileInfo, getFileBufferData } = fileControl()
-    const { testfunc } = orderService()
+    const { loadPathFileAndAddMusicData } = orderService()
     ipcMain.handle('open-flac-file', loadFlacFile)
     ipcMain.handle('load-path-file', loadPathFileInfo)
     ipcMain.handle('get-file-buffer-data', (_event, filePatch: string) => {
@@ -55,7 +55,7 @@ export function loader(window: BrowserWindow) {
     })
 
     ipcMain.handle('test-a', async () => {
-        const res = await testfunc()
+        const res = await loadPathFileAndAddMusicData()
         return res
     })
 }

@@ -66,6 +66,8 @@ export const fileControl = () => {
         return fileExt == 'flac' || fileExt == 'wav' || fileExt == 'mp3'
     }
 
+    
+
     const getFileBufferData = (filePath: string) => {
         return fs.readFileSync(filePath).buffer
     }
