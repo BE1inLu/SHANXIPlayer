@@ -17,6 +17,7 @@ declare global {
             }
             db: {
                 readConfigTable: () => configItem[]
+                updateConfigItem: (configname: string, value: string) => boolean
             }
         }
     }

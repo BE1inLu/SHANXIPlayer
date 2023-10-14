@@ -107,8 +107,9 @@ export async function readConfigTable() {
 }
 
 export async function updateConfigItem(configname: string, value: string) {
-    const sql = 'UPDATE `configtable` SET ' + configname + '= ? WHERE `configname`= ' + configname
-    const val = [value]
+    const sql = 'UPDATE `configtable` SET `status` = ?, `lastchangetime` = ? WHERE `configname` = ?'
+    const lastchangetime = new Date().toLocaleDateString()
+    const val = [value, lastchangetime, configname]
     return new Promise<any>((resolve, reject) => {
         db.executeQuery(sql, '', val)
             .then((req) => {
