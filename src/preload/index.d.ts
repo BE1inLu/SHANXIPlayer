@@ -10,9 +10,11 @@ declare global {
             minwindow: () => void
             maxwindow: () => void
             closewindow: () => void
-            loadFlacFile: () => void
-            loadPathFile: () => musicFile[]
-            getBufferData: (filePatch: string) => ArrayBuffer
+            file: {
+                loadFlacFile: () => void
+                loadPathFile: () => musicFile[]
+                getBufferData: (filePatch: string) => ArrayBuffer
+            }
         }
     }
 }

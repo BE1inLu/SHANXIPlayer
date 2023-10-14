@@ -10,4 +10,7 @@ export function loader(window: BrowserWindow) {
     ipcMain.handle('get-file-buffer-data', (_event, filePatch: string) => {
         return getFileBufferData(filePatch)
     })
+
+    
+
 }

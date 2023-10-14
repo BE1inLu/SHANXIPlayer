@@ -8,9 +8,11 @@ const api = {
     minwindow: () => ipcRenderer.send('min-window'),
     maxwindow: () => ipcRenderer.send('max-window'),
     closewindow: () => ipcRenderer.send('close-window'),
-    loadFlacFile:()=>ipcRenderer.invoke('open-flac-file'), 
-    loadPathFile:()=>ipcRenderer.invoke('load-path-file'), 
-    getBufferData:(filePath:string)=>ipcRenderer.invoke('get-file-buffer-data',filePath)
+    file: {
+        loadFlacFile: () => ipcRenderer.invoke('open-flac-file'),
+        loadPathFile: () => ipcRenderer.invoke('load-path-file'),
+        getBufferData: (filePath: string) => ipcRenderer.invoke('get-file-buffer-data', filePath),
+    },
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
