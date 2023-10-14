@@ -1,6 +1,7 @@
 import type {
     musicFile as musicType,
     musimusicFileExt as musicExt,
+    configItem as _configItem,
 } from '@main/types/index'
 
 /** playList 播放队列对象 */
@@ -26,3 +27,5 @@ export type tabsList = {
     name: string
     data: musicFileExt[]
 }
+
+export type configItem = _configItem

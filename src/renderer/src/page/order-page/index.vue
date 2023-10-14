@@ -10,14 +10,13 @@
 <script lang="ts" setup>
 
 const getFlacFile = async () => {
+    let configdata = await window.api.db.readConfigTable()
+    console.log(configdata)
 }
 
 const start = () => {
 
 }
-
-// const stop = () => {
-// }
 
 </script>
 <style lang="less" scoped></style>

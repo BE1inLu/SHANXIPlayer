@@ -13,6 +13,9 @@ const api = {
         loadPathFile: () => ipcRenderer.invoke('load-path-file'),
         getBufferData: (filePath: string) => ipcRenderer.invoke('get-file-buffer-data', filePath),
     },
+    db:{
+        readConfigTable:()=>ipcRenderer.invoke('read-config-table'),
+    }
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
