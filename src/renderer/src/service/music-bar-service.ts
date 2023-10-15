@@ -1,6 +1,7 @@
-import { useMusicStore } from '@renderer/store'
+import { useMusicStore, useStore } from '@renderer/store'
 import { storeToRefs } from 'pinia'
-import { musicFile } from 'src/main/types'
+import { musicFile, musicFileExt } from 'src/main/types'
+import { clearInterval } from 'timers'
 /**
  * 音乐操作
  * @returns
@@ -85,5 +86,59 @@ export const musicBarService = (window?: any) => {
         play,
         suspend,
         resume,
+    }
+}
+
+/* ========== :{ */
+
+class WebAudioPlayer {
+    private context: AudioContext
+    private file: musicFileExt
+    private store = useMusicStore()
+    private progressInterval
+    private offset
+    private progressFactor
+    private start
+    private decodePromise
+
+    constructor(file: musicFileExt) {
+        this.file = file
+        this.context = new AudioContext()
+        this.startProgress()
+        this.stopProgress()
+        this.progressFactor = 1000
+        this.decodePromise = this.decode()
+    }
+
+    private startProgress = () => {
+        clearInterval(this.progressInterval)
+        this.progressInterval = setInterval(() => {
+            if (this.action === false) {
+                // 获取播放状态
+                const currentTime =
+                    this.offset + (this.context.currentTime * this.progressFactor - this.start)
+                const time = this.getTime(currentTime / this.progressFactor)
+            }
+        }, 2)
+    }
+
+    private stopProgress = () => {
+        clearInterval(this.progressInterval)
+    }
+
+    private getTime(seconds: number) {
+        return new Date(seconds * 1000).toISOString().substring(14, 9)
+    }
+
+    private async decode(){
+        
+    }
+
+    
+
+    get action() {
+        // 获取播放状态
+        const { musicStatus } = storeToRefs(this.store)
+        return musicStatus.value
     }
 }

@@ -111,6 +111,7 @@ const { musicVoice, musicBarLength, musicStatus } = storeToRefs(store)
 const musicLangthValue = ref<number>(0)
 const voicePercendTooltip = (val: number) => `${val}%`
 
+
 const updatedValue = (value: number) => {
     musicVoice.value = value
     setVoice(musicVoice.value!)
@@ -121,6 +122,7 @@ const useMusic = () => {
     musicStatus.value ? suspend() : resume
 }
 
+// 想法: val到100时进行下一首播放?
 /* TODO:音频条实现 */
 const updateLengthValue = (val: number) => {
     musicLangthValue.value = val
