@@ -40,7 +40,7 @@
                     v-model:value="musicLangthValue"
                     :max="musicBarLength"
                     :on-update:value="updateLengthValue"
-                    disabled
+                    :disabled="musicBarStatus"
                 />
             </n-space>
         </n-gi>
@@ -109,9 +109,9 @@ import { useMusicStore } from '@renderer/store'
 import { useMusicService } from '@renderer/service/music-bar-service'
 import type { playListItem } from '@renderer/types/default'
 
-const { playListAdd, voice, playPause } = useMusicService()
+const { playListAdd, voice, seek, playPause } = useMusicService()
 const store = useMusicStore()
-const { musicVoice, musicBarLength, musicStatus } = storeToRefs(store)
+const { musicVoice, musicBarLength, musicStatus, musicBarStatus } = storeToRefs(store)
 const musicLangthValue = ref<number>(0)
 const voicePercendTooltip = (val: number) => `${val}%`
 
@@ -133,6 +133,7 @@ const useMusic = () => {}
 /* TODO:音频条实现 */
 const updateLengthValue = (val: number) => {
     musicLangthValue.value = val
+    seek(val)
 }
 
 /**
@@ -171,4 +172,3 @@ const showNote = () => {
     width: 100px;
 }
 </style>
-@renderer/service/music-bar-service

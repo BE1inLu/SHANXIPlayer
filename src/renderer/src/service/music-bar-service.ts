@@ -18,20 +18,10 @@ export const useMusicService = () => {
         let player: WebAudioPlayer | undefined
         musicPlayList.value.forEach((i) => {
             if (listItem.title == i.title) {
-                if (player != null) {
-                    player = i.players
-                }
+                player = i.players
             }
         })
-        if (!player) {
-            player = new WebAudioPlayer(listItem)
-            musicPlayList.value.forEach((i) => {
-                if (listItem.title == i.title) {
-                    i.players = player
-                }
-            })
-            player.play()
-        }
+        if (player == undefined) return
         player.seek(val)
     }
 
@@ -42,8 +32,7 @@ export const useMusicService = () => {
     const playPause = (localfile: playListItem) => {
         /**
          * 这里2种情况, 会有空文件和非空文件传入
-         *
-         * fix: 设置成外部处理
+         * todo-fix: 设置成外部处理
          */
         listItem = localfile
         let player: WebAudioPlayer | undefined
@@ -85,6 +74,7 @@ export const useMusicService = () => {
     return {
         playListAdd,
         voice,
+        seek,
         playPause,
     }
 }
@@ -95,8 +85,7 @@ class WebAudioPlayer {
     private store = useMusicStore()
     private progressInterval
     // 当前音频长度
-    private offset
-    private start
+    // private offset
     private decodePromise
     private audioBuffer!: AudioBuffer | null
     private source: AudioBufferSourceNode | undefined
@@ -158,35 +147,45 @@ class WebAudioPlayer {
 
     private setProgress = () => {
         return setInterval(() => {
-            if (this.action === false) {
+            if (this.action == false) {
                 /**
                  * 需要修改
                  * 理解: 这里应该是获取当前播放时间和总播放时间
                  * currentTime是当前播放时间 time应该是总播放时间
-                 * this.progressFactor 是处理浮点数用
                  */
-                const currentTime = this.context.getOutputTimestamp().contextTime
-                console.log(currentTime)
+                const { musicBarCurrentTime } = storeToRefs(this.store)
+                const currentTime = parseInt(
+                    this.context.getOutputTimestamp().contextTime!.toFixed(0),
+                )
+                musicBarCurrentTime.value = currentTime
             }
         }, 100)
     }
 
     private async decode() {
-        // todo: 播放条拖拽锁定
+        // 播放条拖拽锁定
+        const { musicBarStatus } = storeToRefs(this.store)
+        musicBarStatus.value = true
         this.audioBuffer = await this.context
             .decodeAudioData(await this.fileBuffer)
             .then((buffer) => {
                 return buffer
             })
             .finally(() => {
-                // todo: 播放条拖拽解锁
+                // 播放条拖拽解锁
+                musicBarStatus.value = false
             })
     }
 
     public seek(val: number) {
-        this.stop()
+        // this.stop()
+        const { musicBarCurrentTime, musicBarLength } = storeToRefs(this.store)
         console.log('seek val: ' + val)
-        this.play(/* 获取播放条拖拽的当前长度 */)
+        console.log(this.context.getOutputTimestamp())
+        console.log(musicBarCurrentTime.value)
+        console.log(musicBarLength.value)
+
+        // this.play(val)
     }
 
     /**
@@ -207,19 +206,24 @@ class WebAudioPlayer {
             this.source.onended = () => {
                 // 音频 暂停/结束 事件
                 // ...
+                console.log('音频 暂停/结束 事件')
                 this.stop()
             }
 
             /**
              * 设置bar的默认信息
              * start, offset, length
+             * 设置最大长度
              */
-            // 设置最大长度
             this.musicBarLength = parseInt(this.source.buffer!.duration.toFixed(0))
-            this.offset = offset
+            // this.offset = offset
+
             /** todo: 需要设置 lengthvalue */
 
-            // ...添加对bar的监听
+            /**
+             * ...添加对bar的监听
+             * todo: 增加对 bar 的监听, 需要获取值来判断
+             */
             this.startProgress()
 
             // ...设置播放状态
