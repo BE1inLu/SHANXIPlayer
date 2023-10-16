@@ -1,4 +1,4 @@
-import { useMusicStore, useStore } from '@renderer/store'
+import { useMusicStore } from '@renderer/store'
 import { storeToRefs } from 'pinia'
 import { musicFile, musicFileExt } from 'src/main/types'
 import { clearInterval } from 'timers'
@@ -80,6 +80,15 @@ export const musicBarService = (window?: any) => {
         context.resume()
     }
 
+    // seek 是拖动条设置 param: e 是一个当前的拖动条时间
+    const seek=(e)=>{
+        // 判断当前队列是否存在当前文件
+        // ...
+
+
+    }
+
+
     return {
         playListAdd,
         setVoice,
@@ -90,7 +99,6 @@ export const musicBarService = (window?: any) => {
 }
 
 /* ========== :{ */
-
 class WebAudioPlayer {
     private context: AudioContext
     private file: musicFileExt
@@ -100,7 +108,7 @@ class WebAudioPlayer {
     private progressFactor
     private start
     private decodePromise
-    private audioBuffer
+    private audioBuffer!: AudioBuffer | null 
     private source: AudioBufferSourceNode | undefined
 
     constructor(file: musicFileExt) {
@@ -153,6 +161,7 @@ class WebAudioPlayer {
         this.decodePromise.then(() => {
             this.context.resume()
             this.source = this.context.createBufferSource()
+            this.source.buffer = this.audioBuffer
             this.source.connect(this.context.destination)
             this.source.start(0, offset / this.progressFactor) // this.progressFactor 做什么的?
             this.source.onended = () => {
@@ -181,12 +190,10 @@ class WebAudioPlayer {
 
         // 清除对 bar 的监听
         this.stopProgress()
-
-        
     }
 
     /** 获取文件音频buffer */
-    get fileBuffer() {
+    get  fileBuffer() {
         return window.api.file.getBufferData(this.file.url)
     }
 
