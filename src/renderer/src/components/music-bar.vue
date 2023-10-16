@@ -106,11 +106,10 @@ import {
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMusicStore } from '@renderer/store'
-import { musicBarService } from '@renderer/service/music-bar-service'
+import { useMusicService } from '@renderer/service/new-music-service'
 import type { playListItem } from '@renderer/types/default'
 
-const { play, setVoice, playListAdd } = musicBarService(window)
-
+const { playListAdd, voice, playPause } = useMusicService()
 const store = useMusicStore()
 const { musicVoice, musicBarLength, musicStatus } = storeToRefs(store)
 const musicLangthValue = ref<number>(0)
@@ -118,18 +117,18 @@ const voicePercendTooltip = (val: number) => `${val}%`
 
 /**
  * 音量设置
- * @param value 
+ * @param value
  */
 const updatedValue = (value: number) => {
     musicVoice.value = value
-    setVoice(musicVoice.value!)
+    voice()
 }
 
 /**
  * 播放/暂停方法
  */
 const useMusic = () => {
-    musicStatus.value = !musicStatus.value
+    
 }
 
 // 想法: val到100时进行下一首播放?
@@ -139,10 +138,10 @@ const updateLengthValue = (val: number) => {
 }
 
 /**
- * 这里回传播放的 file 
+ * 这里回传播放的 file
  */
 const playListItemData = (data: playListItem) => {
-    play(data)
+    playPause(data)
 }
 
 const showNote = () => {

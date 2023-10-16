@@ -1,7 +1,6 @@
 import { useMusicStore } from '@renderer/store'
 import { playListItem } from '@renderer/types/default'
 import { storeToRefs } from 'pinia'
-import type { musicFile } from 'src/main/types'
 /**
  * 音乐操作
  * @returns

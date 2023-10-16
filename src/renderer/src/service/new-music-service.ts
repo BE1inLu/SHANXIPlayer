@@ -1,4 +1,3 @@
-import { musicFile } from '@main/types'
 import { useMusicStore } from '@renderer/store'
 import { playListItem } from '@renderer/types/default'
 import { storeToRefs } from 'pinia'
@@ -43,22 +42,20 @@ export const useMusicService = () => {
     const playPause = (localfile: playListItem) => {
         /**
          * 这里2种情况, 会有空文件和非空文件传入
-         * 非空情况下需要读取list来播放==>随机判断
+         * 
          * fix: 设置成外部处理
          */
         listItem = localfile
         let player: WebAudioPlayer | undefined
         musicPlayList.value.forEach((i) => {
-            if (localfile.title == i.title) {
-                if (player != null) {
-                    player = i.players
-                }
+            if (listItem.title == i.title) {
+                player = i.players
             }
         })
         if (!player) {
-            player = new WebAudioPlayer(localfile)
+            player = new WebAudioPlayer(listItem)
             musicPlayList.value.forEach((i) => {
-                if (localfile.title == i.title) {
+                if (listItem.title == i.title) {
                     i.players = player
                 }
             })
@@ -78,12 +75,9 @@ export const useMusicService = () => {
         let player: WebAudioPlayer | undefined
         musicPlayList.value.forEach((i) => {
             if (listItem.title == i.title) {
-                if (player != null) {
-                    player = i.players
-                }
+                player = i.players
             }
         })
-
         if (player == undefined) return
         player.voice = musicVoice.value
     }
@@ -102,7 +96,6 @@ class WebAudioPlayer {
     private progressInterval
     // 当前音频长度
     private offset
-    private progressFactor
     private start
     private decodePromise
     private audioBuffer!: AudioBuffer | null
@@ -136,7 +129,7 @@ class WebAudioPlayer {
     }
 
     set voice(val: number) {
-        this.gain!.gain.value = val
+        this.gain!.gain.value = val * 0.01
     }
 
     set musicBarLength(val: number) {
@@ -181,7 +174,7 @@ class WebAudioPlayer {
     private async decode() {
         // todo: 播放条拖拽锁定
         this.audioBuffer = await this.context
-            .decodeAudioData(this.fileBuffer)
+            .decodeAudioData(await this.fileBuffer)
             .then((buffer) => {
                 return buffer
             })
@@ -219,7 +212,7 @@ class WebAudioPlayer {
 
             /**
              * 设置bar的默认信息
-             * start, offset, length, offset
+             * start, offset, length
              */
             // 设置最大长度
             this.musicBarLength = parseInt(this.source.buffer!.duration.toFixed(0))
@@ -244,5 +237,6 @@ class WebAudioPlayer {
         // ...清除对 bar 的监听
         this.stopProgress()
         // ...更新播放状态
+        this.action = true
     }
 }
