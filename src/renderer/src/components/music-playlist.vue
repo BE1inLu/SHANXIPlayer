@@ -63,12 +63,12 @@ import { NButton, NIcon } from 'naive-ui'
 import { Delete20Filled, Add16Filled } from '@vicons/fluent'
 import { useMusicStore } from '@renderer/store'
 import { storeToRefs } from 'pinia'
-import type { musicFile } from '@renderer/types/default.d.ts'
+import type { playListItem } from '@renderer/types/default.d.ts'
 
 const store = useMusicStore()
 const { switchMusicPlayList, musicPlayList } = storeToRefs(store)
 const emit = defineEmits(['emit-data', 'emit-addlist'])
-const rowProps = (row: musicFile) => {
+const rowProps = (row: playListItem) => {
     return {
         onDblclick: () => {
             emit('emit-data', row)
@@ -76,7 +76,7 @@ const rowProps = (row: musicFile) => {
     }
 }
 
-const column: DataTableColumns<musicFile> = [
+const column: DataTableColumns<playListItem> = [
     {
         title: 'Id',
         key: 'id',
@@ -86,13 +86,14 @@ const column: DataTableColumns<musicFile> = [
         },
     },
     {
-        title: 'Name',
-        key: 'name',
+        title: 'Title',
+        key: 'title',
         width: 90,
         ellipsis: {
             tooltip: true,
         },
     },
+    // todo: 播放状态
     {
         title: '',
         key: 'action',

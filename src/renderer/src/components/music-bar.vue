@@ -1,5 +1,6 @@
 <template>
     <n-grid :cols="12">
+        <!-- 上一首:未实现 -->
         <n-gi span="1" class="local-group">
             <n-button strong secondary circle size="small" type="info">
                 <template #icon>
@@ -9,6 +10,7 @@
                 </template>
             </n-button>
         </n-gi>
+        <!-- 播放/暂停按键 -->
         <n-gi span="1" class="local-group">
             <n-button strong secondary circle size="small" type="info" @click="useMusic">
                 <template #icon>
@@ -21,6 +23,7 @@
                 </template>
             </n-button>
         </n-gi>
+        <!-- 下一首:未实现 -->
         <n-gi span="1" class="local-group">
             <n-button strong secondary circle size="small" type="info">
                 <template #icon>
@@ -30,13 +33,14 @@
                 </template>
             </n-button>
         </n-gi>
+        <!-- 音频条: 未实现 -->
         <n-gi span="6" class="long-group">
             <n-space vertical>
                 <n-slider
                     v-model:value="musicLangthValue"
                     :max="musicBarLength"
                     :on-update:value="updateLengthValue"
-                    disabled
+                    :disabled="musicBarStatus"
                 />
             </n-space>
         </n-gi>
@@ -49,6 +53,7 @@
                 </template>
             </n-button>
         </n-gi>
+        <!-- 音量按键 -->
         <n-gi span="1" class="local-group">
             <n-popconfirm :positive-text="null" :negative-text="null">
                 <template #icon>
@@ -73,6 +78,7 @@
                 />
             </n-popconfirm>
         </n-gi>
+        <!-- 播放列表 -->
         <n-gi span="1" class="local-group">
             <n-button strong secondary circle size="small" type="info" @click="showNote">
                 <template #icon>
@@ -83,7 +89,6 @@
             </n-button>
         </n-gi>
     </n-grid>
-
     <musicPlayList @emit-data="playListItemData" @emit-addlist="playListAdd" />
 </template>
 
@@ -101,33 +106,41 @@ import {
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMusicStore } from '@renderer/store'
-import { musicBarService } from '@renderer/service/music-bar-service'
-import type { musicFile } from '@renderer/types/default'
+import { useMusicService } from '@renderer/service/music-bar-service'
+import type { playListItem } from '@renderer/types/default'
 
-const { play, setVoice, playListAdd, suspend, resume } = musicBarService(window)
-
+const { playListAdd, voice, seek, playPause } = useMusicService()
 const store = useMusicStore()
-const { musicVoice, musicBarLength, musicStatus } = storeToRefs(store)
+const { musicVoice, musicBarLength, musicStatus, musicBarStatus } = storeToRefs(store)
 const musicLangthValue = ref<number>(0)
 const voicePercendTooltip = (val: number) => `${val}%`
 
+/**
+ * 音量设置
+ * @param value
+ */
 const updatedValue = (value: number) => {
     musicVoice.value = value
-    setVoice(musicVoice.value!)
+    voice()
 }
 
-const useMusic = () => {
-    musicStatus.value = !musicStatus.value
-    musicStatus.value ? suspend() : resume
-}
+/**
+ * 播放/暂停方法
+ */
+const useMusic = () => {}
 
+// 想法: val到100时进行下一首播放?
 /* TODO:音频条实现 */
 const updateLengthValue = (val: number) => {
     musicLangthValue.value = val
+    seek(val)
 }
 
-const playListItemData = (data: musicFile) => {
-    play(data)
+/**
+ * 这里回传播放的 file
+ */
+const playListItemData = (data: playListItem) => {
+    playPause(data)
 }
 
 const showNote = () => {
@@ -159,4 +172,3 @@ const showNote = () => {
     width: 100px;
 }
 </style>
-@renderer/service/music-bar-service

@@ -5,13 +5,6 @@
 		}
 	],
 	"settings": {
-		"commit-message-editor.staticTemplate": [
-			"feat: 新增功能",
-			"",
-			"新增功能",
-			"",
-			""
-		],
 		"commit-message-editor.dynamicTemplate": [
 			"{type}{scope}: {description}",
 			"",

@@ -1,29 +1,19 @@
-import { musicFile } from '@renderer/types/default'
+import { musicFileExt } from '@main/types'
+import type { playListItem } from '@renderer/types/default'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useMusicStore = defineStore('musicStore', () => {
-    const musicPlayList = ref<musicFile[]>([])
+    const musicPlayList = ref<playListItem[]>([])
     const switchMusicPlayList = ref<boolean>(false)
     const musicBarLength = ref<number>()
     const musicVoice = ref<number>(10)
     const musicOrderData = ref()
+    const musicBarCurrentTime=ref<number>()
     const musicStatus = ref<boolean>(true)
+    const musicBarStatus=ref<boolean>(false)
 
-    const setMusicPlayList = (musicList: musicFile[]) => {
-        let localList: musicFile[] = []
-
-        if (!musicPlayList.value) {
-            localList = musicPlayList.value
-            localList.concat(musicList)
-            musicPlayList.value = localList
-        } else {
-            localList = musicList
-        }
-        musicPlayList.value = localList
-    }
-
-    const clearMusicPlayListItem = (item: musicFile) => {
+    const clearMusicPlayListItem = (item: playListItem) => {
         musicPlayList.value = musicPlayList.value.filter((i) => {
             return i !== item
         })
@@ -33,9 +23,18 @@ export const useMusicStore = defineStore('musicStore', () => {
         musicPlayList.value = []
     }
 
-    const addPlayList = (list: musicFile[]) => {
+    const addPlayList = (list: musicFileExt[]) => {
+        let f = 0
         list.forEach((i) => {
-            musicPlayList.value.push(i)
+            const localItem: playListItem = {
+                no: ++f,
+                title: i.name,
+                url: i.url,
+                ID: i.fileid.toString(),
+                statu: false,
+                players: null,
+            }
+            musicPlayList.value.push(localItem)
         })
     }
 
@@ -54,7 +53,8 @@ export const useMusicStore = defineStore('musicStore', () => {
         musicVoice,
         musicOrderData,
         musicStatus,
-        setMusicPlayList,
+        musicBarStatus,
+        musicBarCurrentTime,
         clearMusicPlayListItem,
         clearMusicPlayList,
         addPlayList,
