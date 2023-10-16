@@ -1,40 +1,68 @@
 import { musicFile } from '@main/types'
 import { useMusicStore } from '@renderer/store'
+import { playListItem } from '@renderer/types/default'
 import { storeToRefs } from 'pinia'
 
 export const useMusicService = () => {
     const musicstore = useMusicStore()
-    const { musicPlayList } = storeToRefs(musicstore)
-    let file: musicFile
+    const { musicPlayList, musicVoice } = storeToRefs(musicstore)
+    let listItem: playListItem
 
     const playListAdd = async () => {
         musicstore.addPlayList(await window.api.file.loadPathFile())
     }
     /**
      * 获取当前音频长度
-     * @param val
+     * @param val -- 传入进来的参数
      */
     const seek = (val: number) => {
-        let player
-        if (!file) {
-            player = new WebAudioPlayer(file)
+        let player: WebAudioPlayer | undefined
+        musicPlayList.value.forEach((i) => {
+            if (listItem.title == i.title) {
+                if (player != null) {
+                    player = i.players
+                }
+            }
+        })
+        if (!player) {
+            player = new WebAudioPlayer(listItem)
+            musicPlayList.value.forEach((i) => {
+                if (listItem.title == i.title) {
+                    i.players = player
+                }
+            })
             player.play()
         }
-        player.seek()
+        player.seek(val)
     }
 
     /**
      * 设置当前音频播放状态 开始/暂停
      * @param localfile
      */
-    const playPause = (localfile: musicFile) => {
+    const playPause = (localfile: playListItem) => {
         /**
          * 这里2种情况, 会有空文件和非空文件传入
          * 非空情况下需要读取list来播放==>随机判断
          * fix: 设置成外部处理
          */
-        file = localfile
-        const player = new WebAudioPlayer(localfile)
+        listItem = localfile
+        let player: WebAudioPlayer | undefined
+        musicPlayList.value.forEach((i) => {
+            if (localfile.title == i.title) {
+                if (player != null) {
+                    player = i.players
+                }
+            }
+        })
+        if (!player) {
+            player = new WebAudioPlayer(localfile)
+            musicPlayList.value.forEach((i) => {
+                if (localfile.title == i.title) {
+                    i.players = player
+                }
+            })
+        }
         if (player.action === true) {
             player.play()
         } else {
@@ -46,16 +74,30 @@ export const useMusicService = () => {
      * 设置音量大小
      * @param val
      */
-    const voice = () => {}
+    const voice = () => {
+        let player: WebAudioPlayer | undefined
+        musicPlayList.value.forEach((i) => {
+            if (listItem.title == i.title) {
+                if (player != null) {
+                    player = i.players
+                }
+            }
+        })
+
+        if (player == undefined) return
+        player.voice = musicVoice.value
+    }
 
     return {
         playListAdd,
+        voice,
+        playPause,
     }
 }
 
 class WebAudioPlayer {
     private context: AudioContext
-    private file: musicFile
+    private file: playListItem
     private store = useMusicStore()
     private progressInterval
     // 当前音频长度
@@ -67,7 +109,7 @@ class WebAudioPlayer {
     private source: AudioBufferSourceNode | undefined
     private gain: GainNode | undefined
 
-    constructor(file: musicFile) {
+    constructor(file: playListItem) {
         this.file = file
         this.context = new AudioContext()
         this.startProgress()
@@ -83,9 +125,18 @@ class WebAudioPlayer {
         return musicStatus.value
     }
 
+    set action(flag: boolean) {
+        const { musicStatus } = storeToRefs(this.store)
+        musicStatus.value = flag
+    }
+
     get voice() {
         const { musicVoice } = storeToRefs(this.store)
         return musicVoice.value
+    }
+
+    set voice(val: number) {
+        this.gain!.gain.value = val
     }
 
     set musicBarLength(val: number) {
@@ -103,13 +154,17 @@ class WebAudioPlayer {
         return window.api.file.getBufferData(this.file.url)
     }
 
-    private getTime = (seconds: number) => {
-        return new Date(seconds * 1000).toISOString().substring(14, 9)
-    }
-
     private startProgress = () => {
         clearInterval(this.progressInterval)
-        this.progressInterval = setInterval(() => {
+        this.progressInterval = this.setProgress
+    }
+
+    private stopProgress = () => {
+        clearInterval(this.progressInterval)
+    }
+
+    private setProgress = () => {
+        return setInterval(() => {
             if (this.action === false) {
                 /**
                  * 需要修改
@@ -121,10 +176,6 @@ class WebAudioPlayer {
                 console.log(currentTime)
             }
         }, 100)
-    }
-
-    private stopProgress = () => {
-        clearInterval(this.progressInterval)
     }
 
     private async decode() {
@@ -139,8 +190,9 @@ class WebAudioPlayer {
             })
     }
 
-    public seek() {
+    public seek(val: number) {
         this.stop()
+        console.log('seek val: ' + val)
         this.play(/* 获取播放条拖拽的当前长度 */)
     }
 
@@ -158,7 +210,7 @@ class WebAudioPlayer {
             this.gain.gain.value = this.voice * 0.01
             this.source.connect(this.gain)
             this.gain.connect(this.context.destination)
-            this.source.start(0, offset) // this.progressFactor 做什么的?
+            this.source.start(0, offset)
             this.source.onended = () => {
                 // 音频 暂停/结束 事件
                 // ...
@@ -178,6 +230,7 @@ class WebAudioPlayer {
             this.startProgress()
 
             // ...设置播放状态
+            this.action = false
         })
     }
 

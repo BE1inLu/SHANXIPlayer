@@ -107,7 +107,7 @@ import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMusicStore } from '@renderer/store'
 import { musicBarService } from '@renderer/service/music-bar-service'
-import type { musicFile } from '@renderer/types/default'
+import type { playListItem } from '@renderer/types/default'
 
 const { play, setVoice, playListAdd } = musicBarService(window)
 
@@ -141,7 +141,7 @@ const updateLengthValue = (val: number) => {
 /**
  * 这里回传播放的 file 
  */
-const playListItemData = (data: musicFile) => {
+const playListItemData = (data: playListItem) => {
     play(data)
 }
 

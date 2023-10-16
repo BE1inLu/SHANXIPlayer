@@ -1,7 +1,7 @@
 import { useMusicStore } from '@renderer/store'
+import { playListItem } from '@renderer/types/default'
 import { storeToRefs } from 'pinia'
-import { musicFile, musicFileExt } from 'src/main/types'
-import { clearInterval } from 'timers'
+import type { musicFile } from 'src/main/types'
 /**
  * 音乐操作
  * @returns
@@ -25,7 +25,7 @@ export const musicBarService = (window?: any) => {
         return window.api.file.getBufferData(filePatch)
     }
 
-    const loadFile = async (f: musicFile) => {
+    const loadFile = async (f: playListItem) => {
         musicOrderData.value = f.url
         if (playStatu) clearSource()
         source = context.createBufferSource()
@@ -45,13 +45,13 @@ export const musicBarService = (window?: any) => {
     }
 
     /** 通过 file 来播放 */
-    const playByFile = async (f: musicFile) => {
+    const playByFile = async (f: playListItem) => {
         await loadFile(f)
         playControl()
     }
 
     /** 播放操作 */
-    const play = (f?: musicFile) => {
+    const play = (f?: playListItem) => {
         f ? playByFile(f) : playByList()
     }
 
@@ -81,13 +81,10 @@ export const musicBarService = (window?: any) => {
     }
 
     // seek 是拖动条设置 param: e 是一个当前的拖动条时间
-    const seek=(e)=>{
+    const seek = (e) => {
         // 判断当前队列是否存在当前文件
         // ...
-
-
     }
-
 
     return {
         playListAdd,
@@ -95,111 +92,5 @@ export const musicBarService = (window?: any) => {
         play,
         suspend,
         resume,
-    }
-}
-
-/* ========== :{ */
-class WebAudioPlayer {
-    private context: AudioContext
-    private file: musicFileExt
-    private store = useMusicStore()
-    private progressInterval
-    private offset
-    private progressFactor
-    private start
-    private decodePromise
-    private audioBuffer!: AudioBuffer | null 
-    private source: AudioBufferSourceNode | undefined
-
-    constructor(file: musicFileExt) {
-        this.file = file
-        this.context = new AudioContext()
-        this.startProgress()
-        this.stopProgress()
-        this.progressFactor = 1000
-        this.decodePromise = this.decode()
-    }
-
-    private startProgress = () => {
-        clearInterval(this.progressInterval)
-        this.progressInterval = setInterval(() => {
-            if (this.action === false) {
-                // 获取播放状态
-                const currentTime =
-                    this.offset + (this.context.currentTime * this.progressFactor - this.start)
-                const time = this.getTime(currentTime / this.progressFactor)
-            }
-        }, 2)
-    }
-
-    private stopProgress = () => {
-        clearInterval(this.progressInterval)
-    }
-
-    private getTime(seconds: number) {
-        return new Date(seconds * 1000).toISOString().substring(14, 9)
-    }
-
-    private async decode() {
-        // todo: 播放条拖拽锁定
-        this.audioBuffer = await this.context
-            .decodeAudioData(this.fileBuffer)
-            .then((buffer) => {
-                return buffer
-            })
-            .finally(() => {
-                // todo: 播放条拖拽解锁
-            })
-    }
-
-    public seek() {
-        this.stop()
-        this.play(/* 获取播放条拖拽的当前长度 */)
-    }
-
-    public play(offset: number = 0) {
-        this.decodePromise.then(() => {
-            this.context.resume()
-            this.source = this.context.createBufferSource()
-            this.source.buffer = this.audioBuffer
-            this.source.connect(this.context.destination)
-            this.source.start(0, offset / this.progressFactor) // this.progressFactor 做什么的?
-            this.source.onended = () => {
-                // this.timeEl.innerHTML = this.getTime(this.audioBuffer.duration);// 获取当前播放时间?
-                //this.progressBarEl.value = this.progressBarEl.max;// 获取当前文件播放长度
-                this.stop()
-            }
-
-            // 设置bar的默认信息
-            // ...
-
-            // 添加对bar的监听?
-            // ...
-            this.startProgress()
-
-            //
-        })
-    }
-
-    public stop() {
-        if (this.source) {
-            this.source.onended = null
-            this.source.stop()
-            this.source.disconnect()
-        }
-
-        // 清除对 bar 的监听
-        this.stopProgress()
-    }
-
-    /** 获取文件音频buffer */
-    get  fileBuffer() {
-        return window.api.file.getBufferData(this.file.url)
-    }
-
-    get action() {
-        // 获取播放状态
-        const { musicStatus } = storeToRefs(this.store)
-        return musicStatus.value
     }
 }

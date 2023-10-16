@@ -5,18 +5,20 @@ import type {
 } from '@main/types/index'
 
 /** playList 播放队列对象 */
-export type playList = {
+export type playListItem = {
     /** 队列编号 */
     no?: number
     /** 标题 */
     title: string
     /** 长度 */
-    length: string
+    length?: string
     /** 默认编号, UUID 唯一值 */
     ID?: string
     /** 数据 */
     data?: Uint8Array
+    url: string
     statu?: boolean
+    players?: any
 }
 
 export type musicFile = musicType
