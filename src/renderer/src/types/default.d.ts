@@ -16,6 +16,7 @@ export type playList = {
     ID?: string
     /** 数据 */
     data?: Uint8Array
+    statu?: boolean
 }
 
 export type musicFile = musicType
