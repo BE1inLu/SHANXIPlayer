@@ -106,7 +106,7 @@ import {
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMusicStore } from '@renderer/store'
-import { useMusicService } from '@renderer/service/new-music-service'
+import { useMusicService } from '@renderer/service/music-bar-service'
 import type { playListItem } from '@renderer/types/default'
 
 const { playListAdd, voice, playPause } = useMusicService()
@@ -127,9 +127,7 @@ const updatedValue = (value: number) => {
 /**
  * 播放/暂停方法
  */
-const useMusic = () => {
-    
-}
+const useMusic = () => {}
 
 // 想法: val到100时进行下一首播放?
 /* TODO:音频条实现 */
@@ -173,3 +171,4 @@ const showNote = () => {
     width: 100px;
 }
 </style>
+@renderer/service/music-bar-service
