@@ -100,6 +100,8 @@ class WebAudioPlayer {
     private progressFactor
     private start
     private decodePromise
+    private audioBuffer
+    private source: AudioBufferSourceNode | undefined
 
     constructor(file: musicFileExt) {
         this.file = file
@@ -130,11 +132,63 @@ class WebAudioPlayer {
         return new Date(seconds * 1000).toISOString().substring(14, 9)
     }
 
-    private async decode(){
+    private async decode() {
+        // todo: 播放条拖拽锁定
+        this.audioBuffer = await this.context
+            .decodeAudioData(this.fileBuffer)
+            .then((buffer) => {
+                return buffer
+            })
+            .finally(() => {
+                // todo: 播放条拖拽解锁
+            })
+    }
+
+    public seek() {
+        this.stop()
+        this.play(/* 获取播放条拖拽的当前长度 */)
+    }
+
+    public play(offset: number = 0) {
+        this.decodePromise.then(() => {
+            this.context.resume()
+            this.source = this.context.createBufferSource()
+            this.source.connect(this.context.destination)
+            this.source.start(0, offset / this.progressFactor) // this.progressFactor 做什么的?
+            this.source.onended = () => {
+                // this.timeEl.innerHTML = this.getTime(this.audioBuffer.duration);// 获取当前播放时间?
+                //this.progressBarEl.value = this.progressBarEl.max;// 获取当前文件播放长度
+                this.stop()
+            }
+
+            // 设置bar的默认信息
+            // ...
+
+            // 添加对bar的监听?
+            // ...
+            this.startProgress()
+
+            //
+        })
+    }
+
+    public stop() {
+        if (this.source) {
+            this.source.onended = null
+            this.source.stop()
+            this.source.disconnect()
+        }
+
+        // 清除对 bar 的监听
+        this.stopProgress()
+
         
     }
 
-    
+    /** 获取文件音频buffer */
+    get fileBuffer() {
+        return window.api.file.getBufferData(this.file.url)
+    }
 
     get action() {
         // 获取播放状态

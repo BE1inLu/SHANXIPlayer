@@ -161,4 +161,3 @@ const showNote = () => {
     width: 100px;
 }
 </style>
-@renderer/service/music-bar-service
