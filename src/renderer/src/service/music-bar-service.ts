@@ -85,8 +85,10 @@ class WebAudioPlayer {
     private store = useMusicStore()
     private progressInterval
     // 当前音频长度
-    // private offset
+    private offset
+    private start
     private decodePromise
+    private progressFactor
     private audioBuffer!: AudioBuffer | null
     private source: AudioBufferSourceNode | undefined
     private gain: GainNode | undefined
@@ -96,6 +98,7 @@ class WebAudioPlayer {
         this.context = new AudioContext()
         this.startProgress()
         this.stopProgress()
+        this.progressFactor = 1000
         this.decodePromise = this.decode()
     }
 
@@ -154,9 +157,8 @@ class WebAudioPlayer {
                  * currentTime是当前播放时间 time应该是总播放时间
                  */
                 const { musicBarCurrentTime } = storeToRefs(this.store)
-                const currentTime = parseInt(
-                    this.context.getOutputTimestamp().contextTime!.toFixed(0),
-                )
+                const currentTime =
+                    this.offset + (this.context.currentTime * this.progressFactor - this.start)
                 musicBarCurrentTime.value = currentTime
             }
         }, 100)
@@ -206,8 +208,8 @@ class WebAudioPlayer {
             this.source.onended = () => {
                 // 音频 暂停/结束 事件
                 // ...
-                console.log('音频 暂停/结束 事件')
                 this.stop()
+                console.log('音频 暂停/结束 事件')
             }
 
             /**
@@ -215,8 +217,10 @@ class WebAudioPlayer {
              * start, offset, length
              * 设置最大长度
              */
+            this.start = this.context.currentTime * this.progressFactor
             this.musicBarLength = parseInt(this.source.buffer!.duration.toFixed(0))
-            // this.offset = offset
+            this.offset = offset
+            console.log('offset: '+offset)
 
             /** todo: 需要设置 lengthvalue */
 

@@ -1,29 +1,11 @@
 <template>
-    <n-layout-sider
-        class="main-left-nav"
-        bordered
-        :collapsed="true"
-        collapse-mode="width"
-        :collapsed-width="64"
-        :width="240"
-        :native-scrollbar="false"
-    >
+    <n-layout-sider class="main-left-nav" bordered :collapsed="true" collapse-mode="width" :collapsed-width="64"
+        :width="240" :native-scrollbar="false">
         <div class="menu-bar">
-            <n-menu
-                id="flag-menu"
-                :collapsed-width="64"
-                :collapsed-icon-size="22"
-                :options="menuOptions"
-                :watch-props="['defaultValue']"
-                @update:value="updateValue"
-            />
-            <n-menu
-                id="flag-menu"
-                :collapsed-width="64"
-                :collapsed-icon-size="22"
-                :options="settingOptions"
-                @update:value="updateValue"
-            />
+            <n-menu id="flag-menu" :collapsed-width="64" :collapsed-icon-size="22" :options="menuOptions"
+                :watch-props="['defaultValue']" @update:value="updateValue" />
+            <n-menu id="flag-menu" :collapsed-width="64" :collapsed-icon-size="22" :options="settingOptions"
+                @update:value="updateValue" />
         </div>
     </n-layout-sider>
 </template>
@@ -67,7 +49,10 @@ const settingOptions: MenuOption[] = [
             {
                 label: setLabel('/pianopage', '彩蛋'),
                 key: 'key-1',
-            },
+            }, {
+                label: setLabel('/orderpage', 'test'),
+                key: 'key-2'
+            }
         ],
     },
 ]
@@ -77,11 +62,6 @@ const menuOptions: MenuOption[] = [
         label: setLabel('/mainpage', 'Home'),
         key: 'key1',
         icon: renderIcon(Home12Filled),
-    },
-    {
-        label: setLabel('/orderpage', 'Order'),
-        key: 'key2',
-        icon: renderIcon(Search12Regular),
     },
     {
         label: () =>
@@ -98,13 +78,17 @@ const menuOptions: MenuOption[] = [
         icon: renderIcon(TextBulletListLtr20Filled),
     },
     {
+        key: 'key2',
+        icon: renderIcon(Search12Regular),
+    },
+    {
         label: 'table4',
         key: 'key4',
         icon: renderIcon(Document20Regular),
     },
 ]
 
-const updateValue = () => {}
+const updateValue = () => { }
 </script>
 <style lang="less" scoped>
 @import '../../../assets/css/defaultCommon.less';

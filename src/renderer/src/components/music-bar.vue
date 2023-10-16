@@ -36,12 +36,8 @@
         <!-- 音频条: 未实现 -->
         <n-gi span="6" class="long-group">
             <n-space vertical>
-                <n-slider
-                    v-model:value="musicLangthValue"
-                    :max="musicBarLength"
-                    :on-update:value="updateLengthValue"
-                    :disabled="musicBarStatus"
-                />
+                <n-slider v-model:value="musicLangthValue" :max="musicBarLength" :on-update:value="updateLengthValue"
+                    :disabled="musicBarStatus" />
             </n-space>
         </n-gi>
         <n-gi span="1" class="local-group">
@@ -70,12 +66,8 @@
                         </template>
                     </n-button>
                 </template>
-                <n-slider
-                    v-model:value="musicVoice"
-                    class="slider-style"
-                    :format-tooltip="voicePercendTooltip"
-                    :on-update:value="updatedValue"
-                />
+                <n-slider v-model:value="musicVoice" class="slider-style" :format-tooltip="voicePercendTooltip"
+                    :on-update:value="updatedValue" />
             </n-popconfirm>
         </n-gi>
         <!-- 播放列表 -->
@@ -114,6 +106,7 @@ const store = useMusicStore()
 const { musicVoice, musicBarLength, musicStatus, musicBarStatus } = storeToRefs(store)
 const musicLangthValue = ref<number>(0)
 const voicePercendTooltip = (val: number) => `${val}%`
+const localdata = ref<playListItem>()
 
 /**
  * 音量设置
@@ -127,7 +120,14 @@ const updatedValue = (value: number) => {
 /**
  * 播放/暂停方法
  */
-const useMusic = () => {}
+const useMusic = () => {
+    if (localdata.value != undefined) { 
+        playPause(localdata.value)
+    }
+    else {
+        
+    }
+}
 
 // 想法: val到100时进行下一首播放?
 /* TODO:音频条实现 */
@@ -140,6 +140,7 @@ const updateLengthValue = (val: number) => {
  * 这里回传播放的 file
  */
 const playListItemData = (data: playListItem) => {
+    localdata.value = data
     playPause(data)
 }
 
