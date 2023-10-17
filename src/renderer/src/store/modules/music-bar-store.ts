@@ -12,9 +12,17 @@ export const useMusicStore = defineStore('musicStore', () => {
     const musicBarCurrentTime = ref<number>()
     const musicStatus = ref<boolean>(true)
     const musicBarStatus = ref<boolean>(false)
+    const piniaInterval = ref<any>(null)
+    /** 0.顺序 1.单曲 2.随机 */
+    const musicPlayMode = ref<number>(0)
 
     const setMusicBarCurrentTime = (val: number) => {
         musicBarCurrentTime.value = val
+    }
+
+    const setMusicPlayMode = () => {
+        musicPlayMode.value++
+        if (musicPlayMode.value >= 3) musicPlayMode.value = 0
     }
 
     const clearMusicPlayListItem = (item: playListItem) => {
@@ -55,6 +63,9 @@ export const useMusicStore = defineStore('musicStore', () => {
         musicStatus,
         musicBarStatus,
         musicBarCurrentTime,
+        piniaInterval,
+        musicPlayMode,
+        setMusicPlayMode,
         setMusicBarCurrentTime,
         clearMusicPlayListItem,
         clearMusicPlayList,

@@ -72,17 +72,18 @@ const menuOptions: MenuOption[] = [
                         path: '/playlistpage',
                     },
                 },
-                { default: () => 'playlist' },
+                { default: () => 'PlayList' },
             ),
-        key: 'key3',
+        key: 'key2',
         icon: renderIcon(TextBulletListLtr20Filled),
     },
-    {
-        key: 'key2',
+    {   
+        label:"施工中🚧",
+        key: 'key3',
         icon: renderIcon(Search12Regular),
     },
-    {
-        label: 'table4',
+    {   
+        label: '施工中🚧',
         key: 'key4',
         icon: renderIcon(Document20Regular),
     },

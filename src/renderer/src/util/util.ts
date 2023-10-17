@@ -10,5 +10,9 @@ export const util = () => {
         return _debounce
     }
 
-    return { debounce }
+    const getRandomInt = (max: number) => {
+        return Math.floor(Math.random() * max)
+    }
+
+    return { debounce, getRandomInt }
 }
