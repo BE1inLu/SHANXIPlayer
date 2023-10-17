@@ -1,6 +1,4 @@
 <template>
-    <!-- <span>i am homepage</span> -->
-
     <n-grid x-gap="12" cols="12" item-responsive responsive="screen">
         <n-gi span="1 m:2"></n-gi>
         <n-gi span="10 m:8">
