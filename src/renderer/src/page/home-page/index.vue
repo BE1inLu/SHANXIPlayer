@@ -8,24 +8,30 @@
                 <n-card style="margin-top: 10px">
                     <n-page-header subtitle="Player">
                         <template #title> SHANXI </template>
-                        <div>123445</div>
+                        <div>一些数据</div>
                         <n-grid :cols="12">
                             <n-gi :span="2">
-                                <n-statistic label="歌曲总数" value="125" />
+                                <n-statistic label="歌曲总数" tabular-nums>
+                                    <n-number-animation :from="0" :to="114" show-separator :duration="1000" />
+                                </n-statistic>
                             </n-gi>
                             <n-gi></n-gi>
                             <n-gi :span="2">
-                                <n-statistic label="歌单列表" value="5" />
+                                <n-statistic label="歌单列表" tabular-nums>
+                                    <n-number-animation :from="0" :to="514" show-separator :duration="1500" />
+                                </n-statistic>
                             </n-gi>
                             <n-gi></n-gi>
                             <n-gi :span="2">
-                                <n-statistic label="播放时长" value="12344" />
+                                <n-statistic label="播放时长" tabular-nums>
+                                    <n-number-animation :from="0" :to="114514" show-separator :duration="2000" />
+                                </n-statistic>
                             </n-gi>
                         </n-grid>
                     </n-page-header>
                 </n-card>
                 <n-card>
-                    <div>12345</div>
+                    <div>施工中🚧</div>
                 </n-card>
             </n-space>
         </n-gi>
