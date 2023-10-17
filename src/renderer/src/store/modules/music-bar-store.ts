@@ -6,7 +6,7 @@ import { ref } from 'vue'
 export const useMusicStore = defineStore('musicStore', () => {
     const musicPlayList = ref<playListItem[]>([])
     const switchMusicPlayList = ref<boolean>(false)
-    const musicBarLength = ref<number>()
+    const musicBarLength = ref<number>(100)
     const musicVoice = ref<number>(10)
     const musicOrderData = ref()
     const musicBarCurrentTime = ref<number>()

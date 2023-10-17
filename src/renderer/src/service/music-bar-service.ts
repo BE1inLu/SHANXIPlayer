@@ -89,7 +89,6 @@ class WebAudioPlayer {
     private offset
     private start
     private decodePromise
-    private progressFactor
     private audioBuffer!: AudioBuffer | null
     private source: AudioBufferSourceNode | undefined
     private gain: GainNode | undefined
@@ -99,7 +98,6 @@ class WebAudioPlayer {
         this.context = new AudioContext()
         this.startProgress()
         this.stopProgress()
-        this.progressFactor = 1000
         this.decodePromise = this.decode()
     }
 
@@ -218,18 +216,13 @@ class WebAudioPlayer {
             this.start = parseInt(this.context.currentTime.toFixed(0))
             this.musicBarLength = parseInt(this.source.buffer!.duration.toFixed(0))
             this.offset = offset
-            console.log('offset: ' + offset)
 
-            /**
-             * @todo 执行监听
-             */
-            // this.startProgress()
-            this.piniaProgressInterval = this.store.$onAction(({ after }) => {
+            this.piniaProgressInterval = this.store.$onAction((/* { after } */) => {
                 this.startProgress()
-                after(() => {
-                    const { musicBarCurrentTime } = storeToRefs(this.store)
-                    console.log('currenttime: ' + musicBarCurrentTime.value)
-                })
+                // after(() => {
+                //     const { musicBarCurrentTime } = storeToRefs(this.store)
+                //     console.log('currenttime: ' + musicBarCurrentTime.value)
+                // })
             })
             this.startProgress()
 

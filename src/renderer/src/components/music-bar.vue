@@ -12,7 +12,7 @@
         </n-gi>
         <!-- 播放/暂停按键 -->
         <n-gi span="1" class="local-group">
-            <n-button strong secondary circle size="small" type="info" @click="useMusic">
+            <n-button strong secondary circle size="small" type="info" @click="useMusic" :disabled="playList.length == 0">
                 <template #icon>
                     <n-icon v-if="musicStatus">
                         <Play12Filled />
@@ -33,14 +33,15 @@
                 </template>
             </n-button>
         </n-gi>
-        <!-- 音频条: 未实现 -->
+        <!-- 音频条 -->
         <n-gi span="6" class="long-group">
             <n-space vertical>
                 <n-slider
                     v-model:value="musicBarCurrentTime"
                     :max="musicBarLength"
                     :on-update:value="updateLengthValue"
-                    :disabled="musicBarStatus"
+                    :disabled="musicBarStatus || playList.length == 0"
+                    :format-tooltip="musicLengthTooltip"
                 />
             </n-space>
         </n-gi>
@@ -57,15 +58,33 @@
         <n-gi span="1" class="local-group">
             <n-popconfirm :positive-text="null" :negative-text="null">
                 <template #icon>
-                    <n-icon>
-                        <Speaker216Filled />
+                    <n-icon v-if="musicVoice == 0">
+                        <SpeakerMute20Filled />
+                    </n-icon>
+                    <n-icon v-else-if="musicVoice > 0 && musicVoice < 20">
+                        <Speaker020Filled />
+                    </n-icon>
+                    <n-icon v-else-if="musicVoice >= 20 && musicVoice < 70">
+                        <Speaker120Filled />
+                    </n-icon>
+                    <n-icon v-else>
+                        <Speaker220Filled />
                     </n-icon>
                 </template>
                 <template #trigger>
                     <n-button strong secondary circle size="small" type="info">
                         <template #icon>
-                            <n-icon>
-                                <Speaker216Filled />
+                            <n-icon v-if="musicVoice == 0">
+                                <SpeakerMute20Filled />
+                            </n-icon>
+                            <n-icon v-else-if="musicVoice > 0 && musicVoice < 20">
+                                <Speaker020Filled />
+                            </n-icon>
+                            <n-icon v-else-if="musicVoice >= 20 && musicVoice < 70">
+                                <Speaker120Filled />
+                            </n-icon>
+                            <n-icon v-else>
+                                <Speaker220Filled />
                             </n-icon>
                         </template>
                     </n-button>
@@ -100,7 +119,10 @@ import {
     Previous16Filled,
     ArrowRepeatAll16Filled,
     TextBulletListLtr16Filled,
-    Speaker216Filled,
+    SpeakerMute20Filled,
+    Speaker020Filled,
+    Speaker120Filled,
+    Speaker220Filled,
     Pause16Filled,
 } from '@vicons/fluent'
 import { ref } from 'vue'
@@ -111,11 +133,41 @@ import type { playListItem } from '@renderer/types/default'
 
 const { playListAdd, voice, seek, playPause } = useMusicService()
 const store = useMusicStore()
-const { musicVoice, musicBarLength, musicStatus, musicBarStatus, musicBarCurrentTime } =
-    storeToRefs(store)
+const {
+    musicVoice,
+    musicBarLength,
+    musicStatus,
+    musicBarStatus,
+    musicBarCurrentTime,
+    musicPlayList: playList,
+} = storeToRefs(store)
 const musicLangthValue = ref<number>(0)
 const voicePercendTooltip = (val: number) => `${val}%`
 const localdata = ref<playListItem>()
+
+const musicLengthTooltip = (val: number) => `${valToMinus(val)}`
+const valToMinus = (val: number) => {
+    var t = ''
+    if (val > -1) {
+        var hour = Math.floor(val / 3600)
+        var min = Math.floor(val / 60) % 60
+        var sec = val % 60
+        if (hour < 10) {
+            t = '0' + hour + ':'
+        } else {
+            t = hour + ':'
+        }
+        if (min < 10) {
+            t += '0'
+        }
+        t += min + ':'
+        if (sec < 10) {
+            t += '0'
+        }
+        t += sec.toFixed(0)
+    }
+    return t
+}
 
 /**
  * 音量设置
