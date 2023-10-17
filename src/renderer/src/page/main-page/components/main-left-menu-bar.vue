@@ -1,6 +1,13 @@
 <template>
-    <n-layout-sider class="main-left-nav" bordered :collapsed="true" collapse-mode="width" :collapsed-width="64"
-        :width="240" :native-scrollbar="false">
+    <n-layout-sider
+        class="main-left-nav"
+        bordered
+        :collapsed="true"
+        collapse-mode="width"
+        :collapsed-width="64"
+        :width="240"
+        :native-scrollbar="false"
+    >
         <div class="menu-bar">
             <n-menu id="flag-menu" :collapsed-width="64" :collapsed-icon-size="22" :options="menuOptions"
                 :watch-props="['defaultValue']" @update:value="updateValue" />
