@@ -84,6 +84,7 @@ class WebAudioPlayer {
     private file: playListItem
     private store = useMusicStore()
     private progressInterval
+    private piniaProgressInterval
     // 当前音频长度
     private offset
     private start
@@ -139,29 +140,22 @@ class WebAudioPlayer {
         return window.api.file.getBufferData(this.file.url)
     }
 
+    /**
+     * @todo 重新设计监听方案
+     */
     private startProgress = () => {
         clearInterval(this.progressInterval)
-        this.progressInterval = this.setProgress
+        this.progressInterval = setInterval(() => {
+            if (this.action == false) {
+                const currentTime =
+                    this.offset + parseInt(this.context.currentTime.toFixed(0)) - this.start
+                this.store.setMusicBarCurrentTime(currentTime)
+            }
+        }, 100)
     }
 
     private stopProgress = () => {
         clearInterval(this.progressInterval)
-    }
-
-    private setProgress = () => {
-        return setInterval(() => {
-            if (this.action == false) {
-                /**
-                 * 需要修改
-                 * 理解: 这里应该是获取当前播放时间和总播放时间
-                 * currentTime是当前播放时间 time应该是总播放时间
-                 */
-                const { musicBarCurrentTime } = storeToRefs(this.store)
-                const currentTime =
-                    this.offset + parseInt(this.context.currentTime.toFixed(0)) - this.start
-                musicBarCurrentTime.value = currentTime
-            }
-        }, 100)
     }
 
     private async decode() {
@@ -180,19 +174,18 @@ class WebAudioPlayer {
     }
 
     public seek(val: number) {
-        // this.stop()
-        const { musicBarCurrentTime, musicBarLength } = storeToRefs(this.store)
-        console.log('seek val: ' + val)
-        console.log('start: ' + this.start)
+        this.stop()
+        // const { musicBarCurrentTime, musicBarLength } = storeToRefs(this.store)
+        // console.log('seek val: ' + val)
+        // console.log('start: ' + this.start)
 
-        const now = parseInt(this.context.currentTime.toFixed(0)) - this.start
-        console.log('now: ' + now)
-        console.log(this.context.getOutputTimestamp())
-        console.log(musicBarCurrentTime.value)
-        console.log(musicBarLength.value)
+        // const now = parseInt(this.context.currentTime.toFixed(0)) - this.start
+        // console.log('now: ' + now)
+        // console.log(this.context.getOutputTimestamp())
+        // console.log(musicBarCurrentTime.value)
+        // console.log(musicBarLength.value)
 
-
-        // this.play(val)
+        this.play(val)
     }
 
     /**
@@ -227,13 +220,17 @@ class WebAudioPlayer {
             this.offset = offset
             console.log('offset: ' + offset)
 
-            /** @todo 需要设置 lengthvalue */
-
             /**
-             * ...添加对bar的监听
-             * @todo 增加对 bar 的监听, 需要获取值来判断
+             * @todo 执行监听
              */
-            
+            // this.startProgress()
+            this.piniaProgressInterval = this.store.$onAction(({ after }) => {
+                this.startProgress()
+                after(() => {
+                    const { musicBarCurrentTime } = storeToRefs(this.store)
+                    console.log('currenttime: ' + musicBarCurrentTime.value)
+                })
+            })
             this.startProgress()
 
             // ...设置播放状态
@@ -248,8 +245,13 @@ class WebAudioPlayer {
             this.source.disconnect()
         }
 
-        // ...清除对 bar 的监听
+        /**
+         * ...清除对 bar 的监听
+         *
+         */
         this.stopProgress()
+        this.piniaProgressInterval() // 清除pinia的监听
+
         // ...更新播放状态
         this.action = true
     }

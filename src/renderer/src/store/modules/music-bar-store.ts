@@ -9,9 +9,13 @@ export const useMusicStore = defineStore('musicStore', () => {
     const musicBarLength = ref<number>()
     const musicVoice = ref<number>(10)
     const musicOrderData = ref()
-    const musicBarCurrentTime =ref<number>()
+    const musicBarCurrentTime = ref<number>()
     const musicStatus = ref<boolean>(true)
-    const musicBarStatus=ref<boolean>(false)
+    const musicBarStatus = ref<boolean>(false)
+
+    const setMusicBarCurrentTime = (val: number) => {
+        musicBarCurrentTime.value = val
+    }
 
     const clearMusicPlayListItem = (item: playListItem) => {
         musicPlayList.value = musicPlayList.value.filter((i) => {
@@ -42,10 +46,6 @@ export const useMusicStore = defineStore('musicStore', () => {
         switchMusicPlayList.value = !switchMusicPlayList.value
     }
 
-    const getPlayListStore = () => {
-        return switchMusicPlayList.value
-    }
-
     return {
         switchMusicPlayList,
         musicBarLength,
@@ -55,10 +55,10 @@ export const useMusicStore = defineStore('musicStore', () => {
         musicStatus,
         musicBarStatus,
         musicBarCurrentTime,
+        setMusicBarCurrentTime,
         clearMusicPlayListItem,
         clearMusicPlayList,
         addPlayList,
         changePlayList,
-        getPlayListStore,
     }
 })
