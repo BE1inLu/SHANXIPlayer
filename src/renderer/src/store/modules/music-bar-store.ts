@@ -9,7 +9,7 @@ export const useMusicStore = defineStore('musicStore', () => {
     const musicBarLength = ref<number>()
     const musicVoice = ref<number>(10)
     const musicOrderData = ref()
-    const musicBarCurrentTime=ref<number>()
+    const musicBarCurrentTime =ref<number>()
     const musicStatus = ref<boolean>(true)
     const musicBarStatus=ref<boolean>(false)
 

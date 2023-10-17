@@ -158,7 +158,7 @@ class WebAudioPlayer {
                  */
                 const { musicBarCurrentTime } = storeToRefs(this.store)
                 const currentTime =
-                    this.offset + (this.context.currentTime * this.progressFactor - this.start)
+                    this.offset + parseInt(this.context.currentTime.toFixed(0)) - this.start
                 musicBarCurrentTime.value = currentTime
             }
         }, 100)
@@ -183,9 +183,14 @@ class WebAudioPlayer {
         // this.stop()
         const { musicBarCurrentTime, musicBarLength } = storeToRefs(this.store)
         console.log('seek val: ' + val)
+        console.log('start: ' + this.start)
+
+        const now = parseInt(this.context.currentTime.toFixed(0)) - this.start
+        console.log('now: ' + now)
         console.log(this.context.getOutputTimestamp())
         console.log(musicBarCurrentTime.value)
         console.log(musicBarLength.value)
+
 
         // this.play(val)
     }
@@ -217,17 +222,18 @@ class WebAudioPlayer {
              * start, offset, length
              * 设置最大长度
              */
-            this.start = this.context.currentTime * this.progressFactor
+            this.start = parseInt(this.context.currentTime.toFixed(0))
             this.musicBarLength = parseInt(this.source.buffer!.duration.toFixed(0))
             this.offset = offset
-            console.log('offset: '+offset)
+            console.log('offset: ' + offset)
 
-            /** todo: 需要设置 lengthvalue */
+            /** @todo 需要设置 lengthvalue */
 
             /**
              * ...添加对bar的监听
-             * todo: 增加对 bar 的监听, 需要获取值来判断
+             * @todo 增加对 bar 的监听, 需要获取值来判断
              */
+            
             this.startProgress()
 
             // ...设置播放状态
