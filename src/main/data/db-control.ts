@@ -161,7 +161,6 @@ export async function readMusicDataTable() {
         db.executeQuery(sql, 'all')
             .then((req: any) => {
                 const result = decodeMusicDataList(req)
-                console.log(result)
                 resolve(result)
             })
             .catch((err) => {

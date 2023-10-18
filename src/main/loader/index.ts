@@ -64,18 +64,22 @@ export function loader(window: BrowserWindow) {
     })
 
     ipcMain.handle('read-tabs-table', async () => {
-        return await readTabsTable()
+        const res = await readTabsTable()
+        return res
     })
 
     ipcMain.handle('insert-tab-item', async (_, tabname: string) => {
-        return await insertTabsItem(tabname)
+        const res = await insertTabsItem(tabname)
+        return res
     })
 
     ipcMain.handle('update-tab-item', async (_, tabname: string, uuid: string) => {
-        return await updateTabsItem(tabname, uuid)
+        const res = await updateTabsItem(tabname, uuid)
+        return res
     })
 
     ipcMain.handle('delete-tab-table', async (_, uuid: string) => {
-        return await deleteTabsItem(uuid)
+        const res = await deleteTabsItem(uuid)
+        return res
     })
 }
