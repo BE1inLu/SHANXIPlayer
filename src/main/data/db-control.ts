@@ -278,3 +278,6 @@ export async function deleteMusicDataItem(data: musicFileExt) {
             })
     })
 }
+
+
+// SELECT * FROM "musicdatatable" JOIN "tabstable" ON listid=id;

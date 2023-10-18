@@ -8,7 +8,7 @@
                 circle
                 size="small"
                 type="info"
-                :display="playList.length == 0"
+                :disabled="playList.length == 0"
                 @click="backPlay"
             >
                 <template #icon>
@@ -109,10 +109,10 @@
                     <n-icon v-if="musicVoice == 0">
                         <SpeakerMute20Filled />
                     </n-icon>
-                    <n-icon v-else-if="musicVoice > 0 && musicVoice < 20">
+                    <n-icon v-else-if="musicVoice > 0 && musicVoice <= 30">
                         <Speaker020Filled />
                     </n-icon>
-                    <n-icon v-else-if="musicVoice >= 20 && musicVoice < 70">
+                    <n-icon v-else-if="musicVoice > 30 && musicVoice <= 60">
                         <Speaker120Filled />
                     </n-icon>
                     <n-icon v-else>
@@ -125,10 +125,10 @@
                             <n-icon v-if="musicVoice == 0">
                                 <SpeakerMute20Filled />
                             </n-icon>
-                            <n-icon v-else-if="musicVoice > 0 && musicVoice < 20">
+                            <n-icon v-else-if="musicVoice > 0 && musicVoice <= 30">
                                 <Speaker020Filled />
                             </n-icon>
-                            <n-icon v-else-if="musicVoice >= 20 && musicVoice < 70">
+                            <n-icon v-else-if="musicVoice > 30 && musicVoice <= 60">
                                 <Speaker120Filled />
                             </n-icon>
                             <n-icon v-else>
@@ -174,7 +174,7 @@ import {
     ArrowRepeatAll20Filled,
     Pause16Filled,
 } from '@vicons/fluent'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMusicStore } from '@renderer/store'
 import { useMusicService } from '@renderer/service/music-bar-service'
@@ -191,35 +191,15 @@ const {
     musicBarCurrentTime,
     musicPlayList: playList,
     musicPlayMode,
+    nextPlayStatu,
 } = storeToRefs(store)
 const voicePercendTooltip = (val: number) => `${val}%`
 const localData = ref<playListItem>()
 const backData = ref<playListItem>()
-const { getRandomInt } = util()
+let playSuccess: boolean = false
+const { getRandomInt, secondToTime } = util()
 
-const musicLengthTooltip = (val: number) => `${valToMinus(val)}`
-const valToMinus = (val: number) => {
-    var t = ''
-    if (val > -1) {
-        var hour = Math.floor(val / 3600)
-        var min = Math.floor(val / 60) % 60
-        var sec = val % 60
-        if (hour < 10) {
-            t = '0' + hour + ':'
-        } else {
-            t = hour + ':'
-        }
-        if (min < 10) {
-            t += '0'
-        }
-        t += min + ':'
-        if (sec < 10) {
-            t += '0'
-        }
-        t += sec.toFixed(0)
-    }
-    return t
-}
+const musicLengthTooltip = (val: number) => `${secondToTime(val)}`
 
 /**
  * 音量设置
@@ -236,21 +216,27 @@ const playMode = () => {
 
 /**
  * 播放/暂停方法
+ * @todo 逻辑优化 
  */
 const useMusic = () => {
     if (localData.value != undefined) {
-
-        playPause(localData.value)
-    } else {
-        if (musicPlayMode.value == 0) {
-            localData.value=playList.value[0]
+        /* 逻辑优化 */
+        if (musicBarCurrentTime.value != undefined && musicBarCurrentTime.value != 0)
             playPause(localData.value)
-        }else if(musicPlayMode.value == 2){
+        else seek(musicBarCurrentTime.value!)
+    } else {
+        backData.value = localData.value
+        if (musicPlayMode.value == 0) {
+            backData.value = localData.value
+            localData.value = playList.value[0]
+            playPause(localData.value)
+        } else if (musicPlayMode.value == 2) {
             const length = playList.value.length
             localData.value = playList.value[getRandomInt(length)]
             playPause(localData.value)
         }
     }
+    playSuccess=false
 }
 
 const updateLengthValue = (val: number) => {
@@ -270,33 +256,44 @@ const playListItemData = (data: playListItem) => {
         localData.value = data
         playPause(data)
     }
+    playSuccess=false
 }
 
 const showNote = () => {
     store.changePlayList()
 }
 
+/**
+ * 下一播放
+ * 
+ */
 const nextPlay = () => {
     let index = 0
-    const length = playList.value.length
-    if (localData.value) {
-        playPause(localData.value)
-        playList.value.indexOf(localData.value)
+    
+    const localPlayList:playListItem[]=playList.value
+    const length = localPlayList.length
+    if (length == 0) return
+    if (localData.value != undefined) {
+       if(!playSuccess) playPause(localData.value)
+        index=localPlayList.indexOf(localData.value)
         if (index++ > length) {
             if (musicPlayMode.value == 2) {
-                localData.value = playList.value[getRandomInt(length)]
+                localData.value = localPlayList[getRandomInt(length)]
                 playPause(localData.value)
             }
         } else {
             if (musicPlayMode.value == 2) {
-                localData.value = playList.value[getRandomInt(length)]
+                localData.value = localPlayList[getRandomInt(length)]
                 playPause(localData.value)
-            } else if (musicPlayMode.value == 1) {
-                localData.value = playList.value[index]
+            } else if (musicPlayMode.value == 0) {
+                localData.value = localPlayList[index]
                 playPause(localData.value)
             }
         }
+    } else {
+        useMusic()
     }
+    playSuccess=false
 }
 
 const backPlay = () => {
@@ -307,7 +304,16 @@ const backPlay = () => {
     localData.value = backData.value
     playPause(localData.value)
     backData.value = data
+    playSuccess=false
 }
+
+watch(nextPlayStatu, () => {
+    if (nextPlayStatu.value == false) return
+    console.log('watch success')
+    playSuccess = true
+    nextPlay()
+    nextPlayStatu.value = true
+})
 </script>
 <style lang="less" scoped>
 @import '../assets/css/defaultCommon.less';

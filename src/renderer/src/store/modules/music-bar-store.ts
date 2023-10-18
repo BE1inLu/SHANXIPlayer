@@ -15,6 +15,7 @@ export const useMusicStore = defineStore('musicStore', () => {
     const piniaInterval = ref<any>(null)
     /** 0.顺序 1.单曲 2.随机 */
     const musicPlayMode = ref<number>(0)
+    const nextPlayStatu = ref<boolean>(false)
 
     const setMusicBarCurrentTime = (val: number) => {
         musicBarCurrentTime.value = val
@@ -65,6 +66,7 @@ export const useMusicStore = defineStore('musicStore', () => {
         musicBarCurrentTime,
         piniaInterval,
         musicPlayMode,
+        nextPlayStatu,
         setMusicPlayMode,
         setMusicBarCurrentTime,
         clearMusicPlayListItem,
