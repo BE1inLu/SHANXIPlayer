@@ -191,6 +191,8 @@ class WebAudioPlayer {
                 // ...
                 this.stop()
                 console.log('音频 暂停/结束 事件')
+                const { nextPlayStatu } = storeToRefs(this.store)
+                nextPlayStatu.value = true
             }
 
             /**

@@ -32,7 +32,7 @@
             animated
             placement="left"
             :addable="addableRef"
-            @add="handleAdd"
+            @add="modelOpen"
             @close="handleClose"
         >
             <n-tab-pane v-for="item of tabList" :key="item.id" :name="item.name">
@@ -53,6 +53,17 @@
             </n-tab-pane>
         </n-tabs>
     </n-space>
+
+    <n-modal
+        v-model:show="showModelRef"
+        preset="dialog"
+        title="添加tab"
+        positive-text="确认"
+        negative-text="返回"
+        @positive-click="handleAdd"
+    >
+        <div><n-input v-model:value="strVal" type="text" /></div>
+    </n-modal>
 </template>
 
 <script lang="ts" setup>
@@ -63,10 +74,16 @@ import type { tabsList, musicFileExt } from '@renderer/types/default'
 
 const tagRef = ref<'card' | 'line'>('line')
 const panelsRef = ref([1, 2, 3])
+const showModelRef = ref(false)
+const strVal=ref()
 
 const closable = computed(() => {
     return panelsRef.value.length > 1
 })
+
+const modelOpen = () => {
+    showModelRef.value = !showModelRef.value
+}
 
 const switchTag = () => {
     tagRef.value = tagRef.value == 'card' ? 'line' : 'card'
@@ -94,7 +111,7 @@ const handleClose = (name: string) => {
 
 const addableRef = computed(() => {
     return {
-        disabled: panelsRef.value.length >= 100,
+        disabled: panelsRef.value.length >= 20,
     }
 })
 

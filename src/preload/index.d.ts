@@ -1,5 +1,5 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
-import type { configItem, musicFile, musicFileExt } from 'src/main/types'
+import type { configItem, musicFile, musicFileExt, tabInfo } from 'src/main/types'
 
 declare global {
     interface Window {
@@ -22,6 +22,10 @@ declare global {
                 insertMusicDataItem: (data: musicFileExt) => boolean
                 insertManyMusicData: (data: musicFileExt[]) => boolean
                 deleteMusicDataItem: (data: musicFileExt) => boolean
+                readTabsTable: () => tabInfo[]
+                insertTabItem: (tabname: string) => boolean
+                updateTabItem: (tabname: string, uuid: string) => boolean
+                deleteTabTable: (uuid: string) => boolean
             }
             test: {
                 testfunc1: () => void

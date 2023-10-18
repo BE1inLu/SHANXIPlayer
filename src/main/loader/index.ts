@@ -3,12 +3,16 @@ import { windowControl } from '../service/window-defalt-service'
 import { fileControl } from '../service/file-service'
 import {
     deleteMusicDataItem,
+    deleteTabsItem,
     insertManyMusicData,
     insertMusicDataTable,
+    insertTabsItem,
     procdb,
     readConfigTable,
     readMusicDataTable,
+    readTabsTable,
     updateConfigItem,
+    updateTabsItem,
 } from '../data/db-control'
 import type { musicFileExt } from '../types'
 import { orderService } from '../service/order-service'
@@ -56,6 +60,26 @@ export function loader(window: BrowserWindow) {
 
     ipcMain.handle('test-a', async () => {
         const res = await loadPathFileAndAddMusicData()
+        return res
+    })
+
+    ipcMain.handle('read-tabs-table', async () => {
+        const res = await readTabsTable()
+        return res
+    })
+
+    ipcMain.handle('insert-tab-item', async (_, tabname: string) => {
+        const res = await insertTabsItem(tabname)
+        return res
+    })
+
+    ipcMain.handle('update-tab-item', async (_, tabname: string, uuid: string) => {
+        const res = await updateTabsItem(tabname, uuid)
+        return res
+    })
+
+    ipcMain.handle('delete-tab-table', async (_, uuid: string) => {
+        const res = await deleteTabsItem(uuid)
         return res
     })
 }

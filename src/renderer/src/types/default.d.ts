@@ -2,6 +2,7 @@ import type {
     musicFile as musicType,
     musicFileExt as musicExt,
     configItem as _configItem,
+    tabInfo as _tabinfo,
 } from '@main/types/index'
 
 /** playList 播放队列对象 */
@@ -33,3 +34,5 @@ export type tabsList = {
 }
 
 export type configItem = _configItem
+
+export type tabInfo = _tabinfo
