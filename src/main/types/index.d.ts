@@ -47,7 +47,7 @@ type musicInfo = {
  * @params
  */
 export type musicFileExt = fileDefaultInfo &
-    listInfo & {
+    tabInfo & {
         tag?: string[]
         createTime?: Date | string
         lastOpenTime?: Date | string
@@ -58,11 +58,13 @@ export type musicFileExt = fileDefaultInfo &
 /**
  * **队列信息**
  */
-export type listInfo = {
+export type tabInfo = {
     /** 队列ID */
     listID?: number
+    uuid?: string
+    rowid?: number
     /** 队列名字 */
-    listName?: string
+    tabname?: string
 }
 
 export type configItem = {

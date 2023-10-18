@@ -93,8 +93,9 @@ const handleClose = (name: string) => {
 }
 
 const addableRef = computed(() => {
+    
     return {
-        disabled: panelsRef.value.length >= 100,
+        disabled: panelsRef.value.length >= 20,
     }
 })
 

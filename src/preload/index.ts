@@ -2,7 +2,6 @@ import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import { musicFileExt } from '@main/types'
 
-/* TODO: api 调整 */
 const api = {
     darkTheme: () => ipcRenderer.invoke('dark-mode'),
     lightTheme: () => ipcRenderer.invoke('light-mode'),
@@ -27,6 +26,11 @@ const api = {
         deleteMusicDataItem: (data: musicFileExt) => {
             ipcRenderer.invoke('delete-musicdata-item', data)
         },
+        readTabsTable: () => ipcRenderer.invoke('read-tabs-table'),
+        insertTabItem: (tabname: string) => ipcRenderer.invoke('insert-tab-item', tabname),
+        updateTabItem: (tabname: string, uuid: string) =>
+            ipcRenderer.invoke('update-tab-item', tabname, uuid),
+        deleteTabTable: (uuid: string) => ipcRenderer.invoke('delete-tab-table', uuid),
     },
     test: {
         testfunc1: () => ipcRenderer.invoke('test-a'),

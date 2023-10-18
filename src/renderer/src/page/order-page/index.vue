@@ -14,6 +14,12 @@
         <div>
             <n-button @click="test7">deleteMusicDataItem</n-button>
         </div>
+        <div>
+            <n-button @click="test8">tabstable-read</n-button>
+            <n-button @click="test9">tabstable-insert</n-button>
+            <n-button @click="test10">tabstable-update</n-button>
+            <n-button @click="test11">tabstable-delete</n-button>
+        </div>
 
         <div>data: {{ refdata }}</div>
     </span>
@@ -21,7 +27,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { musicFileExt } from '@renderer/types/default'
+import type { musicFileExt } from '@renderer/types/default'
 
 const refdata = ref()
 
@@ -41,8 +47,8 @@ const test3 = async () => {
         name: 'test1',
         url: '#1',
         ext: 'flac',
-        listID: 1,
-        listName: '我是listName1',
+        rowid: 1,
+        tabname: '我是listName1',
         tag: ['rock', 'and', 'role'],
     }
     const result = await window.api.db.insertMusicDataItem(data)
@@ -57,7 +63,7 @@ const test4 = async () => {
             url: '#1',
             ext: 'flac',
             listID: 1,
-            listName: '我是listName1',
+            tabname: '我是listName1',
             tag: ['rock', 'and', 'role'],
         },
         {
@@ -66,7 +72,7 @@ const test4 = async () => {
             url: '#2',
             ext: 'flac',
             listID: 2,
-            listName: '我是listName2',
+            tabname: '我是listName2',
             tag: ['blue', 'and', 'black'],
         },
     ]
@@ -95,6 +101,22 @@ const test6 = async () => {
 const test7 = async () => {
     /* 读取目录数据, 然后生成结构化musicfile并返回 */
     await window.api.test.testfunc1()
+}
+
+const test8 = async () => {
+    refdata.value = await window.api.db.readTabsTable()
+}
+
+const test9 = async () => {
+    refdata.value = await window.api.db.insertTabItem('tabname1')
+}
+const test10 = async () => {
+    const uuid = 'c79f31f1-363b-4d1a-a6dd-8b2f5372a85e'
+    refdata.value = await window.api.db.updateTabItem('tabname2', uuid)
+}
+const test11 = async () => {
+    const uuid = 'c79f31f1-363b-4d1a-a6dd-8b2f5372a85e'
+    refdata.value = await window.api.db.deleteTabTable(uuid)
 }
 </script>
 <style lang="less" scoped></style>

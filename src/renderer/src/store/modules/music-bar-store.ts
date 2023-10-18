@@ -8,11 +8,9 @@ export const useMusicStore = defineStore('musicStore', () => {
     const switchMusicPlayList = ref<boolean>(false)
     const musicBarLength = ref<number>(100)
     const musicVoice = ref<number>(10)
-    const musicOrderData = ref()
     const musicBarCurrentTime = ref<number>()
     const musicStatus = ref<boolean>(true)
     const musicBarStatus = ref<boolean>(false)
-    const piniaInterval = ref<any>(null)
     /** 0.顺序 1.单曲 2.随机 */
     const musicPlayMode = ref<number>(0)
     const nextPlayStatu = ref<boolean>(false)
@@ -60,11 +58,9 @@ export const useMusicStore = defineStore('musicStore', () => {
         musicBarLength,
         musicPlayList,
         musicVoice,
-        musicOrderData,
         musicStatus,
         musicBarStatus,
         musicBarCurrentTime,
-        piniaInterval,
         musicPlayMode,
         nextPlayStatu,
         setMusicPlayMode,

@@ -24,8 +24,10 @@ export function procdb() {
         /* 创建表格 */
         createConfigTable()
         createDataTable()
+        createTabsTable()
         /* 初始化默认字段在此处添加 */
         insertConfigItem('voice', '20')
+        insertTabsItem('default')
     }
 }
 
@@ -263,6 +265,11 @@ function decodeMusicDataList(data: any): musicFileExt[] {
     return data
 }
 
+/**
+ * deleteMusicDataItem
+ * @param data
+ * @returns
+ */
 export async function deleteMusicDataItem(data: musicFileExt) {
     const sql = 'DELETE FROM musicdatatable WHERE uuid = ?'
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -279,5 +286,101 @@ export async function deleteMusicDataItem(data: musicFileExt) {
     })
 }
 
+/**
+ * 创建 tabstable
+ * @returns
+ */
+function createTabsTable() {
+    const createval = [
+        '`uuid` text NOT NULL',
+        '`tabname` text',
+        'PRIMARY KEY (`uuid`)',
+    ]
+    const val = createval.join(',')
+    const sql = 'CREATE TABLE `' + 'tabstable' + '` (' + val + ')'
+    return new Promise((resolve, reject) => {
+        db.executeScript(sql)
+            .then((res) => {
+                resolve(res)
+            })
+            .catch((err) => {
+                reject(err)
+            })
+    })
+}
 
-// SELECT * FROM "musicdatatable" JOIN "tabstable" ON listid=id;
+/**
+ * insertTabsItem
+ * @param tabname
+ * @returns
+ */
+export async function insertTabsItem(tabname: string) {
+    const uuid = randomUUID()
+    const insertValue = [uuid, tabname]
+    const sql = 'INSERT INTO `' + 'tabstable' + '` (`uuid`, `tabname`) ' + 'VALUES (?,?)'
+    return new Promise((resolve, reject) => {
+        db.executeQuery(sql, '', insertValue)
+            .then((req) => {
+                resolve(req)
+            })
+            .catch((err) => {
+                reject(err)
+            })
+    })
+}
+
+/**
+ * readTabsTable
+ * @returns
+ */
+export async function readTabsTable() {
+    const sql = 'SELECT `rowid`,`uuid`, `tabname` FROM `tabstable` '
+    return new Promise((resolve, reject) => {
+        db.executeQuery(sql, 'all')
+            .then((req) => {
+                resolve(req)
+            })
+            .catch((err) => {
+                reject(err)
+            })
+    })
+}
+
+/**
+ * updateTabsItem
+ * @param tabname
+ * @param uuid
+ * @returns
+ */
+export async function updateTabsItem(tabname: string, uuid: string) {
+    const sql = 'UPDATE `tabstable` SET `tabname` = ? WHERE `uuid` = ?'
+    const val = [tabname, uuid]
+    return new Promise((resolve, reject) => {
+        db.executeQuery(sql, '', val)
+            .then((req) => {
+                resolve(req)
+            })
+            .catch((err) => {
+                reject(err)
+            })
+    })
+}
+
+/**
+ * deleteTabsItem
+ * @param uuid
+ * @returns
+ */
+export async function deleteTabsItem(uuid: string) {
+    const sql = 'DELETE FROM `tabstable` WHERE uuid = ?'
+    const val = [uuid]
+    return new Promise((resolve, reject) => {
+        db.executeQuery(sql, '', val)
+            .then((res) => {
+                resolve(res)
+            })
+            .catch((err) => {
+                reject(err)
+            })
+    })
+}
