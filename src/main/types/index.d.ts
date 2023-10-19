@@ -65,6 +65,7 @@ export type tabInfo = {
     rowid?: number
     /** 队列名字 */
     tabname?: string
+    data?: musicFileExt[]
 }
 
 export type configItem = {

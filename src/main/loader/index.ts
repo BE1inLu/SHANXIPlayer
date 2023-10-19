@@ -19,7 +19,7 @@ import { orderService } from '../service/order-service'
 export function loader(window: BrowserWindow) {
     windowControl().execWindowControl(window)
     const { loadFlacFile, loadPathFileInfo, getFileBufferData } = fileControl()
-    const { loadPathFileAndAddMusicData } = orderService()
+    const { loadPathFileAndAddMusicData, loadTabData } = orderService()
     ipcMain.handle('open-flac-file', loadFlacFile)
     ipcMain.handle('load-path-file', loadPathFileInfo)
     ipcMain.handle('get-file-buffer-data', (_event, filePatch: string) => {
@@ -80,6 +80,11 @@ export function loader(window: BrowserWindow) {
 
     ipcMain.handle('delete-tab-table', async (_, uuid: string) => {
         const res = await deleteTabsItem(uuid)
+        return res
+    })
+
+    ipcMain.handle('read-new-tabsdata', async () => {
+        const res = await loadTabData()
         return res
     })
 }

@@ -157,7 +157,7 @@ export async function updateConfigItem(configname: string, value: string) {
  */
 export async function readMusicDataTable() {
     const sql = 'SELECT * FROM `musicdatatable` '
-    return new Promise((resolve, reject) => {
+    return new Promise<any>((resolve, reject) => {
         db.executeQuery(sql, 'all')
             .then((req: any) => {
                 const result = decodeMusicDataList(req)
@@ -334,7 +334,7 @@ export async function insertTabsItem(tabname: string) {
  */
 export async function readTabsTable() {
     const sql = 'SELECT `rowid`,`uuid`, `tabname` FROM `tabstable` '
-    return new Promise((resolve, reject) => {
+    return new Promise<any>((resolve, reject) => {
         db.executeQuery(sql, 'all')
             .then((req) => {
                 resolve(req)

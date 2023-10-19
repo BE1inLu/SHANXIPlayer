@@ -35,7 +35,7 @@
             @add="modelOpen"
             @close="handleClose"
         >
-            <n-tab-pane v-for="item of tabList" :key="item.id" :name="item.name">
+            <n-tab-pane v-for="item of tabli" :key="item.rowid" :name="item.tabname!">
                 <n-grid x-gap="12" cols="12" item-responsive responsive="screen">
                     <n-gi span="1 m:2"></n-gi>
                     <n-gi span="10 m:8">
@@ -70,18 +70,24 @@
 import { h, ref, computed, onMounted } from 'vue'
 import type { DataTableColumns } from 'naive-ui'
 import { Navigation16Filled, FolderAdd20Filled, Settings24Filled } from '@vicons/fluent'
-import type { tabsList, musicFileExt } from '@renderer/types/default'
-import { playListService } from '@renderer/service/play-list-service'
+import type { tabInfo, musicFileExt } from '@renderer/types/default'
+import { useMusicListStore } from '@renderer/store/modules/music-list-store'
+import { storeToRefs } from 'pinia'
 
 const tagRef = ref<'card' | 'line'>('line')
 const panelsRef = ref([1, 2, 3])
 const showModelRef = ref(false)
 const strVal = ref()
-const { setTabList } = playListService()
+const store = useMusicListStore()
+const { tabsList: tabli } = storeToRefs(store)
 
 onMounted(() => {
-    setTabList()
+    getdata()
 })
+
+const getdata = async () => {
+    tabli.value = await window.api.db.readNewTabsData()
+}
 
 const closable = computed(() => {
     return panelsRef.value.length > 1
@@ -97,21 +103,21 @@ const switchTag = () => {
 
 const handleAdd = () => {
     console.log('add')
-    const newval = tabList.length + 1
+    const newval = tabli.value!.length + 1
     panelsRef.value.push(newval)
-    const newTable: tabsList = {
-        id: newval,
-        name: 'table' + newval,
+    const newTable: tabInfo = {
+        rowid: newval,
+        tabname: 'table' + newval,
         data: [],
     }
-    tabList.push(newTable)
+    tabli.value!.push(newTable)
 }
 
 const handleClose = (name: string) => {
     console.log('close')
     console.log(name)
     const num = parseInt(name.replace(/[^0~9]/gi, ''))
-    tabList = tabList.filter((i) => i.name != name)
+    tabli.value = tabli.value!.filter((i) => i.tabname != name)
     panelsRef.value = panelsRef.value.filter((i) => i != num)
 }
 
@@ -121,159 +127,159 @@ const addableRef = computed(() => {
     }
 })
 
-let tabList: tabsList[] = [
-    {
-        id: 1,
-        name: 'table1',
-        data: [
-            {
-                id: 121,
-                fileid: 71,
-                name: 'file111111111111111111111111111111111111111111',
-                url: 'file://daa',
-                ext: 'flac',
-            },
-            {
-                id: 122,
-                fileid: 72,
-                name: 'file112',
-                url: 'file://dab',
-                ext: 'flac',
-            },
-            {
-                id: 123,
-                fileid: 73,
-                name: 'file113',
-                url: 'file://dac',
-                ext: 'flac',
-            },
-            {
-                id: 124,
-                fileid: 74,
-                name: 'file114',
-                url: 'file://dad',
-                ext: 'flac',
-            },
-            {
-                id: 3,
-                fileid: 789456,
-                name: 'file12',
-                url: 'file://db',
-                ext: 'flac',
-            },
-            {
-                id: 4,
-                fileid: 789456,
-                name: 'file13',
-                url: 'file://dc',
-                ext: 'flac',
-            },
-            {
-                id: 5,
-                fileid: 789456,
-                name: 'file14',
-                url: 'file://dd',
-                ext: 'flac',
-            },
-            {
-                id: 6,
-                fileid: 789456,
-                name: 'file15',
-                url: 'file://de',
-                ext: 'flac',
-            },
-            {
-                id: 2345,
-                fileid: 789456,
-                name: 'file2',
-                url: 'file://c',
-                ext: 'flac',
-            },
-            {
-                id: 3456,
-                fileid: 789456,
-                name: 'file3',
-                url: 'file://b',
-                ext: 'flac',
-            },
-            {
-                id: 4567,
-                fileid: 789456,
-                name: 'file4',
-                url: 'file://a',
-                ext: 'flac',
-            },
-        ],
-    },
-    {
-        id: 2,
-        name: 'table2',
-        data: [
-            {
-                id: 1234,
-                fileid: 789456,
-                name: 'file1',
-                url: 'file://d',
-                ext: 'flac',
-            },
-            {
-                id: 2345,
-                fileid: 789456,
-                name: 'file2',
-                url: 'file://c',
-                ext: 'flac',
-            },
-            {
-                id: 3456,
-                fileid: 789456,
-                name: 'file3',
-                url: 'file://b',
-                ext: 'flac',
-            },
-            {
-                id: 4567,
-                fileid: 789456,
-                name: 'file4',
-                url: 'file://a',
-                ext: 'flac',
-            },
-        ],
-    },
-    {
-        id: 3,
-        name: 'table3',
-        data: [
-            {
-                id: 1234,
-                fileid: 789456,
-                name: 'file1',
-                url: 'file://d',
-                ext: 'flac',
-            },
-            {
-                id: 2345,
-                fileid: 789456,
-                name: 'file2',
-                url: 'file://c',
-                ext: 'flac',
-            },
-            {
-                id: 3456,
-                fileid: 789456,
-                name: 'file3',
-                url: 'file://b',
-                ext: 'flac',
-            },
-            {
-                id: 4567,
-                fileid: 789456,
-                name: 'file4',
-                url: 'file://a',
-                ext: 'flac',
-            },
-        ],
-    },
-]
+// tabList = [
+//     {
+//         rowid: 0,
+//         tabname: 'table1',
+//         data: [
+//             {
+//                 id: 121,
+//                 fileid: 71,
+//                 name: 'file111111111111111111111111111111111111111111',
+//                 url: 'file://daa',
+//                 ext: 'flac',
+//             },
+//             {
+//                 id: 122,
+//                 fileid: 72,
+//                 name: 'file112',
+//                 url: 'file://dab',
+//                 ext: 'flac',
+//             },
+//             {
+//                 id: 123,
+//                 fileid: 73,
+//                 name: 'file113',
+//                 url: 'file://dac',
+//                 ext: 'flac',
+//             },
+//             {
+//                 id: 124,
+//                 fileid: 74,
+//                 name: 'file114',
+//                 url: 'file://dad',
+//                 ext: 'flac',
+//             },
+//             {
+//                 id: 3,
+//                 fileid: 789456,
+//                 name: 'file12',
+//                 url: 'file://db',
+//                 ext: 'flac',
+//             },
+//             {
+//                 id: 4,
+//                 fileid: 789456,
+//                 name: 'file13',
+//                 url: 'file://dc',
+//                 ext: 'flac',
+//             },
+//             {
+//                 id: 5,
+//                 fileid: 789456,
+//                 name: 'file14',
+//                 url: 'file://dd',
+//                 ext: 'flac',
+//             },
+//             {
+//                 id: 6,
+//                 fileid: 789456,
+//                 name: 'file15',
+//                 url: 'file://de',
+//                 ext: 'flac',
+//             },
+//             {
+//                 id: 2345,
+//                 fileid: 789456,
+//                 name: 'file2',
+//                 url: 'file://c',
+//                 ext: 'flac',
+//             },
+//             {
+//                 id: 3456,
+//                 fileid: 789456,
+//                 name: 'file3',
+//                 url: 'file://b',
+//                 ext: 'flac',
+//             },
+//             {
+//                 id: 4567,
+//                 fileid: 789456,
+//                 name: 'file4',
+//                 url: 'file://a',
+//                 ext: 'flac',
+//             },
+//         ],
+//     },
+//     {
+//         rowid: 1,
+//         tabname: 'table2',
+//         data: [
+//             {
+//                 id: 1234,
+//                 fileid: 789456,
+//                 name: 'file1',
+//                 url: 'file://d',
+//                 ext: 'flac',
+//             },
+//             {
+//                 id: 2345,
+//                 fileid: 789456,
+//                 name: 'file2',
+//                 url: 'file://c',
+//                 ext: 'flac',
+//             },
+//             {
+//                 id: 3456,
+//                 fileid: 789456,
+//                 name: 'file3',
+//                 url: 'file://b',
+//                 ext: 'flac',
+//             },
+//             {
+//                 id: 4567,
+//                 fileid: 789456,
+//                 name: 'file4',
+//                 url: 'file://a',
+//                 ext: 'flac',
+//             },
+//         ],
+//     },
+//     {
+//         rowid: 3,
+//         tabname: 'table3',
+//         data: [
+//             {
+//                 id: 1234,
+//                 fileid: 789456,
+//                 name: 'file1',
+//                 url: 'file://d',
+//                 ext: 'flac',
+//             },
+//             {
+//                 id: 2345,
+//                 fileid: 789456,
+//                 name: 'file2',
+//                 url: 'file://c',
+//                 ext: 'flac',
+//             },
+//             {
+//                 id: 3456,
+//                 fileid: 789456,
+//                 name: 'file3',
+//                 url: 'file://b',
+//                 ext: 'flac',
+//             },
+//             {
+//                 id: 4567,
+//                 fileid: 789456,
+//                 name: 'file4',
+//                 url: 'file://a',
+//                 ext: 'flac',
+//             },
+//         ],
+//     },
+// ]
 
 const columns: DataTableColumns<musicFileExt> = [
     {
