@@ -27,10 +27,10 @@ declare global {
                 updateTabItem: (tabname: string, uuid: string) => boolean
                 deleteTabTable: (uuid: string) => boolean
                 readNewTabsData: () => tabInfo[]
+                loadPathToDB: () => void
+                clearMusicDataTable: () => boolean
             }
-            test: {
-                testfunc1: () => void
-            }
+            test: {}
         }
     }
 }

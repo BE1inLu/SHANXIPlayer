@@ -27,7 +27,8 @@ export function procdb() {
         createTabsTable()
         /* 初始化默认字段在此处添加 */
         insertConfigItem('voice', '20')
-        insertTabsItem('default')
+        insertTabsItem('table1')
+        insertTabsItem('table2')
     }
 }
 
@@ -271,8 +272,7 @@ function decodeMusicDataList(data: any): musicFileExt[] {
  */
 export async function deleteMusicDataItem(data: musicFileExt) {
     const sql = 'DELETE FROM musicdatatable WHERE uuid = ?'
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const uuid = data.UUID!
+    const uuid = data.uuid! || data.UUID!
     const val = [uuid]
     return new Promise((resolve, reject) => {
         db.executeQuery(sql, '', val)
@@ -290,11 +290,7 @@ export async function deleteMusicDataItem(data: musicFileExt) {
  * @returns
  */
 function createTabsTable() {
-    const createval = [
-        '`uuid` text NOT NULL',
-        '`tabname` text',
-        'PRIMARY KEY (`uuid`)',
-    ]
+    const createval = ['`uuid` text NOT NULL', '`tabname` text', 'PRIMARY KEY (`uuid`)']
     const val = createval.join(',')
     const sql = 'CREATE TABLE `' + 'tabstable' + '` (' + val + ')'
     return new Promise((resolve, reject) => {
@@ -375,6 +371,23 @@ export async function deleteTabsItem(uuid: string) {
     const val = [uuid]
     return new Promise((resolve, reject) => {
         db.executeQuery(sql, '', val)
+            .then((res) => {
+                resolve(res)
+            })
+            .catch((err) => {
+                reject(err)
+            })
+    })
+}
+
+/**
+ * 清空 musicdatatable 表
+ * @returns
+ */
+export function clearMusicDataTable() {
+    const sql = 'DELETE FROM `musicdatatable`'
+    return new Promise((resolve, reject) => {
+        db.executeScript(sql)
             .then((res) => {
                 resolve(res)
             })
