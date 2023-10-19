@@ -8,7 +8,7 @@
                     </n-icon>
                 </template>
             </n-button>
-            <n-button tertiary circle type="info" size="small">
+            <n-button tertiary circle type="info" size="small" @clicked="addFileToDB">
                 <template #icon>
                     <n-icon>
                         <FolderAdd20Filled />
@@ -67,7 +67,7 @@
 </template>
 
 <script lang="ts" setup>
-import { h, ref, computed, onMounted } from 'vue'
+import { h, ref, computed } from 'vue'
 import type { DataTableColumns } from 'naive-ui'
 import { Navigation16Filled, FolderAdd20Filled, Settings24Filled } from '@vicons/fluent'
 import type { tabInfo, musicFileExt } from '@renderer/types/default'
@@ -75,22 +75,18 @@ import { useMusicListStore } from '@renderer/store/modules/music-list-store'
 import { storeToRefs } from 'pinia'
 
 const tagRef = ref<'card' | 'line'>('line')
-const panelsRef = ref([1, 2, 3])
 const showModelRef = ref(false)
 const strVal = ref()
 const store = useMusicListStore()
 const { tabsList: tabli } = storeToRefs(store)
 
-onMounted(() => {
-    getdata()
-})
-
-const getdata = async () => {
-    tabli.value = await window.api.db.readNewTabsData()
+const addFileToDB = async () => {
+    const res = await window.api.test.testfunc1()
+    console.log(res);
 }
 
 const closable = computed(() => {
-    return panelsRef.value.length > 1
+    return tabli.value!.length > 1
 })
 
 const modelOpen = () => {
@@ -103,183 +99,25 @@ const switchTag = () => {
 
 const handleAdd = () => {
     console.log('add')
-    const newval = tabli.value!.length + 1
-    panelsRef.value.push(newval)
     const newTable: tabInfo = {
-        rowid: newval,
-        tabname: 'table' + newval,
+        rowid: tabli.value!.length,
+        tabname: strVal.value,
         data: [],
     }
     tabli.value!.push(newTable)
+
 }
 
 const handleClose = (name: string) => {
     console.log('close')
-    console.log(name)
-    const num = parseInt(name.replace(/[^0~9]/gi, ''))
     tabli.value = tabli.value!.filter((i) => i.tabname != name)
-    panelsRef.value = panelsRef.value.filter((i) => i != num)
 }
 
 const addableRef = computed(() => {
     return {
-        disabled: panelsRef.value.length >= 20,
+        disabled: tabli.value!.length >= 10,
     }
 })
-
-// tabList = [
-//     {
-//         rowid: 0,
-//         tabname: 'table1',
-//         data: [
-//             {
-//                 id: 121,
-//                 fileid: 71,
-//                 name: 'file111111111111111111111111111111111111111111',
-//                 url: 'file://daa',
-//                 ext: 'flac',
-//             },
-//             {
-//                 id: 122,
-//                 fileid: 72,
-//                 name: 'file112',
-//                 url: 'file://dab',
-//                 ext: 'flac',
-//             },
-//             {
-//                 id: 123,
-//                 fileid: 73,
-//                 name: 'file113',
-//                 url: 'file://dac',
-//                 ext: 'flac',
-//             },
-//             {
-//                 id: 124,
-//                 fileid: 74,
-//                 name: 'file114',
-//                 url: 'file://dad',
-//                 ext: 'flac',
-//             },
-//             {
-//                 id: 3,
-//                 fileid: 789456,
-//                 name: 'file12',
-//                 url: 'file://db',
-//                 ext: 'flac',
-//             },
-//             {
-//                 id: 4,
-//                 fileid: 789456,
-//                 name: 'file13',
-//                 url: 'file://dc',
-//                 ext: 'flac',
-//             },
-//             {
-//                 id: 5,
-//                 fileid: 789456,
-//                 name: 'file14',
-//                 url: 'file://dd',
-//                 ext: 'flac',
-//             },
-//             {
-//                 id: 6,
-//                 fileid: 789456,
-//                 name: 'file15',
-//                 url: 'file://de',
-//                 ext: 'flac',
-//             },
-//             {
-//                 id: 2345,
-//                 fileid: 789456,
-//                 name: 'file2',
-//                 url: 'file://c',
-//                 ext: 'flac',
-//             },
-//             {
-//                 id: 3456,
-//                 fileid: 789456,
-//                 name: 'file3',
-//                 url: 'file://b',
-//                 ext: 'flac',
-//             },
-//             {
-//                 id: 4567,
-//                 fileid: 789456,
-//                 name: 'file4',
-//                 url: 'file://a',
-//                 ext: 'flac',
-//             },
-//         ],
-//     },
-//     {
-//         rowid: 1,
-//         tabname: 'table2',
-//         data: [
-//             {
-//                 id: 1234,
-//                 fileid: 789456,
-//                 name: 'file1',
-//                 url: 'file://d',
-//                 ext: 'flac',
-//             },
-//             {
-//                 id: 2345,
-//                 fileid: 789456,
-//                 name: 'file2',
-//                 url: 'file://c',
-//                 ext: 'flac',
-//             },
-//             {
-//                 id: 3456,
-//                 fileid: 789456,
-//                 name: 'file3',
-//                 url: 'file://b',
-//                 ext: 'flac',
-//             },
-//             {
-//                 id: 4567,
-//                 fileid: 789456,
-//                 name: 'file4',
-//                 url: 'file://a',
-//                 ext: 'flac',
-//             },
-//         ],
-//     },
-//     {
-//         rowid: 3,
-//         tabname: 'table3',
-//         data: [
-//             {
-//                 id: 1234,
-//                 fileid: 789456,
-//                 name: 'file1',
-//                 url: 'file://d',
-//                 ext: 'flac',
-//             },
-//             {
-//                 id: 2345,
-//                 fileid: 789456,
-//                 name: 'file2',
-//                 url: 'file://c',
-//                 ext: 'flac',
-//             },
-//             {
-//                 id: 3456,
-//                 fileid: 789456,
-//                 name: 'file3',
-//                 url: 'file://b',
-//                 ext: 'flac',
-//             },
-//             {
-//                 id: 4567,
-//                 fileid: 789456,
-//                 name: 'file4',
-//                 url: 'file://a',
-//                 ext: 'flac',
-//             },
-//         ],
-//     },
-// ]
 
 const columns: DataTableColumns<musicFileExt> = [
     {
