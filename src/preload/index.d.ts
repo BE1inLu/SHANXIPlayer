@@ -26,6 +26,7 @@ declare global {
                 insertTabItem: (tabname: string) => boolean
                 updateTabItem: (tabname: string, uuid: string) => boolean
                 deleteTabTable: (uuid: string) => boolean
+                readNewTabsData: () => tabInfo[]
             }
             test: {
                 testfunc1: () => void

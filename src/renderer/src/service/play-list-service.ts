@@ -1,36 +1,21 @@
 import { useMusicListStore } from '@renderer/store/modules/music-list-store'
-import { tabsList } from '@renderer/types/default'
+
 import { storeToRefs } from 'pinia'
 
 export const playListService = () => {
     const store = useMusicListStore()
-    const { tabsList, musicDataList } = storeToRefs(store)
+    const { tabsList } = storeToRefs(store)
 
-    const setTabList = () => {
+    const setTabList = async () => {
+        await getData()
+    }
 
-        const panelTabList: tabsList[] = []
-        const defaultTab: tabsList = {
-            id: 0,
-            name: 'default',
-            data: musicDataList.value!,
-        }
-        // panelTabList.unshift(defaultTab)
-        tabsList.value!.forEach((i) => {
-            const tab: tabsList = {
-                id: i.rowid!,
-                name: i.tabname!,
-                data: [],
-            }
-            musicDataList.value!.forEach((item) => {
-                if (item.listID == tab.id) tab.data.push(item)
-            })
-            panelTabList.push(tab)
-        })
-        panelTabList.unshift(defaultTab)
-        return panelTabList
+    const getData = async () => {
+        tabsList.value = await window.api.db.readNewTabsData()
     }
 
     return {
         setTabList,
+        getData,
     }
 }

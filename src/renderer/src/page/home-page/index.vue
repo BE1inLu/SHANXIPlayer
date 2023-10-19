@@ -10,19 +10,34 @@
                         <n-grid :cols="12">
                             <n-gi :span="2">
                                 <n-statistic label="歌曲总数" tabular-nums>
-                                    <n-number-animation :from="0" :to="114" show-separator :duration="1000" />
+                                    <n-number-animation
+                                        :from="0"
+                                        :to="114"
+                                        show-separator
+                                        :duration="1000"
+                                    />
                                 </n-statistic>
                             </n-gi>
                             <n-gi></n-gi>
                             <n-gi :span="2">
                                 <n-statistic label="歌单列表" tabular-nums>
-                                    <n-number-animation :from="0" :to="514" show-separator :duration="1500" />
+                                    <n-number-animation
+                                        :from="0"
+                                        :to="514"
+                                        show-separator
+                                        :duration="1500"
+                                    />
                                 </n-statistic>
                             </n-gi>
                             <n-gi></n-gi>
                             <n-gi :span="2">
                                 <n-statistic label="播放时长" tabular-nums>
-                                    <n-number-animation :from="0" :to="114514" show-separator :duration="2000" />
+                                    <n-number-animation
+                                        :from="0"
+                                        :to="114514"
+                                        show-separator
+                                        :duration="2000"
+                                    />
                                 </n-statistic>
                             </n-gi>
                         </n-grid>
@@ -39,5 +54,20 @@
     <n-space vertical> </n-space>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { useMusicListStore } from '@renderer/store/modules/music-list-store'
+import { storeToRefs } from 'pinia'
+import { onMounted } from 'vue'
+
+const store = useMusicListStore()
+const { tabsList: tabli } = storeToRefs(store)
+
+onMounted(() => {
+    getdata()
+})
+
+const getdata = async () => {
+    tabli.value = await window.api.db.readNewTabsData()
+}
+</script>
 <style lang="less" scoped></style>
