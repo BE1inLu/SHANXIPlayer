@@ -67,15 +67,21 @@
 </template>
 
 <script lang="ts" setup>
-import { h, ref, computed } from 'vue'
+import { h, ref, computed, onMounted } from 'vue'
 import type { DataTableColumns } from 'naive-ui'
 import { Navigation16Filled, FolderAdd20Filled, Settings24Filled } from '@vicons/fluent'
 import type { tabsList, musicFileExt } from '@renderer/types/default'
+import { playListService } from '@renderer/service/play-list-service'
 
 const tagRef = ref<'card' | 'line'>('line')
 const panelsRef = ref([1, 2, 3])
 const showModelRef = ref(false)
-const strVal=ref()
+const strVal = ref()
+const { setTabList } = playListService()
+
+onMounted(() => {
+    setTabList()
+})
 
 const closable = computed(() => {
     return panelsRef.value.length > 1
