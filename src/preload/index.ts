@@ -31,11 +31,11 @@ const api = {
         updateTabItem: (tabname: string, uuid: string) =>
             ipcRenderer.invoke('update-tab-item', tabname, uuid),
         deleteTabTable: (uuid: string) => ipcRenderer.invoke('delete-tab-table', uuid),
-        readNewTabsData:()=>ipcRenderer.invoke('read-new-tabsdata')
+        readNewTabsData: () => ipcRenderer.invoke('read-new-tabsdata'),
+        loadPathToDB: () => ipcRenderer.invoke('load-path-to-db'),
+        clearMusicDataTable: () => ipcRenderer.invoke('clear-music-data-table'),
     },
-    test: {
-        testfunc1: () => ipcRenderer.invoke('test-a'),
-    },
+    test: {},
 }
 
 if (process.contextIsolated) {

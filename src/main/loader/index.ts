@@ -13,6 +13,7 @@ import {
     readTabsTable,
     updateConfigItem,
     updateTabsItem,
+    clearMusicDataTable,
 } from '../data/db-control'
 import type { musicFileExt } from '../types'
 import { orderService } from '../service/order-service'
@@ -58,7 +59,7 @@ export function loader(window: BrowserWindow) {
         return res
     })
 
-    ipcMain.handle('test-a', async () => {
+    ipcMain.handle('load-path-to-db', async () => {
         const res = await loadPathFileAndAddMusicData()
         return res
     })
@@ -85,6 +86,11 @@ export function loader(window: BrowserWindow) {
 
     ipcMain.handle('read-new-tabsdata', async () => {
         const res = await loadTabData()
+        return res
+    })
+
+    ipcMain.handle('clear-music-data-table',async()=>{
+        const res = await clearMusicDataTable()
         return res
     })
 }
