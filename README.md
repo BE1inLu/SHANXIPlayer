@@ -1,4 +1,4 @@
-# SANXIPlayer
+# SHANXIPlayer
 
 vue + electron  
 UI: naiveui  
