@@ -1,3 +1,6 @@
-# PROJECT:MUSIC
+# SANXIPlayer
 
-一个音频播放器
+vue + electron  
+UI: naiveui  
+
+
