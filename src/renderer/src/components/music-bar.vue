@@ -174,7 +174,7 @@ import {
     ArrowRepeatAll20Filled,
     Pause16Filled,
 } from '@vicons/fluent'
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMusicStore } from '@renderer/store'
 import { useMusicService } from '@renderer/service/music-bar-service'
@@ -201,6 +201,21 @@ const { getRandomInt, secondToTime } = util()
 
 const musicLengthTooltip = (val: number) => `${secondToTime(val)}`
 
+onMounted(() => {
+    getMusicVoiceData()
+})
+
+const getMusicVoiceData = async () => {
+    const data = await window.api.db.readConfigTable()
+    let voiceStatus
+    data.forEach((i) => {
+        if (i[1] == 'voice') {
+            voiceStatus = parseInt(i[2])
+        }
+    })
+    musicVoice.value = voiceStatus
+}
+
 /**
  * 音量设置
  * @param value
@@ -216,7 +231,7 @@ const playMode = () => {
 
 /**
  * 播放/暂停方法
- * @todo 逻辑优化 
+ * @todo 逻辑优化
  */
 const useMusic = () => {
     if (localData.value != undefined) {
@@ -226,6 +241,7 @@ const useMusic = () => {
         else seek(musicBarCurrentTime.value!)
     } else {
         backData.value = localData.value
+        if (musicPlayMode.value == 1) seek(0)
         if (musicPlayMode.value == 0) {
             backData.value = localData.value
             localData.value = playList.value[0]
@@ -236,7 +252,7 @@ const useMusic = () => {
             playPause(localData.value)
         }
     }
-    playSuccess=false
+    playSuccess = false
 }
 
 const updateLengthValue = (val: number) => {
@@ -256,7 +272,7 @@ const playListItemData = (data: playListItem) => {
         localData.value = data
         playPause(data)
     }
-    playSuccess=false
+    playSuccess = false
 }
 
 const showNote = () => {
@@ -265,17 +281,18 @@ const showNote = () => {
 
 /**
  * 下一播放
- * 
+ *
  */
 const nextPlay = () => {
     let index = 0
-    
-    const localPlayList:playListItem[]=playList.value
+
+    const localPlayList: playListItem[] = playList.value
     const length = localPlayList.length
     if (length == 0) return
     if (localData.value != undefined) {
-       if(!playSuccess) playPause(localData.value)
-        index=localPlayList.indexOf(localData.value)
+        if (!playSuccess) playPause(localData.value)
+        if (musicPlayMode.value == 1) seek(0)
+        index = localPlayList.indexOf(localData.value)
         if (index++ > length) {
             if (musicPlayMode.value == 2) {
                 localData.value = localPlayList[getRandomInt(length)]
@@ -293,7 +310,7 @@ const nextPlay = () => {
     } else {
         useMusic()
     }
-    playSuccess=false
+    playSuccess = false
 }
 
 const backPlay = () => {
@@ -304,7 +321,7 @@ const backPlay = () => {
     localData.value = backData.value
     playPause(localData.value)
     backData.value = data
-    playSuccess=false
+    playSuccess = false
 }
 
 watch(nextPlayStatu, () => {

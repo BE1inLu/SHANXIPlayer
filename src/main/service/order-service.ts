@@ -31,9 +31,9 @@ export const orderService = () => {
             musicdata.push(data)
         })
 
-        let j=0;
+        let j = 0
         oldtabsData.forEach((i) => {
-            j++;
+            j++
             const data: tabInfo = {
                 rowid: j,
                 uuid: i[1],

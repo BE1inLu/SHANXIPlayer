@@ -89,7 +89,7 @@ export function loader(window: BrowserWindow) {
         return res
     })
 
-    ipcMain.handle('clear-music-data-table',async()=>{
+    ipcMain.handle('clear-music-data-table', async () => {
         const res = await clearMusicDataTable()
         return res
     })

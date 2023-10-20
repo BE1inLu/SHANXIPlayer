@@ -1,7 +1,6 @@
 <template>
     <n-space vertical>
         <n-space justify="end" style="margin-top: 10px; margin-right: 10px">
-
             <n-tooltip trigger="hover">
                 <template #trigger>
                     <n-button tertiary circle type="info" size="small" @click="switchTag">
@@ -12,7 +11,7 @@
                         </template>
                     </n-button>
                 </template>
-                添加TAB...
+                施工中🚧...
             </n-tooltip>
             <n-tooltip trigger="hover">
                 <template #trigger>
@@ -26,7 +25,7 @@
                 </template>
                 从文件夹添加...
             </n-tooltip>
-            <n-popselect size="small" :options="options">
+            <n-dropdown trigger="hover" :options="options" @select="handleSelect">
                 <n-button tertiary circle type="info" size="small">
                     <template #icon>
                         <n-icon>
@@ -34,17 +33,31 @@
                         </n-icon>
                     </template>
                 </n-button>
-            </n-popselect>
+            </n-dropdown>
         </n-space>
         <n-divider style="margin-top: 0; margin-bottom: 0" />
-        <n-tabs class="tab-style" size="medium" :type="tagRef" :closable="closable" animated placement="left"
-            :addable="addableRef" @add="modelOpen" @close="handleClose">
+        <n-tabs
+            class="tab-style"
+            size="medium"
+            :type="tagRef"
+            :closable="closable"
+            animated
+            placement="left"
+            :addable="addableRef"
+            @add="modelOpen"
+            @close="handleClose"
+        >
             <n-tab-pane v-for="item of tabli" :key="item.rowid" :name="item.tabname!">
                 <n-grid x-gap="12" cols="12" item-responsive responsive="screen">
                     <n-gi span="1 m:2"></n-gi>
                     <n-gi span="10 m:8">
-                        <n-data-table :columns="columns" max-height="70vh" :data="item.data" :pagination="false"
-                            :bordered="false">
+                        <n-data-table
+                            :columns="columns"
+                            max-height="70vh"
+                            :data="item.data"
+                            :pagination="false"
+                            :bordered="false"
+                        >
                         </n-data-table>
                     </n-gi>
                     <n-gi span="1 l:2"></n-gi>
@@ -53,21 +66,34 @@
         </n-tabs>
     </n-space>
 
-    <n-modal v-model:show="showModelRef" preset="dialog" title="添加tab" positive-text="确认" negative-text="返回"
-        @positive-click="handleAdd">
+    <n-modal
+        v-model:show="showModelRef"
+        preset="dialog"
+        title="添加tab"
+        positive-text="确认"
+        negative-text="返回"
+        @positive-click="handleAdd"
+    >
         <div><n-input v-model:value="strVal" type="text" /></div>
     </n-modal>
 </template>
 
 <script lang="ts" setup>
-import { h, ref, computed, onMounted } from 'vue'
+import { h, ref, computed } from 'vue'
 import type { DataTableColumns } from 'naive-ui'
-import { Navigation16Filled, FolderAdd20Filled, Add20Filled, Settings24Filled, Delete20Filled } from '@vicons/fluent'
-import type { tabInfo, musicFileExt, playListItem } from '@renderer/types/default'
+import {
+    Navigation16Filled,
+    FolderAdd20Filled,
+    Add20Filled,
+    Settings24Filled,
+    Delete20Filled,
+} from '@vicons/fluent'
+import type { musicFileExt, playListItem } from '@renderer/types/default'
 import { useMusicListStore } from '@renderer/store/modules/music-list-store'
 import { storeToRefs } from 'pinia'
 import { NButton, NIcon } from 'naive-ui'
 import { useMusicStore } from '@renderer/store'
+import { playListService } from '@renderer/service/play-list-service'
 
 const tagRef = ref<'card' | 'line'>('line')
 const showModelRef = ref(false)
@@ -76,18 +102,11 @@ const store = useMusicListStore()
 const playListStore = useMusicStore()
 const { tabsList: tabli } = storeToRefs(store)
 const { musicPlayList } = storeToRefs(playListStore)
-
-onMounted(() => {
-    getdata()
-})
-
-const getdata = async () => {
-    tabli.value = await window.api.db.readNewTabsData()
-}
+const { getTabsUUID, getData } = playListService()
 
 const addFileToDB = async () => {
     await window.api.db.loadPathToDB()
-    getdata()
+    getData()
 }
 
 const closable = computed(() => {
@@ -99,23 +118,17 @@ const modelOpen = () => {
 }
 
 const switchTag = () => {
-    tagRef.value = tagRef.value == 'card' ? 'line' : 'card'
+    tagRef.value = 'line'
 }
 
-const handleAdd = () => {
-    console.log('add')
-    const newTable: tabInfo = {
-        rowid: tabli.value!.length,
-        tabname: strVal.value,
-        data: [],
-    }
-    tabli.value!.push(newTable)
-
+const handleAdd = async () => {
+    await window.api.db.insertTabItem(strVal.value)
+    getData()
 }
 
-const handleClose = (name: string) => {
-    console.log('close')
-    tabli.value = tabli.value!.filter((i) => i.tabname != name)
+const handleClose = async (name: string) => {
+    await window.api.db.deleteTabTable(getTabsUUID(name))
+    getData()
 }
 
 const addableRef = computed(() => {
@@ -145,11 +158,12 @@ const columns: DataTableColumns<musicFileExt> = [
     {
         title: 'Ext',
         key: 'ext',
-        width: 50,
+        width: 100,
     },
     {
         title: '',
         key: 'action',
+        fixed: 'right',
         render: (row) => {
             return h('span', [
                 h(NButton, {
@@ -168,11 +182,11 @@ const columns: DataTableColumns<musicFileExt> = [
                             fileid: row.fileid,
                             name: row.name,
                             url: row.url,
-                            ext: row.ext
+                            ext: row.ext,
                         }
                         const del = async () => {
                             await window.api.db.deleteMusicDataItem(musicFile)
-                            getdata()
+                            getData()
                         }
                         del()
                     },
@@ -199,27 +213,42 @@ const columns: DataTableColumns<musicFileExt> = [
                             musicPlayList.value.push(playItem)
                         }
                     },
-                })
+                }),
             ])
-        }
-    }
+        },
+    },
 ]
 
+const handleSelect = (val: string) => {
+    if (val == 'key1') {
+        window.api.db.clearMusicDataTable()
+        getData()
+    } else if (val == 'key2') {
+        tabli.value![0].data!.forEach((i: musicFileExt) => {
+            const playItem: playListItem = {
+                title: i.name,
+                url: i.url,
+                statu: undefined,
+                players: undefined,
+            }
+            const flag = musicPlayList.value.find((j) => i.name == j.title)
+            if (!flag) {
+                musicPlayList.value.push(playItem)
+            }
+        })
+    }
+}
 
 const options = [
     {
         label: '清空列表',
-        value: 'val1',
-        onClick:()=>{
-            
-        }
+        key: 'key1',
     },
     {
         label: '全部添加到播放队列',
-        value: 'val2'
+        key: 'key2',
     },
 ]
-
 </script>
 <style lang="less" scoped>
 .btn-style {

@@ -68,7 +68,12 @@ export const useMusicService = () => {
             }
         })
         if (player == undefined) return
+        setMusicVoiceData(musicVoice.value)
         player.voice = musicVoice.value
+    }
+
+    const setMusicVoiceData = async (val: number) => {
+        await window.api.db.updateConfigItem('voice', val.toString())
     }
 
     return {
@@ -190,7 +195,6 @@ class WebAudioPlayer {
                 // 音频 暂停/结束 事件
                 // ...
                 this.stop()
-                console.log('音频 暂停/结束 事件')
                 const { nextPlayStatu } = storeToRefs(this.store)
                 nextPlayStatu.value = true
             }

@@ -4,8 +4,8 @@
         <n-gi span="10 m:8">
             <n-space vertical>
                 <n-card style="margin-top: 10px">
-                    <n-page-header subtitle="Player">
-                        <template #title> SHANXI </template>
+                    <n-page-header subtitle="叁汐">
+                        <template #title> SHANXIPlayer </template>
                         <div>一些数据</div>
                         <n-grid :cols="12">
                             <n-gi :span="2">
@@ -31,7 +31,7 @@
                             </n-gi>
                             <n-gi></n-gi>
                             <n-gi :span="2">
-                                <n-statistic label="播放时长" tabular-nums>
+                                <n-statistic label="施工中🚧" tabular-nums>
                                     <n-number-animation
                                         :from="0"
                                         :to="114514"

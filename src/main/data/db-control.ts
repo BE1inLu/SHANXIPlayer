@@ -20,15 +20,12 @@ export function procdb() {
     db.setdbPath(resPath)
 
     if (!pathflag) {
-        console.log('db proc success')
         /* 创建表格 */
         createConfigTable()
         createDataTable()
         createTabsTable()
         /* 初始化默认字段在此处添加 */
         insertConfigItem('voice', '20')
-        insertTabsItem('table1')
-        insertTabsItem('table2')
     }
 }
 
