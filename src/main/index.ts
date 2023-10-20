@@ -5,7 +5,6 @@ import icon from '../../resources/icon.png?asset'
 import { WINDOWCONFIG } from './config/windowConfig'
 import { loader } from './loader/index'
 function createWindow(): void {
-    /**首屏窗口 */
     const mainWindow = new BrowserWindow(WINDOWCONFIG(icon))
 
     loader(mainWindow)

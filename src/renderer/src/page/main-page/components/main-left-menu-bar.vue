@@ -9,10 +9,21 @@
         :native-scrollbar="false"
     >
         <div class="menu-bar">
-            <n-menu id="flag-menu" :collapsed-width="64" :collapsed-icon-size="22" :options="menuOptions"
-                :watch-props="['defaultValue']" @update:value="updateValue" />
-            <n-menu id="flag-menu" :collapsed-width="64" :collapsed-icon-size="22" :options="settingOptions"
-                @update:value="updateValue" />
+            <n-menu
+                id="flag-menu"
+                :collapsed-width="64"
+                :collapsed-icon-size="22"
+                :options="menuOptions"
+                :watch-props="['defaultValue']"
+                @update:value="updateValue"
+            />
+            <n-menu
+                id="flag-menu"
+                :collapsed-width="64"
+                :collapsed-icon-size="22"
+                :options="settingOptions"
+                @update:value="updateValue"
+            />
         </div>
     </n-layout-sider>
 </template>
@@ -25,8 +36,8 @@ import {
     Settings24Filled,
     Home12Filled,
     TextBulletListLtr20Filled,
-    Document20Regular,
-    Search12Regular,
+    // Document20Regular,
+    // Search12Regular,
 } from '@vicons/fluent'
 import { RouterLink } from 'vue-router'
 
@@ -56,10 +67,11 @@ const settingOptions: MenuOption[] = [
             {
                 label: setLabel('/pianopage', '彩蛋'),
                 key: 'key-1',
-            }, {
-                label: setLabel('/orderpage', 'test'),
-                key: 'key-2'
-            }
+            },
+            //  {
+            //     label: setLabel('/orderpage', 'test'),
+            //     key: 'key-2'
+            // }
         ],
     },
 ]
@@ -84,19 +96,19 @@ const menuOptions: MenuOption[] = [
         key: 'key2',
         icon: renderIcon(TextBulletListLtr20Filled),
     },
-    {   
-        label:"施工中🚧",
-        key: 'key3',
-        icon: renderIcon(Search12Regular),
-    },
-    {   
-        label: '施工中🚧',
-        key: 'key4',
-        icon: renderIcon(Document20Regular),
-    },
+    // {
+    //     label: '施工中🚧',
+    //     key: 'key3',
+    //     icon: renderIcon(Search12Regular),
+    // },
+    // {
+    //     label: '施工中🚧',
+    //     key: 'key4',
+    //     icon: renderIcon(Document20Regular),
+    // },
 ]
 
-const updateValue = () => { }
+const updateValue = () => {}
 </script>
 <style lang="less" scoped>
 @import '../../../assets/css/defaultCommon.less';

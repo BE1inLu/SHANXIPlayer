@@ -27,8 +27,8 @@ export const util = () => {
 
     /**
      * 秒数转时分秒
-     * @param val 
-     * @returns 
+     * @param val
+     * @returns
      */
     const secondToTime = (val: number) => {
         var t = ''
@@ -53,5 +53,5 @@ export const util = () => {
         return t
     }
 
-    return { debounce, getRandomInt,secondToTime }
+    return { debounce, getRandomInt, secondToTime }
 }

@@ -4,8 +4,8 @@
         <n-gi span="10 m:8">
             <n-space vertical>
                 <n-card style="margin-top: 10px">
-                    <n-page-header subtitle="Player">
-                        <template #title> 🚧 </template>
+                    <n-page-header subtitle="叁汐">
+                        <template #title> SHANXIPlayer </template>
                         <div>一些数据</div>
                         <n-grid :cols="12">
                             <n-gi :span="2">
