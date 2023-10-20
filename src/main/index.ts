@@ -1,6 +1,6 @@
 import { app, shell, BrowserWindow } from 'electron'
 import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+// import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { WINDOWCONFIG } from './config/windowConfig'
 import { loader } from './loader/index'
@@ -18,7 +18,7 @@ function createWindow(): void {
         return { action: 'deny' }
     })
 
-    if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
+    if (process.env['ELECTRON_RENDERER_URL']) {
         mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
     } else {
         mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
@@ -26,10 +26,10 @@ function createWindow(): void {
 }
 
 app.whenReady().then(() => {
-    electronApp.setAppUserModelId('com.localTool')
-    app.on('browser-window-created', (_, window) => {
-        optimizer.watchWindowShortcuts(window)
-    })
+    //electronApp.setAppUserModelId('com.localTool')
+    // app.on('browser-window-created', (_, window) => {
+    //     optimizer.watchWindowShortcuts(window)
+    // })
 
     createWindow()
 

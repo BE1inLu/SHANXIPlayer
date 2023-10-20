@@ -100,7 +100,7 @@ const test6 = async () => {
 
 const test7 = async () => {
     /* 读取目录数据, 然后生成结构化musicfile并返回 */
-    await window.api.test.testfunc1()
+    // await window.api.test.testfunc1()
 }
 
 const test8 = async () => {

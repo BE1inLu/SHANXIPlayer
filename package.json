@@ -1,7 +1,7 @@
 {
     "name": "shanxi-palyer",
-    "version": "0.1.1",
-    "description": "An Electron application with Vue and TypeScript",
+    "version": "1.0.0",
+    "description": "A musicPlayer Application",
     "main": "./out/main/index.js",
     "author": "example.com",
     "homepage": "https://www.electronjs.org",

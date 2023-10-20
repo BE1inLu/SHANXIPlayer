@@ -10,7 +10,7 @@ import { musicFileExt } from '@main/types'
  */
 export function procdb() {
     const { checkFilePath, createFile } = useUtil()
-    const filepath = join(app.getAppPath(), 'basedb.sqlite3')
+    const filepath = join(app.getPath('exe'),'../', 'basedb.sqlite3')
     const pathflag = checkFilePath(filepath)
 
     if (!pathflag) createFile(filepath)
